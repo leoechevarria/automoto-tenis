@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Automoto Tenis — versión Emil Kowalski</title>
+<link rel="icon" href="../assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Versión basada en emilkowalski/skill (emil-design-eng):
+ * - animar solo transform/opacity, easings custom, UI < 300ms
+ * - scale(0.97) en :active, nunca scale(0), hover gated con (hover:hover)
+ * - @starting-style para entradas, stagger 40ms, drawer con curva iOS
+ * - blur para enmascarar el crossfade de estados del botón
+ */
+:root {
+  --bg: #fafafa; --surface: #fff; --surface-2: #f3f3f2;
+  --fg: #171717; --fg-2: #6b6b6b; --fg-3: #9a9a9a;
+  --line: rgba(0,0,0,.08); --line-2: rgba(0,0,0,.14);
+  --green: #3f7d2c; --green-soft: #e7f3e1; --red: #c4373c;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.05), 0 0 0 1px var(--line);
+  --shadow-md: 0 8px 24px -8px rgba(0,0,0,.18), 0 0 0 1px var(--line);
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body { overflow-x: clip; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.55 Inter, system-ui, -apple-system, sans-serif; -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; border-radius: 6px; }
+h1, h2, h3 { margin: 0; letter-spacing: -0.02em; line-height: 1.15; }
+.wrap { width: min(720px, 100% - 40px); margin-inline: auto; }
+
+/* ---- Top bar ---- */
+.top { position: sticky; top: 0; z-index: 5; background: color-mix(in oklab, var(--bg) 85%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.top .wrap { display: flex; align-items: center; justify-content: space-between; height: 56px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 14px; }
+.brand img { width: 28px; height: 28px; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 36px; padding: 0 14px;
+  border-radius: 10px; border: 0; background: var(--fg); color: #fff; font-weight: 500; font-size: 14px; cursor: pointer;
+  transition: transform 160ms var(--ease-out), background-color 160ms ease;
+}
+.btn.ghost { background: transparent; color: var(--fg); box-shadow: var(--shadow-sm); }
+.btn:active { transform: scale(0.97); }
+@media (hover: hover) and (pointer: fine) { .btn.ghost:hover { background: var(--surface-2); } .btn:not(.ghost):hover { background: #000; } }
+
+/* ---- Hero ---- */
+.hero { padding: 56px 0 28px; }
+.hero h1 { font-size: 32px; font-weight: 600; max-width: 18ch; }
+.hero p { margin: 12px 0 0; color: var(--fg-2); max-width: 46ch; }
+.hero .actions { display: flex; gap: 8px; margin-top: 20px; flex-wrap: wrap; }
+
+/* ---- Entradas: @starting-style + stagger ---- */
+.enter { opacity: 1; transform: translateY(0); transition: opacity 400ms var(--ease-out), transform 400ms var(--ease-out); transition-delay: var(--d, 0ms); }
+@starting-style { .enter { opacity: 0; transform: translateY(8px); } }
+
+/* ---- Accesos ---- */
+.list { display: grid; gap: 8px; padding-bottom: 8px; }
+.item {
+  display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; gap: 14px; align-items: center;
+  padding: 14px 16px; border-radius: 14px; background: var(--surface); box-shadow: var(--shadow-sm);
+  transition: transform 160ms var(--ease-out), box-shadow 200ms ease;
+}
+.item:active { transform: scale(0.985); }
+@media (hover: hover) and (pointer: fine) { .item:hover { box-shadow: var(--shadow-md); } .item:hover .arrow { transform: translateX(3px); opacity: 1; } }
+.item .ico { width: 40px; height: 40px; border-radius: 10px; background: var(--surface-2); display: grid; place-items: center; color: var(--fg-2); }
+.item .ico svg { width: 20px; height: 20px; }
+.item h3 { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.item p { margin: 2px 0 0; color: var(--fg-2); font-size: 13.5px; }
+.tag { font-size: 11px; font-weight: 500; padding: 2px 7px; border-radius: 999px; background: var(--green-soft); color: var(--green); }
+.arrow { color: var(--fg-3); opacity: .6; transition: transform 160ms var(--ease-out), opacity 160ms ease; }
+
+/* ---- Clima ---- */
+.clima { padding: 40px 0 64px; }
+.clima-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
+.clima h2 { font-size: 20px; font-weight: 600; }
+.clima .sub { margin: 4px 0 0; color: var(--fg-2); font-size: 13.5px; max-width: 44ch; }
+.refresh { position: relative; overflow: hidden; }
+.refresh .lbl { display: inline-block; transition: filter 200ms ease, opacity 200ms ease; }
+.refresh.is-swapping .lbl { filter: blur(2px); opacity: .6; }
+.refresh[data-state="ok"] { color: var(--green); }
+.wx-carousel { position: relative; }
+.wx-track { display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 4px 2px 12px; scrollbar-width: none; }
+.wx-track::-webkit-scrollbar { display: none; }
+.wx-card {
+  flex: 0 0 auto; width: 176px; scroll-snap-align: start; padding: 14px; border-radius: 14px;
+  background: var(--surface); box-shadow: var(--shadow-sm); text-align: center;
+  opacity: 0; transform: translateY(6px); animation: cardIn 320ms var(--ease-out) forwards;
+  animation-delay: calc(var(--i, 0) * 40ms);
+}
+@keyframes cardIn { to { opacity: 1; transform: translateY(0); } }
+.wx-top { display: flex; justify-content: center; gap: 6px; font-size: 12px; color: var(--fg-2); }
+.wx-dow { color: var(--fg); font-weight: 600; }
+.wx-ico { font-size: 26px; margin: 8px 0 2px; }
+.wx-temp { font-size: 20px; font-weight: 600; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+.wx-temp small { color: var(--fg-3); font-weight: 500; font-size: 13px; }
+.wx-meta { font-size: 12px; color: var(--fg-2); font-variant-numeric: tabular-nums; }
+.wx-bands { margin-top: 10px; border-top: 1px solid var(--line); padding-top: 6px; text-align: left; }
+.wx-band { padding: 5px 0; }
+.b-top { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+.b-ico { width: 18px; flex: none; letter-spacing: -2px; font-size: 11px; }
+.b-name { font-weight: 500; }
+.b-stars { margin-left: auto; font-size: 9px; letter-spacing: 1px; color: var(--line-2); }
+.b-stars .on { color: var(--green); }
+.b-sub { font-size: 11px; color: var(--fg-3); font-variant-numeric: tabular-nums; }
+.wx-arrow {
+  position: absolute; top: 50%; transform: translateY(-50%); z-index: 1; width: 32px; height: 32px; border-radius: 50%;
+  border: 0; background: var(--surface); box-shadow: var(--shadow-md); cursor: pointer; font-size: 18px; line-height: 1;
+  transition: transform 160ms var(--ease-out);
+}
+.wx-arrow.prev { left: -12px; } .wx-arrow.next { right: -12px; }
+.wx-arrow:active { transform: translateY(-50%) scale(0.94); }
+.wx-arrow[hidden] { display: none; }
+.wx-loading, .wx-error { color: var(--fg-2); font-size: 13.5px; padding: 24px 0; }
+.wx-spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid var(--line-2); border-top-color: var(--fg); border-radius: 50%; animation: spin 500ms linear infinite; vertical-align: -2px; margin-right: 8px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.clima-foot { margin: 0; font-size: 12px; color: var(--fg-3); }
+
+/* ---- Footer ---- */
+footer { border-top: 1px solid var(--line); padding: 24px 0 48px; font-size: 13px; color: var(--fg-2); }
+footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+footer a { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line-2); }
+
+/* ---- Drawer (bottom sheet, curva iOS) ---- */
+.backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.32); opacity: 0; pointer-events: none; transition: opacity 300ms ease; z-index: 20; }
+.sheet {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 21; background: var(--surface); border-radius: 18px 18px 0 0;
+  padding: 10px 16px 28px; max-width: 560px; margin-inline: auto;
+  transform: translateY(100%); transition: transform 500ms var(--ease-drawer);
+}
+.sheet .handle { width: 36px; height: 4px; border-radius: 2px; background: var(--line-2); margin: 0 auto 10px; }
+.sheet a { display: flex; align-items: center; justify-content: space-between; padding: 12px 8px; border-radius: 10px; font-weight: 500; transition: transform 160ms var(--ease-out); }
+.sheet a:active { transform: scale(0.98); }
+@media (hover: hover) and (pointer: fine) { .sheet a:hover { background: var(--surface-2); } }
+.sheet a span:last-child { color: var(--fg-3); font-size: 13px; font-weight: 400; }
+body.nav-open .backdrop { opacity: 1; pointer-events: auto; }
+body.nav-open .sheet { transform: translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  .enter, .wx-card { transition: opacity 200ms ease; animation: none; opacity: 1; transform: none; }
+  .sheet { transition: opacity 200ms ease; }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="emil.html"><img src="../assets/logo.png" alt="">Automoto Tenis</a>
+    <button class="btn ghost" id="menuBtn" type="button" aria-expanded="false" aria-controls="sheet">Menú</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <h1 class="enter">Todo el tenis del club, en un solo lugar.</h1>
+    <p class="enter" style="--d:40ms">Ranking en vivo, cartelera, turnos de cancha y un pronóstico pensado para saber si está lindo para jugar.</p>
+    <div class="actions enter" style="--d:80ms">
+      <a class="btn" href="https://darturnos.com/AutomotoTenis/" target="_blank" rel="noopener">Reservar turno</a>
+      <a class="btn ghost" href="../rankings.html">Ver ranking</a>
+    </div>
+  </section>
+
+  <nav class="list" aria-label="Accesos">
+    <a class="item enter" style="--d:120ms" href="../rankings.html">
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4zM7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3"/></svg></span>
+      <span><h3>Ranking <span class="tag">En vivo</span></h3><p>Categorías A, B y C con ascensos, descensos y promoción.</p></span>
+      <span class="arrow">→</span>
+    </a>
+    <a class="item enter" style="--d:160ms" href="../cartelera.html">
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1zM15 9a3 3 0 0 1 0 6M17 6a7 7 0 0 1 0 12"/></svg></span>
+      <span><h3>Cartelera</h3><p>Novedades, torneos y avisos, con lo importante fijado arriba.</p></span>
+      <span class="arrow">→</span>
+    </a>
+    <a class="item enter" style="--d:200ms" href="https://darturnos.com/AutomotoTenis/" target="_blank" rel="noopener">
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span>
+      <span><h3>Turnos de cancha</h3><p>Reservá tu horario en darturnos.com.</p></span>
+      <span class="arrow">↗</span>
+    </a>
+    <a class="item enter" style="--d:240ms" href="../info.html">
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></span>
+      <span><h3>Info del club</h3><p>Cuota y alias de pago, cuidado de la cancha y teléfonos.</p></span>
+      <span class="arrow">→</span>
+    </a>
+  </nav>
+
+  <section class="clima" id="clima">
+    <div class="clima-head">
+      <div>
+        <h2>¿Está lindo para el tenis?</h2>
+        <p class="sub">Estrellas según viento, lluvia y sol. Cinco estrellas es un día perfecto para reservar.</p>
+      </div>
+      <button class="btn ghost refresh" id="wxRefresh" type="button"><span class="lbl">Actualizar</span></button>
+    </div>
+    <div class="wx-carousel">
+      <button class="wx-arrow prev" id="wxPrev" type="button" aria-label="Días anteriores" hidden>‹</button>
+      <div class="wx-track" id="wxTrack"><div class="wx-loading"><span class="wx-spinner"></span>Cargando el pronóstico…</div></div>
+      <button class="wx-arrow next" id="wxNext" type="button" aria-label="Más días" hidden>›</button>
+    </div>
+    <p class="clima-foot" id="wxFoot"></p>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Automoto Tenis · Temporada 2026</span>
+    <span><a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener">@automototenis</a> · <a href="https://www.instagram.com/masu.tenis/" target="_blank" rel="noopener">@masu.tenis</a></span>
+  </div>
+</footer>
+
+<div class="backdrop" id="backdrop"></div>
+<nav class="sheet" id="sheet" aria-label="Menú principal">
+  <div class="handle"></div>
+  <a href="emil.html"><span>Inicio</span></a>
+  <a href="../rankings.html"><span>Ranking</span><span>Categorías A · B · C</span></a>
+  <a href="#clima"><span>Clima para jugar</span></a>
+  <a href="https://darturnos.com/AutomotoTenis/" target="_blank" rel="noopener"><span>Turnos de cancha</span><span>darturnos.com ↗</span></a>
+  <a href="../cartelera.html"><span>Cartelera</span></a>
+  <a href="../info.html"><span>Info del club</span></a>
+</nav>
+<script>
+  const body = document.body, menuBtn = document.getElementById('menuBtn'), sheet = document.getElementById('sheet'), backdrop = document.getElementById('backdrop');
+  const setNav = open => { body.classList.toggle('nav-open', open); menuBtn.setAttribute('aria-expanded', String(open)); };
+  menuBtn.addEventListener('click', () => setNav(!body.classList.contains('nav-open')));
+  backdrop.addEventListener('click', () => setNav(false));
+  sheet.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setNav(false)));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') setNav(false); });
+
+  // Botón "Actualizar": crossfade con blur entre estados (idle → cargando → listo)
+  const refreshBtn = document.getElementById('wxRefresh');
+  function swapLabel(text, state) {
+    refreshBtn.classList.add('is-swapping');
+    setTimeout(() => { refreshBtn.querySelector('.lbl').textContent = text; refreshBtn.dataset.state = state || ''; refreshBtn.classList.remove('is-swapping'); }, 200);
+  }
+  refreshBtn.addEventListener('click', async () => {
+    swapLabel('Actualizando…', 'busy');
+    await loadWeather();
+    swapLabel('Listo ✓', 'ok');
+    setTimeout(() => swapLabel('Actualizar', ''), 1800);
+  });
+  /* CLIMA — pronóstico + puntaje de estrellas (Open-Meteo)
+     ========================================================== */
+
+  // ---- Configuración: coordenadas de la cancha ----
+  // Tornquist, Buenos Aires (8160)
+  const CLUB_LAT = -38.1006;
+  const CLUB_LON = -62.2214;
+  const WX_DAYS = 16; // Open-Meteo entrega hasta 16 días
+  const WX_SOURCE = `https://open-meteo.com/en/docs?latitude=${CLUB_LAT}&longitude=${CLUB_LON}`;
+  // -------------------------------------------------
+
+  const wxTrack = document.getElementById('wxTrack');
+  const wxFoot = document.getElementById('wxFoot');
+  const wxPrev = document.getElementById('wxPrev');
+  const wxNext = document.getElementById('wxNext');
+
+  // WMO weather code -> emoji + texto  (night = true usa iconos nocturnos)
+  function wxCode(code, night) {
+    if (code === 0) return { i: night ? '🌙' : '☀️', t: 'Despejado', clear: true };
+    if (code === 1) return { i: night ? '🌙' : '🌤️', t: night ? 'Mayormente despejado' : 'Mayormente sol', clear: true };
+    if (code === 2) return { i: night ? '☁️🌙' : '⛅', t: 'Parcial nublado' };
+    if (code === 3) return { i: '☁️', t: 'Nublado', cloud: true };
+    if (code === 45 || code === 48) return { i: '🌫️', t: 'Niebla', fog: true };
+    if (code >= 51 && code <= 57) return { i: '🌦️', t: 'Llovizna', rain: true };
+    if (code >= 61 && code <= 67) return { i: '🌧️', t: 'Lluvia', rain: true };
+    if (code >= 71 && code <= 77) return { i: '🌨️', t: 'Nieve', snow: true };
+    if (code >= 80 && code <= 82) return { i: '🌧️', t: 'Chaparrones', rain: true };
+    if (code >= 85 && code <= 86) return { i: '🌨️', t: 'Nevadas', snow: true };
+    if (code >= 95) return { i: '⛈️', t: 'Tormenta', storm: true };
+    return { i: '🌡️', t: '—' };
+  }
+
+  // penalización por temperatura (°C) — el frío pega fuerte
+  function tempPenalty(t) {
+    if (t < 4) return 2.8;    // helado
+    if (t < 7) return 2.0;    // muy frío
+    if (t < 10) return 1.7;   // frío
+    if (t < 13) return 0.8;   // fresco
+    if (t < 15) return 0.3;   // fresquito
+    if (t <= 28) return 0;    // ideal para jugar
+    if (t <= 31) return 0.5;  // calorcito
+    if (t <= 34) return 1.3;  // calor
+    return 2.6;               // mucho calor
+  }
+
+  // puntaje de 1 a 5 estrellas "para jugar al tenis"
+  function playScore(wind, precipProb, code, temp) {
+    let s = 5;
+    if (wind > 35) s -= 2.5; else if (wind > 25) s -= 1.5; else if (wind > 18) s -= 0.8; else if (wind > 12) s -= 0.3;
+    if (precipProb >= 70) s -= 2.5; else if (precipProb >= 50) s -= 1.5; else if (precipProb >= 30) s -= 0.8; else if (precipProb >= 15) s -= 0.3;
+    const w = wxCode(code);
+    if (w.storm || w.snow) s -= 3;
+    else if (w.rain) s -= 1.5;
+    else if (w.fog) s -= 0.8;
+    else if (w.cloud) s -= 0.3;
+    s -= tempPenalty(temp);
+    return Math.max(1, Math.min(5, Math.round(s)));
+  }
+
+  // colores claros para el veredicto (sobre fondo oscuro)
+  function verdict(stars) {
+    if (stars >= 5) return { t: '¡Ideal!', c: '#b6e05f' };
+    if (stars === 4) return { t: 'Muy bueno', c: '#a6d04e' };
+    if (stars === 3) return { t: 'Se puede', c: '#e0a94e' };
+    if (stars === 2) return { t: 'Complicado', c: '#dd8a55' };
+    return { t: 'Mejor no', c: '#e0776b' };
+  }
+
+  const DOW = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+  const MON = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+
+  function starsHtml(n) {
+    let h = '';
+    for (let i = 1; i <= 5; i++) h += `<span class="${i <= n ? 'on' : 'off'}">★</span>`;
+    return h;
+  }
+
+  // franjas horarias: mañana 6-12, tarde 12-19, noche 19-24
+  const BANDS = [
+    { key: 'mañ', ico: '🌅', name: 'Mañana', from: 6, to: 12 },
+    { key: 'tar', ico: '☀️', name: 'Tarde', from: 12, to: 19 },
+    { key: 'noc', ico: '🌙', name: 'Noche', from: 19, to: 24 },
+  ];
+
+  function bandScore(hourly, dayIso, band) {
+    const idxs = [];
+    for (let i = 0; i < hourly.time.length; i++) {
+      const t = hourly.time[i];
+      if (t.slice(0, 10) === dayIso) {
+        const hr = parseInt(t.slice(11, 13), 10);
+        if (hr >= band.from && hr < band.to) idxs.push(i);
+      }
+    }
+    if (!idxs.length) return null;
+    let windMax = 0, precipMax = 0, tempSum = 0, worstCode = 0;
+    idxs.forEach(i => {
+      windMax = Math.max(windMax, hourly.wind_speed_10m[i] || 0);
+      precipMax = Math.max(precipMax, hourly.precipitation_probability ? (hourly.precipitation_probability[i] || 0) : 0);
+      tempSum += hourly.temperature_2m[i] || 0;
+      worstCode = Math.max(worstCode, hourly.weather_code[i] || 0);
+    });
+    const tavg = Math.round(tempSum / idxs.length);
+    return { stars: playScore(Math.round(windMax), precipMax, worstCode, tavg), temp: tavg, code: worstCode, wind: Math.round(windMax), precip: precipMax };
+  }
+
+  function updateArrows() {
+    const max = wxTrack.scrollWidth - wxTrack.clientWidth - 4;
+    const overflowing = max > 4;
+    wxPrev.hidden = !overflowing;
+    wxNext.hidden = !overflowing;
+    wxPrev.disabled = wxTrack.scrollLeft <= 4;
+    wxNext.disabled = wxTrack.scrollLeft >= max;
+  }
+
+  async function loadWeather() {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${CLUB_LAT}&longitude=${CLUB_LON}`
+      + `&daily=weather_code,temperature_2m_max,temperature_2m_min,wind_speed_10m_max,precipitation_probability_max`
+      + `&hourly=temperature_2m,weather_code,wind_speed_10m,precipitation_probability`
+      + `&timezone=auto&forecast_days=${WX_DAYS}`;
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      const d = data.daily, h = data.hourly;
+      if (!d || !d.time) throw new Error('sin datos');
+
+      const days = d.time.map((iso, idx) => {
+        const wind = Math.round(d.wind_speed_10m_max[idx]);
+        const precip = d.precipitation_probability_max ? (d.precipitation_probability_max[idx] ?? 0) : 0;
+        const code = d.weather_code[idx];
+        const tmax = Math.round(d.temperature_2m_max[idx]);
+        const tmin = Math.round(d.temperature_2m_min[idx]);
+        // puntaje del día = horario jugable (8 a 21 hs), no el máximo de las 24 hs
+        const daytime = h ? bandScore(h, iso, { from: 8, to: 21 }) : null;
+        const stars = daytime ? daytime.stars : playScore(wind, precip, code, tmax);
+        const bands = h ? BANDS.map(b => ({ b, s: bandScore(h, iso, b) })) : [];
+        return { iso, wind, precip, code, tmax, tmin, stars, bands };
+      });
+
+      wxTrack.innerHTML = days.map((day, idx) => {
+        const dt = new Date(day.iso + 'T12:00:00');
+        const w = wxCode(day.code);
+        const label = idx === 0 ? 'Hoy' : DOW[dt.getDay()];
+        const bandsHtml = day.bands.filter(x => x.s).map(x => {
+          const bw = wxCode(x.s.code, x.b.key === 'noc');
+          return `
+          <div class="wx-band">
+            <div class="b-top">
+              <span class="b-ico" title="${bw.t}">${bw.i}</span>
+              <span class="b-name">${x.b.name}</span>
+              <span class="b-stars">${starsHtml(x.s.stars)}</span>
+            </div>
+            <div class="b-sub">🌡️ ${x.s.temp}° · 💨 ${x.s.wind} · 💧 ${x.s.precip}%</div>
+          </div>`;
+        }).join('');
+        return `
+          <div class="wx-card" style="--i:${idx}">
+            <div class="wx-top"><span class="wx-dow">${label}</span><span class="wx-date">${dt.getDate()} ${MON[dt.getMonth()]}</span></div>
+            <div class="wx-ico" title="${w.t}">${w.i}</div>
+            <div class="wx-temp">${day.tmax}°<small> / ${day.tmin}°</small></div>
+            <div class="wx-meta">💨 ${day.wind} km/h · 💧 ${day.precip}%</div>
+            ${bandsHtml ? `<div class="wx-bands">${bandsHtml}</div>` : ''}
+          </div>`;
+      }).join('');
+
+      wxFoot.textContent = `Pronóstico de los próximos ${days.length} días · datos de Open-Meteo`;
+
+      updateArrows();
+    } catch (err) {
+      wxTrack.innerHTML = `<div class="wx-error">No se pudo cargar el clima.<br>${err.message}</div>`;
+    }
+  }
+
+  function scrollCards(dir) {
+    const card = wxTrack.querySelector('.wx-card');
+    const step = card ? (card.offsetWidth + 13) * 3 : 480;
+    wxTrack.scrollBy({ left: dir * step, behavior: 'smooth' });
+  }
+  wxPrev.addEventListener('click', () => scrollCards(-1));
+  wxNext.addEventListener('click', () => scrollCards(1));
+  wxTrack.addEventListener('scroll', updateArrows, { passive: true });
+  window.addEventListener('resize', updateArrows, { passive: true });
+
+  loadWeather();
+</script>
+</body>
+</html>

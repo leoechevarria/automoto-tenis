@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Ranking del club Automoto Tenis — categorías A, B y C en vivo.">
+<title>Automoto Tenis — Ranking</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy-950: #1b1927;
+    --navy-900: #252233;
+    --navy-800: #322e45;
+    --red: #c14649;
+    --red-strong: #b23f43;
+    --red-deep: #96363a;
+    --lime: #9ac746;
+    --lime-deep: #6faa2a;
+    --bg: #f5f6f8;
+    --bg-alt: #eceef2;
+    --surface: #ffffff;
+    --line: rgba(37, 34, 51, 0.08);
+    --ink: #23242c;
+    --muted: #6b7078;
+    --gold: #d4a943;
+    --font-display: 'Sora', 'Helvetica Neue', Arial, sans-serif;
+    --font-body: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    --shadow: 0 1px 2px rgba(20, 20, 40, 0.05), 0 18px 44px -14px rgba(20, 20, 40, 0.28);
+    --ascend: #1f7a4d;
+    --ascend-bg: #e7f4ec;
+    --promo: #b5751d;
+    --promo-bg: #fbf0dd;
+    --descend: #a13a2e;
+    --descend-bg: #fbe9e5;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection { background: rgba(154, 199, 70, 0.35); }
+
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--lime);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  /* ---- Hero ---- */
+
+  .hero {
+    background:
+      radial-gradient(700px 380px at 50% -14%, rgba(154, 199, 70, 0.13), transparent 62%),
+      radial-gradient(620px 380px at 88% 118%, rgba(193, 70, 73, 0.30), transparent 58%),
+      radial-gradient(480px 320px at 8% 104%, rgba(193, 70, 73, 0.14), transparent 55%),
+      linear-gradient(165deg, #2b2840 0%, var(--navy-900) 55%, var(--navy-950) 100%);
+    color: #fff;
+    padding: 64px 24px 66px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ===== Header compartido (idéntico en todas las páginas) ===== */
+
+  body.nav-open { overflow: hidden; }
+
+  .menu-btn {
+    position: fixed;
+    top: 13px;
+    left: 14px;
+    z-index: 90;
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 13px;
+    background: rgba(37, 34, 51, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+    transition: background 0.2s ease;
+  }
+
+  .menu-btn:hover { background: rgba(37, 34, 51, 0.72); }
+
+  body.nav-open .menu-btn { background: var(--navy-900); }
+
+  .menu-bars span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+    transition: transform 0.3s cubic-bezier(0.2, 0.6, 0.3, 1), opacity 0.2s ease;
+  }
+
+  .menu-bars span + span { margin-top: 5px; }
+
+  body.nav-open .menu-bars span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  body.nav-open .menu-bars span:nth-child(2) { opacity: 0; }
+  body.nav-open .menu-bars span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .social {
+    position: fixed;
+    top: 13px;
+    right: 14px;
+    z-index: 90;
+    display: flex;
+    gap: 8px;
+  }
+
+  .social a {
+    width: 44px;
+    height: 44px;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+    transition: transform 0.18s ease;
+  }
+
+  .social a:hover { transform: translateY(-2px); }
+
+  .social .ig {
+    background: rgba(37, 34, 51, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #fff;
+    transition: transform 0.18s ease, background 0.25s ease;
+  }
+  .social .ig:hover { background: linear-gradient(135deg, #feda75 0%, #fa7e1e 22%, #d62976 55%, #962fbf 80%, #4f5bd5 100%); }
+
+  .social .ig svg { width: 22px; height: 22px; display: block; }
+
+  .social .masu { background: rgba(37, 34, 51, 0.5); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: transform 0.18s ease, background 0.25s ease; }
+  .social .masu:hover { background: #10105a; }
+  .social .masu img { width: 66%; height: 66%; object-fit: contain; display: block; }
+
+  .drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 70;
+    width: min(82vw, 300px);
+    background: var(--surface);
+    box-shadow: 0 0 60px rgba(20, 20, 40, 0.35);
+    transform: translateX(-100%);
+    transition: transform 0.32s cubic-bezier(0.2, 0.7, 0.25, 1);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  body.nav-open .drawer { transform: translateX(0); }
+
+  .drawer-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 20px 22px 18px 68px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .drawer-head img { width: 34px; height: auto; display: block; }
+
+  .drawer-head span {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--navy-900);
+  }
+
+  .drawer-nav {
+    list-style: none;
+    margin: 8px 0;
+    padding: 0;
+  }
+
+  .drawer-nav a,
+  .drawer-nav .soon {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 13px 24px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .drawer-nav a .ico,
+  .drawer-nav .soon .ico { font-size: 18px; width: 22px; text-align: center; }
+
+  .drawer-nav a:hover {
+    background: var(--bg);
+    color: var(--red);
+    border-left-color: var(--red);
+  }
+
+  .drawer-nav a[aria-current="page"] {
+    color: var(--red);
+    border-left-color: var(--lime);
+    font-weight: 600;
+  }
+
+  .drawer-nav .soon {
+    color: #9aa0aa;
+    cursor: default;
+  }
+
+  .drawer-nav .soon em {
+    margin-left: auto;
+    font-style: normal;
+    font-size: 9.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: #eef0f3;
+    color: #8b909a;
+    padding: 3px 8px;
+    border-radius: 999px;
+  }
+
+  .drawer-foot {
+    margin-top: auto;
+    padding: 18px 24px 22px;
+    border-top: 1px solid var(--line);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #a2a7b0;
+  }
+
+  .backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    background: rgba(18, 17, 27, 0.45);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  body.nav-open .backdrop { opacity: 1; pointer-events: auto; }
+
+  .topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 11px;
+    background: rgba(37, 34, 51, 0.93);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 11px 16px;
+    transform: translateY(-100%);
+    transition: transform 0.3s cubic-bezier(0.2, 0.6, 0.3, 1);
+    box-shadow: 0 6px 22px rgba(20, 20, 40, 0.3);
+  }
+
+  .topbar.visible { transform: translateY(0); }
+
+  .topbar a { display: inline-flex; align-items: center; gap: 11px; text-decoration: none; }
+
+  .topbar img { width: 30px; height: auto; display: block; }
+
+  .topbar span {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 12.5px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #fff;
+  }
+
+  a.drawer-head { text-decoration: none; cursor: pointer; }
+  a.drawer-head:hover span { color: var(--red); }
+
+  /* ===== fin header compartido ===== */
+
+  .nav {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 22px;
+  }
+
+  .nav button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 13px;
+    letter-spacing: 0.4px;
+    font-family: inherit;
+    font-weight: 500;
+    padding: 6px 12px 9px;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .nav button:hover { color: rgba(255, 255, 255, 0.9); }
+
+  .nav button.active {
+    color: #fff;
+    font-weight: 600;
+    border-bottom-color: var(--lime);
+  }
+
+  .hero-eyebrow {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-size: 11px;
+    color: var(--lime);
+    margin: 0 0 10px;
+    font-weight: 600;
+  }
+
+  .hero-eyebrow::before,
+  .hero-eyebrow::after {
+    content: "";
+    width: 30px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(154, 199, 70, 0.7));
+  }
+
+  .hero-eyebrow::after {
+    background: linear-gradient(to left, transparent, rgba(154, 199, 70, 0.7));
+  }
+
+  .hero h1 {
+    position: relative;
+    z-index: 2;
+    font-family: var(--font-display);
+    font-size: clamp(26px, 4vw, 38px);
+    margin: 0 0 8px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+  }
+
+  .hero p.subtitle {
+    position: relative;
+    z-index: 2;
+    font-size: 14.5px;
+    color: rgba(255, 255, 255, 0.72);
+    margin: 0;
+  }
+
+  /* ---- Tarjeta / tabla ---- */
+
+  .container {
+    max-width: 880px;
+    margin: -44px auto 60px;
+    padding: 0 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .card {
+    background: var(--surface);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 28px;
+    background: var(--surface);
+    border-bottom: 3px solid var(--red);
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .card-header h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 19px;
+    color: var(--navy-900);
+    font-weight: 700;
+    letter-spacing: -0.2px;
+  }
+
+  .meta {
+    font-size: 12px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #9a9a9a;
+    display: inline-block;
+  }
+
+  .dot.live {
+    background: var(--lime-deep);
+    box-shadow: 0 0 0 3px rgba(111, 170, 42, 0.18);
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 14px 28px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--bg-alt);
+    font-size: 12px;
+    color: #5a5e66;
+  }
+
+  .legend:empty { display: none; }
+
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+
+  .legend-swatch {
+    width: 11px;
+    height: 11px;
+    border-radius: 3px;
+    display: inline-block;
+    flex: none;
+  }
+
+  .legend-swatch.ascend { background: var(--ascend); }
+  .legend-swatch.promo { background: var(--promo); }
+  .legend-swatch.descend { background: var(--descend); }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  thead th {
+    text-align: left;
+    padding: 12px 16px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #fff;
+    background: var(--navy-900);
+    font-weight: 600;
+  }
+
+  thead th.num, tbody td.num { text-align: center; }
+
+  tbody tr {
+    border-bottom: 1px solid var(--bg-alt);
+    transition: background 0.15s ease;
+    border-left: 4px solid transparent;
+  }
+
+  tbody tr:last-child { border-bottom: none; }
+
+  tbody tr:hover { background: var(--bg); }
+
+  tbody tr.ascends { background: var(--ascend-bg); border-left-color: var(--ascend); }
+  tbody tr.ascends:hover { background: #dcefe4; }
+
+  tbody tr.promo { background: var(--promo-bg); border-left-color: var(--promo); }
+  tbody tr.promo:hover { background: #f7e7c9; }
+
+  tbody tr.descends { background: var(--descend-bg); border-left-color: var(--descend); }
+  tbody tr.descends:hover { background: #f6dcd5; }
+
+  tbody td {
+    padding: 14px 16px;
+    font-size: 14.5px;
+    color: var(--ink);
+  }
+
+  .pos {
+    font-weight: 700;
+    color: var(--navy-900);
+    width: 44px;
+    text-align: center;
+  }
+
+  .pos-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  tr.rank-1 .pos-badge { background: var(--gold); color: #fff; }
+  tr.rank-2 .pos-badge { background: #b7b7b7; color: #fff; }
+  tr.rank-3 .pos-badge { background: #cd8f68; color: #fff; }
+
+  .player {
+    font-weight: 600;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 14.5px;
+    letter-spacing: -0.1px;
+  }
+
+  .tag {
+    display: inline-block;
+    margin-top: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 10px;
+  }
+
+  .tag.ascend { background: var(--ascend); color: #fff; }
+  .tag.promo { background: var(--promo); color: #fff; }
+  .tag.descend { background: var(--descend); color: #fff; }
+
+  .pts {
+    font-weight: 700;
+    color: var(--red);
+    font-size: 15px;
+  }
+
+  .gp-ratio {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  .gp-pct {
+    color: var(--lime-deep);
+    font-weight: 700;
+  }
+
+  .win-rate-bar {
+    width: 100%;
+    max-width: 70px;
+    height: 5px;
+    background: var(--bg-alt);
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 6px auto 0;
+  }
+
+  .win-rate-fill {
+    height: 100%;
+    background: var(--lime-deep);
+    border-radius: 3px;
+  }
+
+  .state {
+    padding: 60px 20px;
+    text-align: center;
+    color: var(--muted);
+  }
+
+  .state.error { color: var(--red-deep); }
+
+  .spinner {
+    width: 28px;
+    height: 28px;
+    border: 3px solid var(--bg-alt);
+    border-top-color: var(--red);
+    border-radius: 50%;
+    margin: 0 auto 16px;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  footer {
+    text-align: center;
+    padding: 0 20px 44px;
+  }
+
+  footer .rule {
+    width: 56px;
+    height: 3px;
+    border-radius: 2px;
+    margin: 0 auto 18px;
+    background: linear-gradient(to right, var(--red), var(--lime));
+    opacity: 0.6;
+  }
+
+  footer p {
+    margin: 0;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #9aa0aa;
+    font-weight: 500;
+  }
+
+  @media (max-width: 560px) {
+    thead th:nth-child(3), tbody td:nth-child(3),
+    thead th:nth-child(4), tbody td:nth-child(4),
+    thead th:nth-child(5), tbody td:nth-child(5),
+    thead th:nth-child(6), tbody td:nth-child(6) { display: none; }
+    .card-header { flex-direction: column; align-items: flex-start; }
+    .legend { padding: 12px 16px; }
+    .hero { padding: 60px 20px 56px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav button, tbody tr, .topbar, .drawer, .backdrop, .menu-bars span, .social a { transition: none; }
+    .spinner { animation-duration: 1.6s; }
+  }
+</style>
+</head>
+<body>
+
+  <button class="menu-btn" id="menuBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="drawer">
+    <span class="menu-bars"><span></span><span></span><span></span></span>
+  </button>
+
+  <div class="social">
+    <a class="ig" href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener" aria-label="Instagram de Automoto Tenis">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.42.56.21.96.47 1.38.89.42.42.68.82.89 1.38.17.43.37 1.06.42 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.42 2.23-.21.56-.47.96-.89 1.38-.42.42-.82.68-1.38.89-.43.17-1.06.37-2.23.42-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.42-.56-.21-.96-.47-1.38-.89-.42-.42-.68-.82-.89-1.38-.17-.43-.37-1.06-.42-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.42-2.23.21-.56.47-.96.89-1.38.42-.42.82-.68 1.38-.89.43-.17 1.06-.37 2.23-.42 1.27-.06 1.65-.07 4.85-.07M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.13.63c-.79.3-1.46.72-2.13 1.38C1.34 2.68.92 3.35.63 4.13.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.3.79.72 1.46 1.38 2.13.67.66 1.34 1.08 2.13 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56.79-.3 1.46-.72 2.13-1.38.66-.67 1.08-1.34 1.38-2.13.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91-.3-.79-.72-1.46-1.38-2.13-.67-.66-1.34-1.08-2.13-1.38-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0z"/><path d="M12 5.84A6.16 6.16 0 1 0 12 18.16 6.16 6.16 0 0 0 12 5.84zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/><circle cx="18.41" cy="5.59" r="1.44"/></svg>
+    </a>
+    <a class="masu" href="https://www.instagram.com/masu.tenis/" target="_blank" rel="noopener" aria-label="Instagram de Masu Tenis">
+      <img src="assets/masu-mark.png" alt="Masu Tenis">
+    </a>
+  </div>
+
+  <nav class="drawer" id="drawer" aria-hidden="true" aria-label="Menú principal">
+    <a class="drawer-head" href="index.html" aria-label="Ir al inicio">
+      <img src="assets/logo.png" alt="">
+      <span>Automoto Tenis</span>
+    </a>
+    <ul class="drawer-nav">
+      <li><a href="index.html"><span class="ico">🏠</span> Inicio</a></li>
+      <li><a href="rankings.html" aria-current="page"><span class="ico">🏆</span> Ranking</a></li>
+      <li><a href="index.html#clima"><span class="ico">🌦️</span> Clima para jugar</a></li>
+      <li><a href="https://darturnos.com/AutomotoTenis/" target="_blank" rel="noopener"><span class="ico">📅</span> Turnos de cancha</a></li>
+      <li><a href="cartelera.html"><span class="ico">📣</span> Cartelera</a></li>
+      <li><a href="info.html"><span class="ico">ℹ️</span> Info del club</a></li>
+    </ul>
+    <div class="drawer-foot">Temporada 2026</div>
+  </nav>
+
+  <div class="backdrop" id="backdrop"></div>
+
+  <div class="topbar" id="topbar" aria-hidden="true">
+    <a href="index.html" aria-label="Ir al inicio">
+      <img src="assets/logo.png" alt="">
+      <span>Automoto Tenis</span>
+    </a>
+  </div>
+
+  <div class="hero">
+    <nav class="nav" id="nav"></nav>
+    <p class="hero-eyebrow">Temporada 2026</p>
+    <h1>Ranking del Club</h1>
+    <p class="subtitle" id="subtitle">Caballeros &middot; Categoría A</p>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+        <h2>Tabla de posiciones</h2>
+        <div class="meta">
+          <span class="dot live" id="status-dot"></span>
+          <span id="status-text">Actualizando…</span>
+        </div>
+      </div>
+
+      <div class="legend" id="legend"></div>
+
+      <div id="content">
+        <div class="state">
+          <div class="spinner"></div>
+          Cargando ranking…
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="rule"></div>
+    <p>Datos sincronizados en vivo desde Google Sheets</p>
+  </footer>
+
+<script>
+  // ---- Configuración ----
+  const SHEET_ID = '1rWi1oJ9PKRLErlIGEzqEZ2JakEDyuk1poDqFdj88R9w';
+  const API_KEY = 'AIzaSyCZWAlXFGaAtjNYYWB3ajsjQ0W72CNJnCI';
+  const REFRESH_MS = 5 * 60 * 1000; // refrescar cada 5 minutos
+
+  // Reglas de ascenso/descenso por categoría (ver REGLAS - LIGA 2026):
+  // - Top N asciende automático, los 2 puestos siguientes juegan promoción de ascenso.
+  // - Últimos N desciende automático, los 2 puestos anteriores juegan promoción de descenso.
+  const CATEGORIES = {
+    a: { tab: 'Ranking_A', label: 'Categoría A', short: 'A', ascendTopN: 0, descendBottomN: 3, aboveLabel: null, belowLabel: 'Categoría B' },
+    b: { tab: 'Ranking_B', label: 'Categoría B', short: 'B', ascendTopN: 3, descendBottomN: 3, aboveLabel: 'Categoría A', belowLabel: 'Categoría C' },
+    c: { tab: 'Ranking_C', label: 'Categoría C', short: 'C', ascendTopN: 3, descendBottomN: 0, aboveLabel: 'Categoría B', belowLabel: null },
+  };
+  const DEFAULT_CATEGORY = 'a';
+  // ------------------------
+
+  const navEl = document.getElementById('nav');
+  const subtitleEl = document.getElementById('subtitle');
+  const legendEl = document.getElementById('legend');
+  const contentEl = document.getElementById('content');
+  const statusDot = document.getElementById('status-dot');
+  const statusText = document.getElementById('status-text');
+
+  let currentCat = DEFAULT_CATEGORY;
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function renderNav() {
+    navEl.innerHTML = Object.entries(CATEGORIES)
+      .map(([key, cfg]) => `<button data-cat="${key}" class="${key === currentCat ? 'active' : ''}">${cfg.label}</button>`)
+      .join('');
+    navEl.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        location.hash = btn.dataset.cat;
+      });
+    });
+  }
+
+  function renderLegend(cfg, total) {
+    const items = [];
+    if (cfg.ascendTopN > 0) {
+      items.push(`<div class="legend-item"><span class="legend-swatch ascend"></span> Top ${cfg.ascendTopN} — asciende a ${cfg.aboveLabel}</div>`);
+      items.push(`<div class="legend-item"><span class="legend-swatch promo"></span> ${cfg.ascendTopN + 1}° y ${cfg.ascendTopN + 2}° — juegan promoción vs. ${cfg.aboveLabel}</div>`);
+    }
+    if (cfg.descendBottomN > 0 && total > 0) {
+      const bottomStart = total - cfg.descendBottomN + 1;
+      items.push(`<div class="legend-item"><span class="legend-swatch descend"></span> Últimos ${cfg.descendBottomN} — desciende a ${cfg.belowLabel}</div>`);
+      items.push(`<div class="legend-item"><span class="legend-swatch promo"></span> ${bottomStart - 2}° y ${bottomStart - 1}° — juegan promoción vs. ${cfg.belowLabel}</div>`);
+    }
+    legendEl.innerHTML = items.join('');
+  }
+
+  function renderTable(rows, cfg) {
+    const header = rows[0];
+    const dataRows = rows.slice(1).filter(r => r[0] && r[0].trim() !== '');
+    const categoryLabel = header && header[0] ? header[0] : 'Jugador';
+    const total = dataRows.length;
+    const bottomStart = total - cfg.descendBottomN + 1;
+
+    renderLegend(cfg, total);
+
+    let html = `
+      <table>
+        <thead>
+          <tr>
+            <th class="num">#</th>
+            <th>${escapeHtml(categoryLabel)}</th>
+            <th class="num">PJ</th>
+            <th class="num">PG</th>
+            <th class="num">PP</th>
+            <th class="num">NP</th>
+            <th class="num">G/P</th>
+            <th class="num">Pts</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+
+    dataRows.forEach((row, i) => {
+      const [player = '', pj = '0', pg = '0', pp = '0', np = '0', pts = '0'] = row;
+      const rank = i + 1;
+      const played = parseInt(pj, 10) || 0;
+      const won = parseInt(pg, 10) || 0;
+      const lost = parseInt(pp, 10) || 0;
+      const winRate = played > 0 ? Math.round((won / played) * 100) : 0;
+
+      const isAscend = cfg.ascendTopN > 0 && rank <= cfg.ascendTopN;
+      const isAscendPromo = cfg.ascendTopN > 0 && (rank === cfg.ascendTopN + 1 || rank === cfg.ascendTopN + 2);
+      const isDescend = cfg.descendBottomN > 0 && rank >= bottomStart;
+      const isDescendPromo = cfg.descendBottomN > 0 && (rank === bottomStart - 1 || rank === bottomStart - 2);
+
+      let rowClass = '';
+      let tag = '';
+      if (isAscend) {
+        rowClass = 'ascends';
+        tag = '<span class="tag ascend">Asciende</span>';
+      } else if (isDescend) {
+        rowClass = 'descends';
+        tag = '<span class="tag descend">Desciende</span>';
+      } else if (isAscendPromo || isDescendPromo) {
+        rowClass = 'promo';
+        tag = '<span class="tag promo">Promoción</span>';
+      }
+
+      html += `
+        <tr class="rank-${rank} ${rowClass}">
+          <td class="pos"><span class="pos-badge">${rank}</span></td>
+          <td>
+            <div class="player">${escapeHtml(player)}</div>
+            ${tag}
+          </td>
+          <td class="num">${escapeHtml(pj)}</td>
+          <td class="num">${escapeHtml(pg)}</td>
+          <td class="num">${escapeHtml(pp)}</td>
+          <td class="num">${escapeHtml(np)}</td>
+          <td class="num gp">
+            <div class="gp-ratio">${won}/${lost} <span class="gp-pct">${winRate}%</span></div>
+            <div class="win-rate-bar"><div class="win-rate-fill" style="width:${winRate}%"></div></div>
+          </td>
+          <td class="num pts">${escapeHtml(pts)}</td>
+        </tr>
+      `;
+    });
+
+    html += '</tbody></table>';
+    contentEl.innerHTML = html;
+  }
+
+  function renderError(message) {
+    legendEl.innerHTML = '';
+    contentEl.innerHTML = `
+      <div class="state error">
+        No se pudo cargar el ranking.<br>${escapeHtml(message)}
+      </div>
+    `;
+    statusDot.classList.remove('live');
+    statusText.textContent = 'Error de conexión';
+  }
+
+  async function loadRanking() {
+    const cfg = CATEGORIES[currentCat];
+    contentEl.innerHTML = `<div class="state"><div class="spinner"></div>Cargando ranking…</div>`;
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(cfg.tab)}?key=${API_KEY}`;
+    try {
+      const res = await fetch(url);
+      if (!res.ok) {
+        const errBody = await res.json().catch(() => ({}));
+        throw new Error(errBody?.error?.message || `HTTP ${res.status}`);
+      }
+      const data = await res.json();
+      const rows = data.values || [];
+      if (rows.length < 2) throw new Error('La hoja no contiene datos.');
+
+      renderTable(rows, cfg);
+      statusDot.classList.add('live');
+      const now = new Date();
+      statusText.textContent = 'Actualizado ' + now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+    } catch (err) {
+      renderError(err.message || 'Error desconocido');
+    }
+  }
+
+  function setCategory(key) {
+    if (!CATEGORIES[key]) key = DEFAULT_CATEGORY;
+    currentCat = key;
+    renderNav();
+    subtitleEl.textContent = `Caballeros · ${CATEGORIES[key].label}`;
+    loadRanking();
+  }
+
+  window.addEventListener('hashchange', () => {
+    setCategory(location.hash.replace('#', '') || DEFAULT_CATEGORY);
+  });
+
+  setCategory(location.hash.replace('#', '') || DEFAULT_CATEGORY);
+  setInterval(loadRanking, REFRESH_MS);
+
+  /* ---- Header compartido: menú lateral + barra fija ---- */
+  const body = document.body;
+  const menuBtn = document.getElementById('menuBtn');
+  const drawer = document.getElementById('drawer');
+  const backdrop = document.getElementById('backdrop');
+  const topbar = document.getElementById('topbar');
+  const hero = document.querySelector('.hero');
+
+  function openNav() {
+    body.classList.add('nav-open');
+    menuBtn.setAttribute('aria-expanded', 'true');
+    menuBtn.setAttribute('aria-label', 'Cerrar menú');
+    drawer.setAttribute('aria-hidden', 'false');
+  }
+
+  function closeNav() {
+    body.classList.remove('nav-open');
+    menuBtn.setAttribute('aria-expanded', 'false');
+    menuBtn.setAttribute('aria-label', 'Abrir menú');
+    drawer.setAttribute('aria-hidden', 'true');
+  }
+
+  menuBtn.addEventListener('click', () => {
+    body.classList.contains('nav-open') ? closeNav() : openNav();
+  });
+  backdrop.addEventListener('click', closeNav);
+  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && body.classList.contains('nav-open')) closeNav();
+  });
+
+  function onScroll() {
+    topbar.classList.toggle('visible', window.scrollY > hero.offsetHeight - 40);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  onScroll();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Automoto Tenis — Más info</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+.sec { padding: var(--space-md) 0 0; }
+.sec-head { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-xl); align-items: end; border-bottom: 3px solid var(--color-ink); padding-bottom: var(--space-sm); margin-bottom: var(--space-lg); }
+.sec-head h2 { font-size: var(--text-2xl); font-weight: 800; text-transform: uppercase; }
+.sec-head p { margin: 0; color: var(--color-ink-2); }
+.pay-table { width: 100%; border-collapse: collapse; }
+.pay-table td { padding: 12px 0; border-bottom: 1px solid var(--color-rule); vertical-align: top; }
+.pay-table .muted { display: block; font-size: var(--text-xs); color: var(--color-ink-3); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.04em; margin-top: 2px; }
+.pay-table .val { text-align: right; font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.alias-box { display: flex; justify-content: space-between; align-items: center; gap: var(--space-lg); flex-wrap: wrap; padding: var(--space-lg) 0; border-bottom: 1px solid var(--color-rule); }
+.alias-box .lbl { font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-ink-2); }
+.alias { font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; line-height: 1.05; color: var(--color-accent-deep); user-select: all; }
+.alias-box .who { font-size: var(--text-xs); color: var(--color-ink-3); margin-top: 4px; }
+.copy-btn.done { background: var(--color-accent-deep); border-color: var(--color-accent-deep); }
+.care-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--space-xl); }
+.care-item { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: var(--space-md); padding: var(--space-md) 0; border-bottom: 1px solid var(--color-rule); }
+.care-item .ck { font-family: var(--font-display); font-size: 1.3rem; font-weight: 800; text-transform: uppercase; color: var(--color-ink); }
+.care-item.no .ck { color: var(--color-accent); }
+.care-item h4 { margin: 0 0 2px; font-family: var(--font-display); font-size: 1.35rem; font-weight: 700; text-transform: uppercase; }
+.care-item p { margin: 0; color: var(--color-ink-2); font-size: var(--text-sm); }
+.contact-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--space-xl); }
+.contact-card { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-md); align-items: center; padding: var(--space-md) 0; border-bottom: 1px solid var(--color-rule); }
+.contact-card .role { font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-ink-2); }
+.contact-card .name { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; text-transform: uppercase; }
+.contact-actions { display: flex; gap: var(--space-sm); }
+main { padding-bottom: var(--space-3xl); }
+@media (max-width: 720px) { .sec-head, .care-grid, .contact-grid { grid-template-columns: minmax(0, 1fr); } .contact-card { grid-template-columns: minmax(0, 1fr); } }
+</style>
+</head>
+<body>
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <a class="mast-brand" href="index.html"><img src="assets/logo.png" alt="">Automoto Club Deportivo · Subcomisión de Tenis</a>
+      <span class="loc">Tornquist, Buenos Aires</span>
+    </div>
+    <div class="mast-row">
+      <nav class="mast-nav" aria-label="Secciones">
+        <a href="index.html">Inicio</a>
+        <a href="rankings.html">Ranking</a>
+        <a href="cartelera.html">Cartelera</a>
+        <a href="https://darturnos.com/AutomotoTenis/" target="_blank" rel="noopener">Turnos</a>
+        <a href="mercado.html">Mercado</a>
+        <div class="menu">
+          <button type="button" class="menu-btn" aria-current="page" aria-expanded="false" aria-haspopup="true">Más info <span class="chev" aria-hidden="true">▾</span></button>
+          <div class="menu-list" role="menu">
+            <a role="menuitem" href="info.html#pagos">Cuota y alias de pago</a>
+            <a role="menuitem" href="info.html#cancha">Cuidado de la cancha</a>
+            <a role="menuitem" href="info.html#contacto">Teléfonos y contactos</a>
+            <a role="menuitem" href="subcomision.html">Subcomisión de Tenis</a>
+            <a role="menuitem" href="reglas.html">Reglas de la liga</a>
+          </div>
+        </div>
+        <a href="index.html#clima">Clima</a>
+      </nav>
+      <div class="social">
+        <a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener" aria-label="Instagram de Automoto Tenis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="https://www.instagram.com/masu.tenis/" target="_blank" rel="noopener" aria-label="Instagram de Masu Tenis" class="masu"><img src="assets/masu-mark.png" alt=""></a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="page-head reveal" style="--i:0">
+    <div><h1>Más info</h1><p class="sub">Cuota y alias de pago, cuidado de la cancha y teléfonos útiles.</p></div>
+    <p class="meta"><a href="#pagos">Pagos</a> · <a href="#cancha">Cancha</a> · <a href="#contacto">Contactos</a><br><a href="subcomision.html">Subcomisión</a> · <a href="reglas.html">Reglas de la liga</a></p>
+  </div>
+
+
+    <!-- ===== Pagos ===== -->
+    <details class="fold sec revealNone" id="pagos" open style="--i:1">
+      <summary><div>
+          <h2>Cuota y alias de pago</h2>
+          <p>Valores de la temporada y datos para transferir.</p><span class="chev">▾</span></summary>
+      <div class="fold-body"><div>
+      </div>
+
+      <div class="note">Valores y alias de ejemplo · reemplazar por los reales del club.</div>
+
+      <table class="pay-table">
+        <tr><td>Cuota mensual — socio<span class="muted">Acceso a canchas y actividades</span></td><td class="val">$ XX.XXX</td></tr>
+        <tr><td>Cuota mensual — menores / estudiantes</td><td class="val">$ XX.XXX</td></tr>
+        <tr><td>Matrícula anual</td><td class="val">$ XX.XXX</td></tr>
+        <tr><td>Alquiler de cancha — no socios<span class="muted">Por hora</span></td><td class="val">$ X.XXX</td></tr>
+        <tr><td>Escuela de tenis — clases<span class="muted">Consultar con el profe</span></td><td class="val">a convenir</td></tr>
+      </table>
+
+      <div class="alias-box">
+        <div>
+          <div class="lbl">Alias para transferir</div>
+          <div class="alias" id="aliasText">AUTOMOTO.TENIS.MP</div>
+          <div class="who">Titular: Club Automoto · CBU/CVU a solicitar por privado</div>
+        </div>
+        <button class="btn fill copy-btn" id="copyAlias" type="button">
+          <span id="copyLabel">Copiar alias</span>
+        </button>
+      </div>
+          </div></div>
+    </details>
+
+    <!-- ===== Cuidado de la cancha ===== -->
+    <details class="fold sec revealNone" id="cancha" style="--i:2">
+      <summary><div>
+          <h2>Cuidado de la cancha</h2>
+          <p>El polvo de ladrillo se mantiene entre todos. Unas pocas cosas hacen la diferencia.</p><span class="chev">▾</span></summary>
+      <div class="fold-body"><div>
+      </div>
+
+      <div class="care-grid">
+        <div class="care-item">
+          <span class="ck">Sí</span>
+          <div><h4>Pasá la red al terminar</h4><p>Arrastrá la red (drag) por toda la cancha para emparejar el polvillo y borrar las pisadas.</p></div>
+        </div>
+        <div class="care-item">
+          <span class="ck">Sí</span>
+          <div><h4>Barré las líneas</h4><p>Con el cepillo, dejá las líneas limpias y visibles para el que juega después.</p></div>
+        </div>
+        <div class="care-item">
+          <span class="ck">Sí</span>
+          <div><h4>Regá si está seca</h4><p>Una cancha bien regada juega mejor y levanta menos tierra. Si el canchero no está, ayudá con el riego.</p></div>
+        </div>
+        <div class="care-item">
+          <span class="ck">Sí</span>
+          <div><h4>Zapatillas de polvo de ladrillo</h4><p>Suela adecuada: cuida la superficie y evita resbalones.</p></div>
+        </div>
+        <div class="care-item no">
+          <span class="ck">No</span>
+          <div><h4>No juegues con la cancha encharcada</h4><p>Si quedó agua, esperá que drene: jugar sobre barro arruina la carpeta.</p></div>
+        </div>
+        <div class="care-item no">
+          <span class="ck">No</span>
+          <div><h4>No dejes basura ni botellas</h4><p>Llevate lo tuyo. Los tachos están en la entrada de las canchas.</p></div>
+        </div>
+      </div>
+          </div></div>
+    </details>
+
+    <!-- ===== Contactos ===== -->
+    <details class="fold sec revealNone" id="contacto" style="--i:3">
+      <summary><div>
+          <h2>Teléfonos y contactos</h2>
+          <p>¿Una duda? Escribile a quien corresponde.</p><span class="chev">▾</span></summary>
+      <div class="fold-body"><div>
+      </div>
+
+      <div class="note">Nombres y teléfonos de ejemplo · reemplazar por los reales.</div>
+
+      <div class="contact-grid">
+        <div class="contact-card">
+          <div class="role">Organizador de la liga</div>
+          <div class="name">Gonza</div>
+          <div class="contact-actions">
+            <a class="btn" href="https://wa.me/5492915555555" target="_blank" rel="noopener">WhatsApp</a>
+            <a class="btn" href="tel:+5492915555555">Llamar</a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="role">Subcomisión / cuotas</div>
+          <div class="name">Tesorería</div>
+          <div class="contact-actions">
+            <a class="btn" href="https://wa.me/5492915555555" target="_blank" rel="noopener">WhatsApp</a>
+            <a class="btn" href="tel:+5492915555555">Llamar</a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="role">Turnos y cancha</div>
+          <div class="name">Seba</div>
+          <div class="contact-actions">
+            <a class="btn" href="https://wa.me/5492915555555" target="_blank" rel="noopener">WhatsApp</a>
+            <a class="btn" href="tel:+5492915555555">Llamar</a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="role">Escuela de tenis</div>
+          <div class="name">Profes</div>
+          <div class="contact-actions">
+            <a class="btn" href="https://wa.me/5492915555555" target="_blank" rel="noopener">WhatsApp</a>
+            <a class="btn" href="tel:+5492915555555">Llamar</a>
+          </div>
+        </div>
+      </div>
+          </div></div>
+    </details>
+</main>
+<footer>
+  <div class="wrap cols">
+    <div><strong>Automoto Club Deportivo</strong><a href="subcomision.html">Subcomisión de Tenis</a> · Tornquist, Buenos Aires · <a href="reglas.html">Reglas de la liga</a></div>
+  </div>
+</footer>
+<script>
+  /* ---- Copiar alias (con fallback para mobile / HTTP) ---- */
+  const copyBtn = document.getElementById('copyAlias');
+  const copyLabel = document.getElementById('copyLabel');
+
+  // fallback que funciona en contextos no seguros (HTTP) y en móviles
+  function legacyCopy(text) {
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.top = '0';
+      ta.style.left = '0';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      ta.setSelectionRange(0, text.length); // iOS
+      const ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      return ok;
+    } catch (e) { return false; }
+  }
+
+  async function copyAlias() {
+    const alias = document.getElementById('aliasText').textContent.trim();
+    let ok = false;
+    // método moderno solo en contexto seguro (HTTPS o localhost)
+    if (navigator.clipboard && window.isSecureContext) {
+      try { await navigator.clipboard.writeText(alias); ok = true; } catch (e) { ok = false; }
+    }
+    if (!ok) ok = legacyCopy(alias);
+
+    copyBtn.classList.add('done');
+    copyLabel.textContent = ok ? '¡Copiado!' : 'Copiá: ' + alias;
+    setTimeout(() => { copyBtn.classList.remove('done'); copyLabel.textContent = 'Copiar alias'; }, ok ? 1800 : 3500);
+  }
+
+  copyBtn.addEventListener('click', copyAlias);
+</script>
+<script src="site.js"></script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Automoto Tenis — Mercado del usado</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+main { padding-bottom: var(--space-3xl); }
+.tabs { margin-top: var(--space-lg); }
+.items { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 3px solid var(--color-ink); border-left: 1px solid var(--color-rule); }
+.item { display: grid; grid-template-rows: auto 1fr auto; gap: var(--space-sm); padding: var(--space-md); border-right: 1px solid var(--color-rule); border-bottom: 1px solid var(--color-rule); min-width: 0; }
+.item[hidden] { display: none; }
+.item .ph { display: block; aspect-ratio: 4 / 3; overflow: hidden; border: 1px solid var(--color-rule); background: var(--color-paper-2); }
+.item .ph img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 420ms var(--ease-out); }
+@media (hover: hover) { .item .ph:hover img { transform: scale(1.03); } }
+.item .cat { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-accent-deep); text-transform: uppercase; letter-spacing: 0.05em; }
+.item h3 { font-size: 1.6rem; font-weight: 700; text-transform: uppercase; margin-top: 2px; }
+.item p { margin: 4px 0 0; color: var(--color-ink-2); font-size: var(--text-sm); }
+.item .foot { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-sm); border-top: 1px solid var(--color-rule); padding-top: var(--space-sm); }
+.item .price { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.item .who { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-ink-3); text-align: right; }
+.item .who a { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--color-rule); }
+.howto { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); gap: var(--space-lg); padding: var(--space-xl) 0 0; }
+.howto .k { font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-ink-2); }
+.howto h3 { font-size: var(--text-2xl); font-weight: 700; text-transform: uppercase; margin: 0 0 var(--space-sm); }
+.howto p { margin: 0 0 var(--space-md); color: var(--color-ink-2); max-width: 60ch; }
+.credits { margin-top: var(--space-2xl); font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-ink-3); }
+.credits a { text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 900px) { .items { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .items { grid-template-columns: minmax(0, 1fr); } .howto { grid-template-columns: minmax(0, 1fr); gap: var(--space-xs); } }
+</style>
+</head>
+<body>
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <a class="mast-brand" href="index.html"><img src="assets/logo.png" alt="">Automoto Club Deportivo · Subcomisión de Tenis</a>
+      <span class="loc">Tornquist, Buenos Aires</span>
+    </div>
+    <div class="mast-row">
+      <nav class="mast-nav" aria-label="Secciones">
+        <a href="index.html">Inicio</a>
+        <a href="rankings.html">Ranking</a>
+        <a href="cartelera.html">Cartelera</a>
+        <a href="https://darturnos.com/AutomotoTenis/" target="_blank" rel="noopener">Turnos</a>
+        <a href="mercado.html" aria-current="page">Mercado</a>
+        <div class="menu">
+          <button type="button" class="menu-btn" aria-expanded="false" aria-haspopup="true">Más info <span class="chev" aria-hidden="true">▾</span></button>
+          <div class="menu-list" role="menu">
+            <a role="menuitem" href="info.html#pagos">Cuota y alias de pago</a>
+            <a role="menuitem" href="info.html#cancha">Cuidado de la cancha</a>
+            <a role="menuitem" href="info.html#contacto">Teléfonos y contactos</a>
+            <a role="menuitem" href="subcomision.html">Subcomisión de Tenis</a>
+            <a role="menuitem" href="reglas.html">Reglas de la liga</a>
+          </div>
+        </div>
+        <a href="index.html#clima">Clima</a>
+      </nav>
+      <div class="social">
+        <a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener" aria-label="Instagram de Automoto Tenis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="https://www.instagram.com/masu.tenis/" target="_blank" rel="noopener" aria-label="Instagram de Masu Tenis" class="masu"><img src="assets/masu-mark.png" alt=""></a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="page-head reveal" style="--i:0">
+    <div><h1>Mercado del usado</h1><p class="sub">Raquetas, zapatillas y bolsos que venden socios y profes del club. Se arregla directo con quien vende.</p></div>
+    <p class="meta"><b>6 publicaciones</b> · de ejemplo</p>
+  </div>
+  <nav class="tabs reveal" id="filtros" aria-label="Filtrar" style="--i:1">
+    <button type="button" class="active" data-cat="todo">Todo</button>
+    <button type="button" data-cat="raquetas">Raquetas</button>
+    <button type="button" data-cat="zapatillas">Zapatillas</button>
+    <button type="button" data-cat="bolsos">Bolsos</button>
+  </nav>
+  <p class="note reveal" style="--i:1; margin-top: var(--space-md)">Publicaciones de ejemplo, para ver cómo queda la sección</p>
+  <div class="items reveal" id="items" style="--i:2">
+      <article class="item" data-cat="raquetas">
+        <a class="ph" href="assets/mercado/raqueta-wilson.jpg" target="_blank" rel="noopener"><img src="assets/mercado/raqueta-wilson.jpg" alt="Wilson Blade 98 v8" loading="lazy"></a>
+        <div><span class="cat">Raqueta</span><h3>Wilson Blade 98 v8</h3><p>Grip 2, 305 g. Encordada con Luxilon a 24 kg. Muy poco uso, sin golpes en el marco.</p></div>
+        <div class="foot"><span class="price">$ 260.000</span><span class="who">Vende <a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener">Gonza</a></span></div>
+      </article>
+      <article class="item" data-cat="raquetas">
+        <a class="ph" href="assets/mercado/raqueta-yonex.jpg" target="_blank" rel="noopener"><img src="assets/mercado/raqueta-yonex.jpg" alt="Yonex VCORE 100" loading="lazy"></a>
+        <div><span class="cat">Raqueta</span><h3>Yonex VCORE 100</h3><p>Grip 3, 300 g. Dos temporadas de uso, marco impecable. Va con funda.</p></div>
+        <div class="foot"><span class="price">$ 210.000</span><span class="who">Vende <a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener">Seba</a></span></div>
+      </article>
+      <article class="item" data-cat="raquetas">
+        <a class="ph" href="assets/mercado/raqueta-head.jpg" target="_blank" rel="noopener"><img src="assets/mercado/raqueta-head.jpg" alt="Head Ti.S6 + tubo de pelotas" loading="lazy"></a>
+        <div><span class="cat">Raqueta</span><h3>Head Ti.S6 + tubo de pelotas</h3><p>Ideal para arrancar: liviana y con mucha potencia. Incluye tubo de pelotas nuevo.</p></div>
+        <div class="foot"><span class="price">$ 95.000</span><span class="who">Vende <a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener">Masu Tenis</a></span></div>
+      </article>
+      <article class="item" data-cat="zapatillas">
+        <a class="ph" href="assets/mercado/zapas-wilson.jpg" target="_blank" rel="noopener"><img src="assets/mercado/zapas-wilson.jpg" alt="Wilson Rush Pro 4.0" loading="lazy"></a>
+        <div><span class="cat">Zapatillas</span><h3>Wilson Rush Pro 4.0</h3><p>Talle 39 (mujer). Suela para polvo de ladrillo, usadas tres meses.</p></div>
+        <div class="foot"><span class="price">$ 110.000</span><span class="who">Vende <a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener">Lu</a></span></div>
+      </article>
+      <article class="item" data-cat="zapatillas">
+        <a class="ph" href="assets/mercado/zapas-babolat.jpg" target="_blank" rel="noopener"><img src="assets/mercado/zapas-babolat.jpg" alt="Babolat Propulse Fury" loading="lazy"></a>
+        <div><span class="cat">Zapatillas</span><h3>Babolat Propulse Fury</h3><p>Talle 43, para polvo de ladrillo. Usadas una temporada, suela entera.</p></div>
+        <div class="foot"><span class="price">$ 90.000</span><span class="who">Vende <a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener">Pablo</a></span></div>
+      </article>
+      <article class="item" data-cat="bolsos">
+        <a class="ph" href="assets/mercado/bolso-wilson.jpg" target="_blank" rel="noopener"><img src="assets/mercado/bolso-wilson.jpg" alt="Bolso Wilson Tour 6R" loading="lazy"></a>
+        <div><span class="cat">Bolso</span><h3>Bolso Wilson Tour 6R</h3><p>Seis raquetas, compartimento térmico y bolsillo para zapatillas. Sin roturas ni cierres rotos.</p></div>
+        <div class="foot"><span class="price">$ 75.000</span><span class="who">Vende <a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener">Vale</a></span></div>
+      </article>
+  </div>
+  <div class="howto reveal" style="--i:3">
+    <span class="k">Publicar</span>
+    <div>
+      <h3>¿Querés vender algo?</h3>
+      <p>Mandá una foto, una descripción corta (marca, modelo, talle o grip, estado) y el precio por Instagram. Lo publicamos acá y los interesados te escriben directo.</p>
+      <a class="btn" href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener">Escribir a @automototenis ↗</a>
+    </div>
+  </div>
+  <p class="credits">Fotos de ejemplo: Wikimedia Commons, licencias CC BY-SA / libre uso (<a href="https://commons.wikimedia.org/wiki/File:Wilson_Tennis_Racquet_1.jpg" target="_blank" rel="noopener">1</a>, <a href="https://commons.wikimedia.org/wiki/File:Tennis_racket_and_ball.JPG" target="_blank" rel="noopener">2</a>, <a href="https://commons.wikimedia.org/wiki/File:Tennis_Racket_and_Balls.jpg" target="_blank" rel="noopener">3</a>, <a href="https://commons.wikimedia.org/wiki/File:Wilson_Rush_Pro_tennis_shoes.jpg" target="_blank" rel="noopener">4</a>, <a href="https://commons.wikimedia.org/wiki/File:ChaussuresTennis.jpg" target="_blank" rel="noopener">5</a>, <a href="https://commons.wikimedia.org/wiki/File:Wilson_Sporting_Goods_orange_tennis_bagA.jpg" target="_blank" rel="noopener">6</a>). Reemplazar por fotos reales al publicar.</p>
+</main>
+<footer>
+  <div class="wrap cols">
+    <div><strong>Automoto Club Deportivo</strong><a href="subcomision.html">Subcomisión de Tenis</a> · Tornquist, Buenos Aires · <a href="reglas.html">Reglas de la liga</a></div>
+  </div>
+</footer>
+<script>
+  const filtros = document.getElementById('filtros');
+  filtros.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    filtros.querySelectorAll('button').forEach(x => x.classList.toggle('active', x === b));
+    document.querySelectorAll('#items .item').forEach(it => { it.hidden = b.dataset.cat !== 'todo' && it.dataset.cat !== b.dataset.cat; });
+  });
+</script>
+<script src="site.js"></script>
+</body>
+</html>

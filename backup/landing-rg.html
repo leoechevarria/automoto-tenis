@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Automoto Tenis — ranking en vivo, turnos y novedades del club.">
+<title>Automoto Tenis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-950: #07281e;
+    --green-900: #0b3d2e;
+    --green-800: #10513c;
+    --clay: #b5451d;
+    --clay-strong: #a53d19;
+    --clay-deep: #8f3616;
+    --gold: #c9a24b;
+    --cream: #faf3e6;
+    --cream-dark: #f1e6d2;
+    --surface: #ffffff;
+    --line: rgba(43, 26, 10, 0.09);
+    --ink: #2a221c;
+    --muted: #8a7d6d;
+    --font-display: 'Fraunces', 'Georgia', 'Times New Roman', serif;
+    --font-body: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    font-family: var(--font-body);
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection { background: rgba(201, 162, 75, 0.35); }
+
+  a:focus-visible, .card:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  /* ---- Hero ---- */
+
+  .hero {
+    background:
+      radial-gradient(900px 480px at 50% -12%, rgba(201, 162, 75, 0.17), transparent 62%),
+      radial-gradient(760px 460px at 88% 112%, rgba(181, 69, 29, 0.32), transparent 58%),
+      radial-gradient(600px 400px at 8% 100%, rgba(181, 69, 29, 0.15), transparent 55%),
+      linear-gradient(165deg, var(--green-800) 0%, var(--green-900) 55%, var(--green-950) 100%);
+    color: var(--cream);
+    padding: 44px 24px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .logo-wrap {
+    position: relative;
+    z-index: 2;
+    width: 210px;
+    margin: 0 auto 18px;
+    filter: drop-shadow(0 14px 26px rgba(0, 0, 0, 0.38));
+  }
+
+  .logo-wrap img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .hero-eyebrow {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-size: 11.5px;
+    color: var(--gold);
+    margin: 0 0 14px;
+    font-weight: 600;
+  }
+
+  .hero-eyebrow::before,
+  .hero-eyebrow::after {
+    content: "";
+    width: 34px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(201, 162, 75, 0.75));
+  }
+
+  .hero-eyebrow::after {
+    background: linear-gradient(to left, transparent, rgba(201, 162, 75, 0.75));
+  }
+
+  .hero h1 {
+    position: relative;
+    z-index: 2;
+    font-family: var(--font-display);
+    font-size: clamp(34px, 5.2vw, 54px);
+    margin: 0 0 14px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    line-height: 1.08;
+  }
+
+  .hero p.tagline {
+    position: relative;
+    z-index: 2;
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: rgba(250, 243, 230, 0.75);
+    margin: 0 auto 28px;
+    max-width: 440px;
+    font-weight: 400;
+  }
+
+  .cta {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(180deg, #c25326 0%, var(--clay-strong) 100%);
+    border: 1px solid rgba(250, 243, 230, 0.18);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.2px;
+    padding: 15px 34px;
+    border-radius: 999px;
+    box-shadow:
+      0 12px 28px rgba(181, 69, 29, 0.42),
+      inset 0 1px 0 rgba(255, 255, 255, 0.22);
+    transition: transform 0.2s cubic-bezier(0.2, 0.6, 0.3, 1), box-shadow 0.2s ease;
+  }
+
+  .cta .arrow { transition: transform 0.2s ease; }
+
+  .cta:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 16px 34px rgba(181, 69, 29, 0.52),
+      inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  }
+
+  .cta:hover .arrow { transform: translateX(3px); }
+
+  /* ---- Foto de la cancha ---- */
+
+  .parallax {
+    height: clamp(400px, 66vh, 660px);
+    background-image:
+      linear-gradient(to bottom,
+        rgba(7, 40, 30, 0.5) 0%,
+        rgba(7, 40, 30, 0) 22%,
+        rgba(250, 243, 230, 0) 68%,
+        var(--cream) 97%),
+      url('assets/court.jpg');
+    background-size: 100% 100%, cover;
+    background-position: center, center 38%;
+    background-attachment: scroll, fixed;
+  }
+
+  /* ---- Tarjetas ---- */
+
+  .container {
+    max-width: 920px;
+    margin: -72px auto 72px;
+    padding: 0 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 22px;
+  }
+
+  .card {
+    background: var(--surface);
+    border-radius: 20px;
+    box-shadow:
+      0 1px 2px rgba(43, 26, 10, 0.05),
+      0 18px 44px -14px rgba(43, 26, 10, 0.26);
+    padding: 30px 26px 28px;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    border: 1px solid var(--line);
+    transition: transform 0.25s cubic-bezier(0.2, 0.6, 0.3, 1), box-shadow 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(to right, var(--clay), var(--gold));
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+
+  a.card:hover {
+    transform: translateY(-5px);
+    box-shadow:
+      0 2px 4px rgba(43, 26, 10, 0.06),
+      0 26px 54px -16px rgba(43, 26, 10, 0.34);
+  }
+
+  a.card:hover::before { opacity: 1; }
+
+  .card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: linear-gradient(160deg, var(--green-800), var(--green-900));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+    margin-bottom: 18px;
+  }
+
+  .card h3 {
+    margin: 0 0 7px;
+    font-family: var(--font-display);
+    font-size: 18.5px;
+    color: var(--green-900);
+    font-weight: 700;
+    letter-spacing: 0.1px;
+  }
+
+  .card p {
+    margin: 0;
+    font-size: 13.5px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .card-go {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--clay);
+  }
+
+  .card-go .arrow { transition: transform 0.2s ease; }
+
+  a.card:hover .card-go .arrow { transform: translateX(3px); }
+
+  .card.disabled {
+    opacity: 0.62;
+    cursor: default;
+  }
+
+  .card.disabled .card-icon { filter: grayscale(0.4); }
+
+  /* ---- Badges ---- */
+
+  .badge {
+    position: absolute;
+    top: 22px;
+    right: 22px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--clay-deep);
+    background: #f7e8dc;
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+
+  .badge.live {
+    color: var(--green-800);
+    background: #e4efe2;
+  }
+
+  .badge.live::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #2e7d54;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(46, 125, 84, 0.5); }
+    50% { box-shadow: 0 0 0 4px rgba(46, 125, 84, 0); }
+  }
+
+  /* ---- Footer ---- */
+
+  footer {
+    text-align: center;
+    padding: 0 20px 44px;
+  }
+
+  footer .rule {
+    width: 56px;
+    height: 3px;
+    border-radius: 2px;
+    margin: 0 auto 18px;
+    background: linear-gradient(to right, var(--clay), var(--gold));
+    opacity: 0.6;
+  }
+
+  footer p {
+    margin: 0;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #a89b89;
+    font-weight: 500;
+  }
+
+  /* ---- Responsive / motion ---- */
+
+  @media (max-width: 560px) {
+    .hero { padding: 40px 20px 52px; }
+    .logo-wrap { width: 170px; }
+    .parallax { background-attachment: scroll, scroll; height: 300px; }
+    .container { margin-top: -60px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .card, .cta, .cta .arrow, .card-go .arrow { transition: none; }
+    .badge.live::before { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="hero">
+    <div class="logo-wrap">
+      <img src="assets/logo.png" alt="Automoto Tenis">
+    </div>
+    <p class="hero-eyebrow">Bienvenidos</p>
+    <h1>Automoto Tenis</h1>
+    <p class="tagline">Ranking, torneos y toda la actividad del club en un solo lugar.</p>
+    <a class="cta" href="rankings.html">Ver Ranking <span class="arrow">→</span></a>
+  </div>
+
+  <div class="parallax" role="img" aria-label="Canchas de polvo de ladrillo del club"></div>
+
+  <div class="container">
+    <div class="cards">
+      <a class="card" href="rankings.html">
+        <span class="badge live">En vivo</span>
+        <div class="card-icon">🏆</div>
+        <h3>Ranking</h3>
+        <p>Posiciones actualizadas de Categorías A, B y C, con ascensos, descensos y promoción.</p>
+        <span class="card-go">Ver tabla <span class="arrow">→</span></span>
+      </a>
+      <div class="card disabled">
+        <span class="badge">Próximamente</span>
+        <div class="card-icon">📅</div>
+        <h3>Turnos de cancha</h3>
+        <p>Reservá tu horario para jugar directamente desde acá.</p>
+      </div>
+      <div class="card disabled">
+        <span class="badge">Próximamente</span>
+        <div class="card-icon">📣</div>
+        <h3>Cartelera y noticias</h3>
+        <p>Novedades, torneos y anuncios del club.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="rule"></div>
+    <p>Automoto Tenis &middot; Temporada 2026</p>
+  </footer>
+
+</body>
+</html>

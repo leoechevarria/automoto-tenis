@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Cartelera del club Automoto Tenis — novedades, torneos y avisos.">
+<title>Automoto Tenis — Cartelera</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy-950: #1b1927;
+    --navy-900: #252233;
+    --navy-800: #322e45;
+    --red: #c14649;
+    --red-strong: #b23f43;
+    --red-deep: #96363a;
+    --lime: #9ac746;
+    --lime-deep: #6faa2a;
+    --bg: #f5f6f8;
+    --bg-alt: #eceef2;
+    --surface: #ffffff;
+    --line: rgba(37, 34, 51, 0.08);
+    --ink: #23242c;
+    --muted: #6b7078;
+    --font-display: 'Sora', 'Helvetica Neue', Arial, sans-serif;
+    --font-body: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    --shadow: 0 1px 2px rgba(20, 20, 40, 0.05), 0 18px 44px -14px rgba(20, 20, 40, 0.28);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; font-family: var(--font-body); background: var(--bg); color: var(--ink);
+    min-height: 100vh; -webkit-font-smoothing: antialiased;
+  }
+  body.nav-open { overflow: hidden; }
+  ::selection { background: rgba(154, 199, 70, 0.35); }
+  a:focus-visible, button:focus-visible { outline: 3px solid var(--lime); outline-offset: 3px; border-radius: 6px; }
+
+  /* ===== Header compartido (idéntico en todas las páginas) ===== */
+  .menu-btn {
+    position: fixed; top: 13px; left: 14px; z-index: 90; width: 44px; height: 44px; border: none; border-radius: 13px;
+    background: rgba(37, 34, 51, 0.5); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2); transition: background 0.2s ease;
+  }
+  .menu-btn:hover { background: rgba(37, 34, 51, 0.72); }
+  body.nav-open .menu-btn { background: var(--navy-900); }
+  .menu-bars span { display: block; width: 20px; height: 2px; background: #fff; border-radius: 2px; transition: transform 0.3s cubic-bezier(0.2, 0.6, 0.3, 1), opacity 0.2s ease; }
+  .menu-bars span + span { margin-top: 5px; }
+  body.nav-open .menu-bars span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  body.nav-open .menu-bars span:nth-child(2) { opacity: 0; }
+  body.nav-open .menu-bars span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .social { position: fixed; top: 13px; right: 14px; z-index: 90; display: flex; gap: 8px; }
+  .social a { width: 44px; height: 44px; border-radius: 13px; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2); transition: transform 0.18s ease; }
+  .social a:hover { transform: translateY(-2px); }
+  .social .ig { background: rgba(37, 34, 51, 0.5); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); color: #fff; transition: transform 0.18s ease, background 0.25s ease; }
+  .social .ig:hover { background: linear-gradient(135deg, #feda75 0%, #fa7e1e 22%, #d62976 55%, #962fbf 80%, #4f5bd5 100%); }
+  .social .ig svg { width: 22px; height: 22px; display: block; }
+  .social .masu { background: rgba(37, 34, 51, 0.5); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: transform 0.18s ease, background 0.25s ease; }
+  .social .masu:hover { background: #10105a; }
+  .social .masu img { width: 66%; height: 66%; object-fit: contain; display: block; }
+  .drawer { position: fixed; top: 0; left: 0; bottom: 0; z-index: 70; width: min(82vw, 300px); background: var(--surface); box-shadow: 0 0 60px rgba(20, 20, 40, 0.35); transform: translateX(-100%); transition: transform 0.32s cubic-bezier(0.2, 0.7, 0.25, 1); display: flex; flex-direction: column; overflow-y: auto; }
+  body.nav-open .drawer { transform: translateX(0); }
+  .drawer-head { display: flex; align-items: center; gap: 12px; padding: 20px 22px 18px 68px; border-bottom: 1px solid var(--line); }
+  .drawer-head img { width: 34px; height: auto; display: block; }
+  .drawer-head span { font-family: var(--font-display); font-weight: 700; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--navy-900); }
+  .drawer-nav { list-style: none; margin: 8px 0; padding: 0; }
+  .drawer-nav a, .drawer-nav .soon { display: flex; align-items: center; gap: 13px; padding: 13px 24px; font-size: 15px; font-weight: 500; color: var(--ink); text-decoration: none; border-left: 3px solid transparent; transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease; }
+  .drawer-nav a .ico, .drawer-nav .soon .ico { font-size: 18px; width: 22px; text-align: center; }
+  .drawer-nav a:hover { background: var(--bg); color: var(--red); border-left-color: var(--red); }
+  .drawer-nav a[aria-current="page"] { color: var(--red); border-left-color: var(--lime); font-weight: 600; }
+  .drawer-nav .soon { color: #9aa0aa; cursor: default; }
+  .drawer-nav .soon em { margin-left: auto; font-style: normal; font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; background: #eef0f3; color: #8b909a; padding: 3px 8px; border-radius: 999px; }
+  .drawer-foot { margin-top: auto; padding: 18px 24px 22px; border-top: 1px solid var(--line); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #a2a7b0; }
+  .backdrop { position: fixed; inset: 0; z-index: 60; background: rgba(18, 17, 27, 0.45); opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+  body.nav-open .backdrop { opacity: 1; pointer-events: auto; }
+  .topbar { position: fixed; top: 0; left: 0; right: 0; z-index: 50; display: flex; align-items: center; justify-content: center; gap: 11px; background: rgba(37, 34, 51, 0.93); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 11px 16px; transform: translateY(-100%); transition: transform 0.3s cubic-bezier(0.2, 0.6, 0.3, 1); box-shadow: 0 6px 22px rgba(20, 20, 40, 0.3); }
+  .topbar.visible { transform: translateY(0); }
+  .topbar img { width: 30px; height: auto; display: block; }
+  .topbar a { display: inline-flex; align-items: center; gap: 11px; text-decoration: none; }
+  .topbar span { font-family: var(--font-display); font-weight: 700; font-size: 12.5px; letter-spacing: 2.5px; text-transform: uppercase; color: #fff; }
+  a.drawer-head { text-decoration: none; cursor: pointer; }
+  a.drawer-head:hover span { color: var(--red); }
+  /* ===== fin header compartido ===== */
+
+  .hero {
+    background:
+      radial-gradient(700px 380px at 50% -14%, rgba(154, 199, 70, 0.13), transparent 62%),
+      radial-gradient(620px 380px at 88% 118%, rgba(193, 70, 73, 0.30), transparent 58%),
+      radial-gradient(480px 320px at 8% 104%, rgba(193, 70, 73, 0.14), transparent 55%),
+      linear-gradient(165deg, #2b2840 0%, var(--navy-900) 55%, var(--navy-950) 100%);
+    color: #fff; padding: 62px 24px 56px; text-align: center; position: relative; overflow: hidden;
+  }
+  .hero-eyebrow { position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; gap: 14px; text-transform: uppercase; letter-spacing: 4px; font-size: 11px; color: var(--lime); margin: 0 0 10px; font-weight: 600; }
+  .hero-eyebrow::before, .hero-eyebrow::after { content: ""; width: 30px; height: 1px; background: linear-gradient(to right, transparent, rgba(154, 199, 70, 0.7)); }
+  .hero-eyebrow::after { background: linear-gradient(to left, transparent, rgba(154, 199, 70, 0.7)); }
+  .hero h1 { position: relative; z-index: 2; font-family: var(--font-display); font-size: clamp(26px, 4vw, 38px); margin: 0 0 8px; font-weight: 800; letter-spacing: -0.5px; line-height: 1.1; }
+  .hero p.subtitle { position: relative; z-index: 2; font-size: 14.5px; color: rgba(255, 255, 255, 0.72); margin: 0; }
+
+  .container { max-width: 760px; margin: -34px auto 40px; padding: 0 20px; position: relative; z-index: 2; }
+
+  /* ---- Anuncios ---- */
+  .board {
+    position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 18px;
+    box-shadow: var(--shadow); padding: 24px 26px 22px; margin-bottom: 16px;
+  }
+  .board.pinned { border-color: rgba(193, 70, 73, 0.35); }
+  .board.pinned::before {
+    content: "📌"; position: absolute; top: -12px; left: 22px; font-size: 22px;
+    filter: drop-shadow(0 3px 4px rgba(0,0,0,0.18));
+  }
+  .board .pin-tag {
+    position: absolute; top: 20px; right: 22px; font-size: 10px; font-weight: 800; letter-spacing: 0.5px;
+    text-transform: uppercase; color: var(--red-deep); background: #fbe9e5; padding: 4px 10px; border-radius: 999px;
+  }
+  .board .when { font-size: 12px; font-weight: 700; color: var(--lime-deep); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 7px; }
+  .board h3 { margin: 0 0 8px; font-family: var(--font-display); font-size: 19px; font-weight: 700; color: var(--navy-900); letter-spacing: -0.3px; padding-right: 70px; }
+  .board p { margin: 0; font-size: 14.5px; line-height: 1.6; color: #4a4e57; white-space: pre-wrap; }
+  .board .board-text.clamp {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .more-btn {
+    display: none; align-items: center; gap: 5px; margin-top: 9px; padding: 0;
+    background: none; border: none; cursor: pointer;
+    color: var(--red); font-family: inherit; font-size: 13px; font-weight: 600;
+  }
+  .more-btn.show { display: inline-flex; }
+  .more-btn .chev { transition: transform 0.2s ease; font-size: 11px; }
+  .more-btn.open .chev { transform: rotate(180deg); }
+
+  .state { text-align: center; padding: 56px 20px; color: var(--muted); font-size: 15px; }
+  .state.error { color: var(--red-deep); }
+  .state .big { font-size: 32px; display: block; margin-bottom: 12px; }
+  .spinner { width: 28px; height: 28px; border: 3px solid var(--line); border-top-color: var(--red); border-radius: 50%; margin: 0 auto 16px; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ---- Instagram ---- */
+  .ig-widget {
+    margin-top: 34px; border-radius: 20px; overflow: hidden; box-shadow: var(--shadow);
+    background: linear-gradient(135deg, #3a2258, #7a2a52 45%, #c94a2c 80%, #e8a33b);
+    color: #fff; text-align: center; padding: 34px 26px 30px; position: relative;
+  }
+  .ig-widget .ig-mark { width: 46px; height: 46px; margin: 0 auto 14px; display: block; }
+  .ig-widget h3 { margin: 0 0 6px; font-family: var(--font-display); font-size: 20px; font-weight: 700; }
+  .ig-widget p { margin: 0 0 18px; font-size: 14px; color: rgba(255,255,255,0.85); }
+  .ig-widget .handle { font-weight: 700; }
+  .ig-btn {
+    display: inline-flex; align-items: center; gap: 9px; background: #fff; color: #b5296b; text-decoration: none;
+    font-weight: 700; font-size: 14.5px; padding: 12px 26px; border-radius: 999px;
+    box-shadow: 0 10px 24px -8px rgba(0,0,0,0.4); transition: transform 0.15s ease;
+  }
+  .ig-btn:hover { transform: translateY(-2px); }
+
+  footer { text-align: center; padding: 30px 20px 44px; }
+  footer .rule { width: 56px; height: 3px; border-radius: 2px; margin: 0 auto 18px; background: linear-gradient(to right, var(--red), var(--lime)); opacity: 0.6; }
+  footer p { margin: 0; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: #9aa0aa; font-weight: 500; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .topbar, .drawer, .backdrop, .menu-bars span, .social a, .ig-btn { transition: none; }
+    .spinner { animation-duration: 1.6s; }
+  }
+</style>
+</head>
+<body>
+
+  <button class="menu-btn" id="menuBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="drawer">
+    <span class="menu-bars"><span></span><span></span><span></span></span>
+  </button>
+
+  <div class="social">
+    <a class="ig" href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener" aria-label="Instagram de Automoto Tenis">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.42.56.21.96.47 1.38.89.42.42.68.82.89 1.38.17.43.37 1.06.42 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.42 2.23-.21.56-.47.96-.89 1.38-.42.42-.82.68-1.38.89-.43.17-1.06.37-2.23.42-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.42-.56-.21-.96-.47-1.38-.89-.42-.42-.68-.82-.89-1.38-.17-.43-.37-1.06-.42-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.42-2.23.21-.56.47-.96.89-1.38.42-.42.82-.68 1.38-.89.43-.17 1.06-.37 2.23-.42 1.27-.06 1.65-.07 4.85-.07M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.13.63c-.79.3-1.46.72-2.13 1.38C1.34 2.68.92 3.35.63 4.13.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.3.79.72 1.46 1.38 2.13.67.66 1.34 1.08 2.13 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56.79-.3 1.46-.72 2.13-1.38.66-.67 1.08-1.34 1.38-2.13.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91-.3-.79-.72-1.46-1.38-2.13-.67-.66-1.34-1.08-2.13-1.38-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0z"/><path d="M12 5.84A6.16 6.16 0 1 0 12 18.16 6.16 6.16 0 0 0 12 5.84zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/><circle cx="18.41" cy="5.59" r="1.44"/></svg>
+    </a>
+    <a class="masu" href="https://www.instagram.com/masu.tenis/" target="_blank" rel="noopener" aria-label="Instagram de Masu Tenis">
+      <img src="assets/masu-mark.png" alt="Masu Tenis">
+    </a>
+  </div>
+
+  <nav class="drawer" id="drawer" aria-hidden="true" aria-label="Menú principal">
+    <a class="drawer-head" href="index.html" aria-label="Ir al inicio">
+      <img src="assets/logo.png" alt="">
+      <span>Automoto Tenis</span>
+    </a>
+    <ul class="drawer-nav">
+      <li><a href="index.html"><span class="ico">🏠</span> Inicio</a></li>
+      <li><a href="rankings.html"><span class="ico">🏆</span> Ranking</a></li>
+      <li><a href="index.html#clima"><span class="ico">🌦️</span> Clima para jugar</a></li>
+      <li><a href="https://darturnos.com/AutomotoTenis/" target="_blank" rel="noopener"><span class="ico">📅</span> Turnos de cancha</a></li>
+      <li><a href="cartelera.html" aria-current="page"><span class="ico">📣</span> Cartelera</a></li>
+      <li><a href="info.html"><span class="ico">ℹ️</span> Info del club</a></li>
+    </ul>
+    <div class="drawer-foot">Temporada 2026</div>
+  </nav>
+
+  <div class="backdrop" id="backdrop"></div>
+
+  <div class="topbar" id="topbar" aria-hidden="true">
+    <a href="index.html" aria-label="Ir al inicio">
+      <img src="assets/logo.png" alt="">
+      <span>Automoto Tenis</span>
+    </a>
+  </div>
+
+  <div class="hero">
+    <p class="hero-eyebrow">Novedades</p>
+    <h1>Cartelera del club</h1>
+    <p class="subtitle">Eventos, torneos y avisos — lo importante, fijado arriba.</p>
+  </div>
+
+  <div class="container">
+    <div id="board">
+      <div class="state"><div class="spinner"></div>Cargando la cartelera…</div>
+    </div>
+
+    <!-- ===== Widget de Instagram ===== -->
+    <div class="ig-widget">
+      <svg class="ig-mark" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.42.56.21.96.47 1.38.89.42.42.68.82.89 1.38.17.43.37 1.06.42 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.42 2.23-.21.56-.47.96-.89 1.38-.42.42-.82.68-1.38.89-.43.17-1.06.37-2.23.42-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.42-.56-.21-.96-.47-1.38-.89-.42-.42-.68-.82-.89-1.38-.17-.43-.37-1.06-.42-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.42-2.23.21-.56.47-.96.89-1.38.42-.42.82-.68 1.38-.89.43-.17 1.06-.37 2.23-.42 1.27-.06 1.65-.07 4.85-.07M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.13.63c-.79.3-1.46.72-2.13 1.38C1.34 2.68.92 3.35.63 4.13.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.3.79.72 1.46 1.38 2.13.67.66 1.34 1.08 2.13 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56.79-.3 1.46-.72 2.13-1.38.66-.67 1.08-1.34 1.38-2.13.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91-.3-.79-.72-1.46-1.38-2.13-.67-.66-1.34-1.08-2.13-1.38-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0z"/><path d="M12 5.84A6.16 6.16 0 1 0 12 18.16 6.16 6.16 0 0 0 12 5.84zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/><circle cx="18.41" cy="5.59" r="1.44"/></svg>
+      <h3>Seguinos en Instagram</h3>
+      <p>Fotos, videos y toda la movida del club en <span class="handle">@automototenis</span></p>
+      <a class="ig-btn" href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener">Ver el perfil →</a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="rule"></div>
+    <p>Automoto Tenis &middot; Temporada 2026</p>
+  </footer>
+
+<script>
+  /* ---- Header compartido: menú lateral + barra fija ---- */
+  const body = document.body;
+  const menuBtn = document.getElementById('menuBtn');
+  const drawer = document.getElementById('drawer');
+  const backdrop = document.getElementById('backdrop');
+  const topbar = document.getElementById('topbar');
+
+  function openNav() { body.classList.add('nav-open'); menuBtn.setAttribute('aria-expanded', 'true'); menuBtn.setAttribute('aria-label', 'Cerrar menú'); drawer.setAttribute('aria-hidden', 'false'); }
+  function closeNav() { body.classList.remove('nav-open'); menuBtn.setAttribute('aria-expanded', 'false'); menuBtn.setAttribute('aria-label', 'Abrir menú'); drawer.setAttribute('aria-hidden', 'true'); }
+  menuBtn.addEventListener('click', () => { body.classList.contains('nav-open') ? closeNav() : openNav(); });
+  backdrop.addEventListener('click', closeNav);
+  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && body.classList.contains('nav-open')) closeNav(); });
+  function onScroll() { topbar.classList.toggle('visible', window.scrollY > 120); }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* ==========================================================
+     CARTELERA — anuncios desde Google Sheets
+     Pestaña "Cartelera" con columnas:
+       A: Fecha (texto libre, ej. "Sábado 20 · 15 hs")
+       B: Título
+       C: Texto
+       D: Fijado  (Sí / No)
+       E: Etiqueta (opcional, ej. "Torneo")
+     Los fijados aparecen primero; el resto en el orden de la planilla.
+     ========================================================== */
+  const SHEET_ID = '1rWi1oJ9PKRLErlIGEzqEZ2JakEDyuk1poDqFdj88R9w';
+  const API_KEY = 'AIzaSyCZWAlXFGaAtjNYYWB3ajsjQ0W72CNJnCI';
+  const TAB = 'Cartelera';
+  const REFRESH_MS = 5 * 60 * 1000;
+
+  const boardEl = document.getElementById('board');
+
+  function esc(s) { const d = document.createElement('div'); d.textContent = s == null ? '' : String(s); return d.innerHTML; }
+  function truthy(v) { return /^(s[ií]|si|x|1|true|✓)$/i.test(String(v || '').trim()); }
+
+  function render(rows) {
+    // primera fila = encabezados; ignorar
+    const data = rows.slice(1)
+      .map(r => ({ fecha: r[0] || '', titulo: r[1] || '', texto: r[2] || '', fijado: truthy(r[3]), etiqueta: r[4] || '' }))
+      .filter(a => (a.titulo && a.titulo.trim()) || (a.texto && a.texto.trim()));
+
+    if (!data.length) {
+      boardEl.innerHTML = `<div class="state"><span class="big">📭</span>Todavía no hay anuncios cargados.<br>Se cargan desde la planilla del club.</div>`;
+      return;
+    }
+
+    const pinned = data.filter(a => a.fijado);
+    const rest = data.filter(a => !a.fijado);
+    const ordered = pinned.concat(rest);
+
+    boardEl.innerHTML = ordered.map(a => `
+      <article class="board${a.fijado ? ' pinned' : ''}">
+        ${a.fijado ? `<span class="pin-tag">${a.etiqueta ? esc(a.etiqueta) : 'Fijado'}</span>`
+                   : (a.etiqueta ? `<span class="pin-tag" style="color:var(--lime-deep);background:#edf6dc">${esc(a.etiqueta)}</span>` : '')}
+        ${a.fecha ? `<div class="when">${esc(a.fecha)}</div>` : ''}
+        ${a.titulo ? `<h3>${esc(a.titulo)}</h3>` : ''}
+        ${a.texto ? `<p class="board-text clamp">${esc(a.texto)}</p>
+        <button class="more-btn" type="button"><span class="lbl">Ver más</span><span class="chev">▾</span></button>` : ''}
+      </article>`).join('');
+
+    // mostrar "Ver más" solo cuando el texto se corta
+    boardEl.querySelectorAll('.board').forEach(b => {
+      const txt = b.querySelector('.board-text');
+      const btn = b.querySelector('.more-btn');
+      if (!txt || !btn) return;
+      if (txt.scrollHeight - txt.clientHeight > 4) {
+        btn.classList.add('show');
+        btn.addEventListener('click', () => {
+          const expanded = !txt.classList.toggle('clamp');
+          btn.classList.toggle('open', expanded);
+          btn.querySelector('.lbl').textContent = expanded ? 'Ver menos' : 'Ver más';
+        });
+      }
+    });
+  }
+
+  async function loadBoard() {
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(TAB)}?key=${API_KEY}`;
+    try {
+      const res = await fetch(url);
+      if (!res.ok) {
+        if (res.status === 400) { // pestaña inexistente todavía
+          boardEl.innerHTML = `<div class="state"><span class="big">📭</span>La cartelera todavía no está configurada.<br>Falta crear la pestaña “Cartelera” en la planilla.</div>`;
+          return;
+        }
+        throw new Error('HTTP ' + res.status);
+      }
+      const dataJson = await res.json();
+      render(dataJson.values || []);
+    } catch (err) {
+      boardEl.innerHTML = `<div class="state error">No se pudo cargar la cartelera.<br>${esc(err.message)}</div>`;
+    }
+  }
+
+  loadBoard();
+  setInterval(loadBoard, REFRESH_MS);
+</script>
+
+</body>
+</html>

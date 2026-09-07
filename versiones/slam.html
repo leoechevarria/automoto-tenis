@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Automoto Tenis — fusión · paletas Grand Slam</title>
+<link rel="icon" href="../assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Hallmark · pre-emit critique: P4 H5 E4 S5 R4 V5 */
+/* Hallmark · macrostructure: Index-First con apertura fotográfica · genre: editorial
+ * nav: N6 Masthead · footer: Ft4 Dense colophon · enrichment: foto real (E-photo, tintada por tema)
+ * tone: utilitarian · paleta: rota entre los 4 Grand Slam (data-slam en <html>)
+ */
+:root {
+  --font-display: 'Barlow Condensed', 'Arial Narrow', Impact, sans-serif;
+  --font-body: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+  --text-display: clamp(2.8rem, 6.5vw, 5.6rem);
+  --text-2xl: clamp(2rem, 4.2vw, 3.2rem);
+  --text-xl: 1.5rem; --text-md: 1.0625rem; --text-sm: 0.9375rem; --text-xs: 0.8125rem;
+  --space-xs: 4px; --space-sm: 8px; --space-md: 16px; --space-lg: 24px;
+  --space-xl: 40px; --space-2xl: 64px; --space-3xl: 112px;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1); --dur-fast: 140ms;
+}
+/* ---- Roland Garros: crema · tinta verde · ladrillo ---- */
+:root, :root[data-slam="rg"] {
+  --color-paper: oklch(96% 0.02 80); --color-paper-2: oklch(92% 0.035 75); --color-paper-3: oklch(86% 0.05 70);
+  --color-ink: oklch(30% 0.06 160); --color-ink-2: oklch(45% 0.05 160); --color-ink-3: oklch(60% 0.03 150);
+  --color-rule: oklch(82% 0.04 75);
+  --color-accent: oklch(55% 0.17 40); --color-accent-deep: oklch(45% 0.15 40);
+  --color-on-photo: oklch(97% 0.02 80);
+  --photo-tint: oklch(55% 0.17 40); --photo-tint-a: 0; --color-accent-photo: oklch(78% 0.14 55);
+}
+/* ---- Wimbledon: blanco · tinta violeta · verde ---- */
+:root[data-slam="wim"] {
+  --color-paper: oklch(98% 0.005 300); --color-paper-2: oklch(94% 0.012 300); --color-paper-3: oklch(89% 0.02 300);
+  --color-ink: oklch(30% 0.12 300); --color-ink-2: oklch(45% 0.09 300); --color-ink-3: oklch(60% 0.05 300);
+  --color-rule: oklch(86% 0.02 300);
+  --color-accent: oklch(48% 0.13 155); --color-accent-deep: oklch(40% 0.12 155);
+  --color-on-photo: oklch(98% 0.005 300);
+  --photo-tint: oklch(45% 0.13 155); --photo-tint-a: 0.55; --color-accent-photo: oklch(82% 0.17 150);
+}
+/* ---- Australian Open: azul claro · tinta azul profundo · cerúleo ---- */
+:root[data-slam="ao"] {
+  --color-paper: oklch(96% 0.015 240); --color-paper-2: oklch(92% 0.03 240); --color-paper-3: oklch(86% 0.05 240);
+  --color-ink: oklch(28% 0.09 260); --color-ink-2: oklch(44% 0.08 255); --color-ink-3: oklch(60% 0.05 250);
+  --color-rule: oklch(84% 0.04 240);
+  --color-accent: oklch(58% 0.16 235); --color-accent-deep: oklch(48% 0.15 240);
+  --color-on-photo: oklch(97% 0.01 240);
+  --photo-tint: oklch(55% 0.17 240); --photo-tint-a: 0.7; --color-accent-photo: oklch(80% 0.11 225);
+}
+/* ---- US Open: blanco cálido · tinta azul marino · amarillo ---- */
+:root[data-slam="uso"] {
+  --color-paper: oklch(97.5% 0.008 90); --color-paper-2: oklch(93% 0.03 95); --color-paper-3: oklch(88% 0.06 95);
+  --color-ink: oklch(27% 0.08 265); --color-ink-2: oklch(42% 0.07 265); --color-ink-3: oklch(58% 0.04 260);
+  --color-rule: oklch(85% 0.03 95);
+  --color-accent: oklch(72% 0.17 85); --color-accent-deep: oklch(58% 0.15 80);
+  --color-on-photo: oklch(97% 0.01 90);
+  --photo-tint: oklch(40% 0.14 265); --photo-tint-a: 0.6; --color-accent-photo: oklch(86% 0.17 92);
+}
+:root[data-slam="uso"] .row .meta b, :root[data-slam="uso"] .mast-nav a[aria-current] { color: var(--color-accent-deep); }
+*, *::before, *::after { box-sizing: border-box; }
+html, body { overflow-x: clip; }
+html.theming * { transition: none !important; }
+body { margin: 0; background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: var(--text-md); line-height: 1.55; -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }
+h1, h2, h3 { font-family: var(--font-display); font-style: normal; line-height: 0.95; margin: 0; letter-spacing: -0.01em; overflow-wrap: anywhere; min-width: 0; }
+.wrap { width: min(1180px, 100% - 2 * var(--space-lg)); margin-inline: auto; }
+.rule-hair { border-bottom: 1px solid var(--color-rule); }
+
+/* ---- Masthead (N6) ---- */
+.mast { border-bottom: 3px solid var(--color-ink); background: var(--color-paper); }
+.mast-top { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); padding: var(--space-md) 0; border-bottom: 1px solid var(--color-rule); font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-ink-2); text-transform: uppercase; letter-spacing: 0.06em; }
+.mast-brand { display: flex; align-items: center; gap: 14px; color: var(--color-ink); font-weight: 500; font-size: var(--text-sm); }
+.mast-brand img { width: 64px; height: 64px; }
+.mast-top { padding: var(--space-sm) 0; }
+.mast-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); }
+.mast-nav { display: flex; flex-wrap: wrap; gap: 0 var(--space-lg); padding: 10px 0; }
+.social { display: flex; gap: var(--space-sm); flex: none; }
+.social a { width: 40px; height: 40px; display: grid; place-items: center; border: 1px solid var(--color-rule); color: var(--color-ink); transition: transform var(--dur-fast) var(--ease-out), border-color var(--dur-fast); }
+.social svg { width: 20px; height: 20px; }
+.social img { width: 26px; height: 26px; }
+.social a.masu { background: var(--color-ink); border-color: var(--color-ink); }
+@media (hover: hover) { .social a:hover { border-color: var(--color-accent); } }
+.social a:active { transform: scale(0.96); }
+.mast-nav a { font-family: var(--font-display); font-weight: 700; font-size: 1.25rem; text-transform: uppercase; letter-spacing: 0.02em; padding: 6px 0; white-space: nowrap; position: relative; }
+.mast-nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 2px; height: 3px; background: var(--color-accent); transform: scaleX(0); transform-origin: left; transition: transform var(--dur-fast) var(--ease-out); }
+@media (hover: hover) { .mast-nav a:hover::after { transform: scaleX(1); } }
+.mast-nav a[aria-current] { color: var(--color-accent); }
+
+/* ---- Apertura fotográfica (foto de la original, tintada por tema) ---- */
+.open { position: relative; min-height: clamp(560px, 82vh, 860px); display: grid; align-items: end; isolation: isolate; color: var(--color-on-photo); }
+.open img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 30%; z-index: -2; }
+.open::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--photo-tint); opacity: var(--photo-tint-a); mix-blend-mode: color; }
+.open::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to top, oklch(15% 0.03 60 / 0.85) 0%, oklch(15% 0.03 60 / 0.35) 38%, transparent 62%); }
+.open .wrap { padding: var(--space-3xl) 0 var(--space-xl); display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-xl); align-items: end; }
+.open h1 { font-size: var(--text-display); font-weight: 800; text-transform: uppercase; }
+.open h1 .accent, .open .cap b { color: var(--color-accent-photo); }
+.open .lede { max-width: 42ch; margin: var(--space-md) 0 0; font-size: var(--text-xl); line-height: 1.35; opacity: .92; }
+.open .cap { font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.06em; justify-self: end; text-align: right; opacity: .85; }
+.open .cap b { font-weight: 500; }
+
+/* ---- Índice ---- */
+.index { border-top: 3px solid var(--color-ink); margin-top: 0; }
+.row { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 5fr) minmax(0, 2fr); gap: var(--space-lg); align-items: baseline; padding: var(--space-lg) 0; border-bottom: 1px solid var(--color-rule); transition: background-color var(--dur-fast) var(--ease-out); }
+.row h2 { font-size: var(--text-2xl); font-weight: 700; text-transform: uppercase; display: flex; align-items: baseline; gap: 12px; }
+.row h2 .go { font-size: 0.6em; color: var(--color-accent); transition: transform var(--dur-fast) var(--ease-out); }
+.row p { margin: 0; color: var(--color-ink-2); max-width: 44ch; }
+.row .meta { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-ink-3); text-transform: uppercase; letter-spacing: 0.05em; justify-self: end; text-align: right; }
+.row .meta b { color: var(--color-accent); font-weight: 500; }
+@media (hover: hover) { .row:hover { background: var(--color-paper-2); box-shadow: 0 0 0 var(--space-md) var(--color-paper-2); } .row:hover h2 .go { transform: translateX(6px); } }
+.row:active { background: var(--color-paper-3); box-shadow: 0 0 0 var(--space-md) var(--color-paper-3); }
+
+/* ---- Argentinos en el circuito ---- */
+.arg { padding: var(--space-3xl) 0 var(--space-2xl); }
+.arg-head { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-xl); align-items: end; margin-bottom: var(--space-lg); }
+.arg h2 { font-size: var(--text-2xl); font-weight: 800; text-transform: uppercase; }
+.arg .sub { margin: 0; color: var(--color-ink-2); }
+.arg-list { border-top: 3px solid var(--color-ink); }
+.arg-day { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 10fr); gap: var(--space-lg); padding: var(--space-md) 0; border-bottom: 1px solid var(--color-rule); }
+.arg-day > .d { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; text-transform: uppercase; line-height: 1; }
+.arg-day > .d small { display: block; font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-ink-3); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; font-weight: 400; }
+.arg-match { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 3fr) minmax(0, 3fr); gap: var(--space-md); align-items: baseline; padding: 6px 0; }
+.arg-match + .arg-match { border-top: 1px solid var(--color-rule); }
+.arg-match .who { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: baseline; }
+.arg-match .who .vs { color: var(--color-ink-3); font-size: var(--text-xs); }
+.arg-match .who .p { font-weight: 500; }
+.arg-match .who .p.ar { color: var(--color-accent-deep); font-weight: 600; }
+.arg-match .who .p.w::after { content: " ✓"; font-size: 0.8em; }
+.arg-match .who .p.l { color: var(--color-ink-2); font-weight: 400; }
+.arg-match .who .p .rk { font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-ink-3); margin-left: 3px; }
+.arg-match .sc { font-family: var(--font-mono); font-size: var(--text-sm); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.arg-match .sc .t { color: var(--color-ink-3); font-size: 0.75em; }
+.arg-match .ctx { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-ink-3); text-transform: uppercase; letter-spacing: 0.04em; text-align: right; }
+.arg-match.next .sc { color: var(--color-accent-deep); }
+.arg-empty, .arg-loading { padding: var(--space-lg) 0; color: var(--color-ink-2); font-family: var(--font-mono); font-size: var(--text-xs); border-bottom: 1px solid var(--color-rule); }
+.arg-foot { margin: var(--space-sm) 0 0; font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-ink-3); }
+@media (max-width: 768px) {
+  .arg-head { grid-template-columns: minmax(0, 1fr); }
+  .arg-day { grid-template-columns: minmax(0, 1fr); gap: var(--space-sm); }
+  .arg-match { grid-template-columns: minmax(0, 1fr) auto; }
+  .arg-match .ctx { grid-column: 1 / -1; text-align: left; }
+}
+
+/* ---- Mercado del usado ---- */
+.mercado { padding: var(--space-3xl) 0 0; }
+.mercado-head { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-xl); align-items: end; margin-bottom: var(--space-lg); }
+.mercado h2 { font-size: var(--text-2xl); font-weight: 800; text-transform: uppercase; }
+.mercado .sub { margin: 0; color: var(--color-ink-2); }
+.mercado-note { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-ink-3); text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 var(--space-md); }
+.items { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 3px solid var(--color-ink); border-left: 1px solid var(--color-rule); }
+.item { display: grid; grid-template-rows: auto 1fr auto; gap: var(--space-sm); padding: var(--space-md); border-right: 1px solid var(--color-rule); border-bottom: 1px solid var(--color-rule); min-width: 0; }
+.item .ph { aspect-ratio: 4 / 3; background: var(--color-paper-2); display: grid; place-items: center; color: var(--color-ink-3); font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.05em; border: 1px solid var(--color-rule); }
+.item .ph svg { width: 44px; height: 44px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.item .cat { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-accent-deep); text-transform: uppercase; letter-spacing: 0.05em; }
+.item h3 { font-size: 1.6rem; font-weight: 700; text-transform: uppercase; margin-top: 2px; }
+.item p { margin: 4px 0 0; color: var(--color-ink-2); font-size: var(--text-sm); }
+.item .foot { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-sm); border-top: 1px solid var(--color-rule); padding-top: var(--space-sm); }
+.item .price { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.item .who { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-ink-3); text-align: right; }
+.item .who a { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--color-rule); }
+.mercado-cta { margin-top: var(--space-md); font-size: var(--text-sm); color: var(--color-ink-2); }
+.mercado-cta a { color: var(--color-accent-deep); text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 900px) { .items { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .items { grid-template-columns: minmax(0, 1fr); } .mercado-head { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---- Clima ---- */
+.clima { padding: var(--space-3xl) 0 var(--space-2xl); }
+.clima-head { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-xl); align-items: end; margin-bottom: var(--space-lg); }
+.clima h2 { font-size: var(--text-2xl); font-weight: 800; text-transform: uppercase; }
+.clima .sub { margin: 0; color: var(--color-ink-2); }
+.wx-bar { display: flex; justify-content: space-between; align-items: center; border-top: 3px solid var(--color-ink); padding: var(--space-sm) 0; }
+.wx-bar .arrows { display: flex; gap: var(--space-sm); }
+.wx-arrow { width: 44px; height: 44px; border: 1px solid var(--color-rule); background: var(--color-paper); color: var(--color-ink); font-family: var(--font-display); font-size: 1.5rem; cursor: pointer; transition: transform var(--dur-fast) var(--ease-out), opacity var(--dur-fast); }
+.wx-arrow:active { transform: scale(0.96); }
+.wx-arrow[hidden] { display: inline-block; opacity: .3; pointer-events: none; }
+.wx-track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; border-top: 1px solid var(--color-rule); border-bottom: 1px solid var(--color-rule); }
+.wx-track::-webkit-scrollbar { display: none; }
+.wx-card { flex: 0 0 auto; width: 210px; scroll-snap-align: start; padding: var(--space-md) var(--space-md) var(--space-lg); border-right: 1px solid var(--color-rule); }
+.wx-card:first-child { padding-left: 0; }
+.wx-top { display: flex; justify-content: space-between; align-items: baseline; font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-ink-2); }
+.wx-dow { color: var(--color-ink); font-weight: 500; }
+.wx-ico { font-size: 1.6rem; margin: 10px 0 2px; }
+.wx-temp { font-family: var(--font-display); font-size: 2.4rem; font-weight: 700; line-height: 1; }
+.wx-temp small { font-size: 0.55em; color: var(--color-ink-3); font-weight: 600; }
+.wx-meta { font-size: var(--text-xs); color: var(--color-ink-2); font-variant-numeric: tabular-nums; margin-top: 4px; }
+.wx-bands { margin-top: var(--space-md); border-top: 1px solid var(--color-rule); }
+.wx-band { padding: 7px 0; border-bottom: 1px solid var(--color-rule); }
+.wx-band:last-child { border-bottom: 0; }
+.b-top { display: flex; align-items: center; gap: 6px; font-size: var(--text-xs); }
+.b-ico { width: 20px; flex: none; letter-spacing: -2px; }
+.b-name { font-weight: 600; }
+.b-stars { margin-left: auto; font-size: 0.7rem; letter-spacing: 1px; color: var(--color-paper-3); }
+.b-stars .on { color: var(--color-accent-deep); }
+.b-sub { font-size: 0.75rem; color: var(--color-ink-3); font-variant-numeric: tabular-nums; margin-top: 2px; }
+.wx-loading, .wx-error { padding: var(--space-xl) 0; color: var(--color-ink-2); font-family: var(--font-mono); font-size: var(--text-xs); }
+.clima-foot { margin: var(--space-sm) 0 0; font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-ink-3); }
+
+/* ---- Footer (Ft4) + selector de tema ---- */
+footer { border-top: 3px solid var(--color-ink); padding: var(--space-lg) 0 var(--space-2xl); font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-ink-2); }
+footer .cols { display: grid; grid-template-columns: minmax(0, 1fr); }
+footer strong { display: block; color: var(--color-ink); font-weight: 500; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
+footer a { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--color-rule); }
+@media (hover: hover) { footer a:hover { text-decoration-color: var(--color-accent); } }
+.slams { display: flex; flex-wrap: wrap; gap: 4px 10px; }
+.slams button { font: inherit; background: none; border: 0; padding: 0; color: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--color-rule); }
+.slams button[aria-pressed="true"] { color: var(--color-accent-deep); text-decoration-color: currentColor; }
+:root[data-slam="rg"] .slams button[aria-pressed="true"], :root[data-slam="ao"] .slams button[aria-pressed="true"], :root[data-slam="wim"] .slams button[aria-pressed="true"] { color: var(--color-accent); }
+
+@media (max-width: 768px) {
+  .open .wrap, .clima-head { grid-template-columns: minmax(0, 1fr); }
+  .open .cap { justify-self: start; text-align: left; }
+  .row { grid-template-columns: minmax(0, 1fr); gap: var(--space-xs); }
+  .row .meta { justify-self: start; text-align: left; margin-top: 6px; }
+  footer .cols { grid-template-columns: minmax(0, 1fr); }
+  .mast-top span.loc { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; } }
+</style>
+</head>
+<body>
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <a class="mast-brand" href="slam.html"><img src="../assets/logo.png" alt="">Automoto Club Deportivo · Tenis</a>
+      <span class="loc">Tornquist, Buenos Aires</span>
+    </div>
+    <div class="mast-row">
+      <nav class="mast-nav" aria-label="Secciones">
+        <a href="slam.html" aria-current="page">Inicio</a>
+        <a href="../rankings.html">Ranking</a>
+        <a href="../cartelera.html">Cartelera</a>
+        <a href="https://darturnos.com/AutomotoTenis/" target="_blank" rel="noopener">Turnos</a>
+        <a href="#mercado">Mercado</a>
+        <a href="../info.html">Más info</a>
+        <a href="#clima">Clima</a>
+      </nav>
+      <div class="social">
+        <a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener" aria-label="Instagram de Automoto Tenis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="https://www.instagram.com/masu.tenis/" target="_blank" rel="noopener" aria-label="Instagram de Masu Tenis" class="masu"><img src="../assets/masu-mark.png" alt=""></a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="open">
+  <img src="../assets/court.jpg" alt="Cancha de polvo de ladrillo del club" fetchpriority="high">
+  <div class="wrap">
+    <div>
+      <h1>Todo el tenis del club, <span class="accent">en un solo lugar.</span></h1>
+      <p class="lede">Ranking en vivo, cartelera, turnos de cancha y un pronóstico pensado para saber si está lindo para jugar.</p>
+    </div>
+    <p class="cap" id="slamCap" hidden>Colores: <b id="slamName">Roland Garros</b><br><span id="slamWhy"></span></p>
+  </div>
+</section>
+
+<main class="wrap">
+  <nav class="index" aria-label="Accesos">
+    <a class="row" href="../rankings.html">
+      <h2>Ranking de la liga <span class="go" aria-hidden="true">→</span></h2>
+      <p>Posiciones de Categorías A, B y C con ascensos, descensos y promoción, según las reglas de la Liga 2026.</p>
+      <span class="meta"><b>En vivo</b> · Google Sheets</span>
+    </a>
+    <a class="row" href="../cartelera.html">
+      <h2>Cartelera <span class="go" aria-hidden="true">→</span></h2>
+      <p>Novedades, torneos y avisos del club. Lo importante queda fijado arriba.</p>
+      <span class="meta">Avisos y eventos</span>
+    </a>
+    <a class="row" href="https://darturnos.com/AutomotoTenis/" target="_blank" rel="noopener">
+      <h2>Turnos <span class="go" aria-hidden="true">↗</span></h2>
+      <p>Reservá tu horario para jugar. Abre darturnos.com en otra pestaña.</p>
+      <span class="meta"><b>Reservar</b> · sitio externo</span>
+    </a>
+    <a class="row" href="#mercado">
+      <h2>Mercado del usado <span class="go" aria-hidden="true">↓</span></h2>
+      <p>Raquetas, zapatillas y bolsos que venden socios y profes. Publicá lo tuyo o encontrá algo a buen precio.</p>
+      <span class="meta">Compra · venta · canje</span>
+    </a>
+    <a class="row" href="../info.html">
+      <h2>Más info <span class="go" aria-hidden="true">→</span></h2>
+      <p>Cuota y alias de pago, cuidado de la cancha y teléfonos útiles.</p>
+      <span class="meta">Pagos · cancha · contactos</span>
+    </a>
+  </nav>
+
+  <section class="mercado" id="mercado">
+    <div class="mercado-head">
+      <h2>Mercado del usado</h2>
+      <p class="sub">Raquetas, zapatillas y bolsos que venden socios y profes del club. Se arregla directo con quien vende.</p>
+    </div>
+    <p class="mercado-note">Publicaciones de ejemplo, para ver cómo queda la sección</p>
+    <div class="items">
+      <article class="item">
+        <div class="ph"><svg viewBox="0 0 24 24"><ellipse cx="13" cy="9" rx="6" ry="7.5" transform="rotate(30 13 9)"/><path d="M9 15l-5.5 5.5M8 11c2 1 4 3 5 5M10 8c2 1 4 3 6 6"/></svg></div>
+        <div><span class="cat">Raqueta</span><h3>Wilson Blade 98 v8</h3><p>Grip 2, 305 g. Encordada con Luxilon a 24 kg. Muy poco uso, sin golpes.</p></div>
+        <div class="foot"><span class="price">$ 260.000</span><span class="who">Vende <a href="#">Gonza</a></span></div>
+      </article>
+      <article class="item">
+        <div class="ph"><svg viewBox="0 0 24 24"><ellipse cx="13" cy="9" rx="6" ry="7.5" transform="rotate(30 13 9)"/><path d="M9 15l-5.5 5.5M8 11c2 1 4 3 5 5M10 8c2 1 4 3 6 6"/></svg></div>
+        <div><span class="cat">Raqueta</span><h3>Babolat Pure Aero</h3><p>Grip 3. Dos temporadas de uso, marco impecable. Va con funda.</p></div>
+        <div class="foot"><span class="price">$ 190.000</span><span class="who">Vende <a href="#">Seba</a></span></div>
+      </article>
+      <article class="item">
+        <div class="ph"><svg viewBox="0 0 24 24"><path d="M3 16c0-1 .5-2 2-2h3l3-3 2 1 3-1c3 1 5 2 5 4v1H3zM3 16v2h18v-2M8 14l1-3"/></svg></div>
+        <div><span class="cat">Zapatillas</span><h3>Asics Gel Resolution 9</h3><p>Talle 42, para polvo de ladrillo. Usadas tres meses, suela entera.</p></div>
+        <div class="foot"><span class="price">$ 120.000</span><span class="who">Vende <a href="#">Masu Tenis</a></span></div>
+      </article>
+      <article class="item">
+        <div class="ph"><svg viewBox="0 0 24 24"><path d="M3 16c0-1 .5-2 2-2h3l3-3 2 1 3-1c3 1 5 2 5 4v1H3zM3 16v2h18v-2M8 14l1-3"/></svg></div>
+        <div><span class="cat">Zapatillas</span><h3>Nike Vapor Pro 2</h3><p>Talle 40,5. Quedaron chicas, dos usos. Con caja.</p></div>
+        <div class="foot"><span class="price">$ 95.000</span><span class="who">Vende <a href="#">Lu</a></span></div>
+      </article>
+      <article class="item">
+        <div class="ph"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="11" rx="2"/><path d="M8 8V6a4 4 0 0 1 8 0v2M3 13h18"/></svg></div>
+        <div><span class="cat">Bolso</span><h3>Head Tour Team 6R</h3><p>Seis raquetas, compartimento térmico, sin roturas. Azul y blanco.</p></div>
+        <div class="foot"><span class="price">$ 70.000</span><span class="who">Vende <a href="#">Pablo</a></span></div>
+      </article>
+      <article class="item">
+        <div class="ph"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="11" rx="2"/><path d="M8 8V6a4 4 0 0 1 8 0v2M3 13h18"/></svg></div>
+        <div><span class="cat">Bolso</span><h3>Mochila Wilson Federer DNA</h3><p>Entra una raqueta más el laptop. Como nueva.</p></div>
+        <div class="foot"><span class="price">$ 55.000</span><span class="who">Vende <a href="#">Vale</a></span></div>
+      </article>
+    </div>
+    <p class="mercado-cta">¿Querés vender algo? Mandá foto, descripción y precio por Instagram a <a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener">@automototenis</a> y lo publicamos.</p>
+  </section>
+
+  <section class="clima" id="clima">
+    <div class="clima-head">
+      <h2>¿Está lindo para el tenis?</h2>
+      <p class="sub">Pronóstico de los próximos días con un puntaje de estrellas pensado para jugar: poco viento, sin lluvia y con sol son 5 estrellas.</p>
+    </div>
+    <div class="wx-bar">
+      <p class="clima-foot" id="wxFoot" style="margin:0"></p>
+      <div class="arrows">
+        <button class="wx-arrow prev" id="wxPrev" type="button" aria-label="Días anteriores" hidden>‹</button>
+        <button class="wx-arrow next" id="wxNext" type="button" aria-label="Más días" hidden>›</button>
+      </div>
+    </div>
+    <div class="wx-track" id="wxTrack"><div class="wx-loading">Cargando el pronóstico…</div></div>
+  </section>
+
+  <section class="arg" id="argentinos">
+    <div class="arg-head">
+      <h2>Argentinos en el circuito</h2>
+      <p class="sub">Singles de ATP y WTA con jugadores argentinos: lo que se jugó y lo que viene.</p>
+    </div>
+    <div class="arg-list" id="argList"><div class="arg-loading">Buscando partidos…</div></div>
+    <p class="arg-foot" id="argFoot"></p>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap cols">
+    <div><strong>Automoto Club Deportivo</strong>Sección Tenis · Tornquist, Buenos Aires</div>
+  </div>
+</footer>
+<script>
+  /* ---- Argentinos en el circuito (ESPN scoreboard, sin API key) ---- */
+  const ARG_BACK = 2, ARG_FWD = 2;
+  const argList = document.getElementById('argList'), argFoot = document.getElementById('argFoot');
+  const ymd = d => d.toISOString().slice(0, 10).replace(/-/g, '');
+  const DOW_L = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+  const MON_L = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+  function roundEs(r) {
+    if (!r) return '';
+    return r.replace(/Qualifying/i, 'Qualy').replace(/Round of (\d+)/i, 'Ronda de $1').replace(/^Round (\d)/i, 'Ronda $1')
+      .replace(/Quarterfinals?/i, 'Cuartos').replace(/Semifinals?/i, 'Semis').replace(/^Final$/i, 'Final').replace(/1st Round/i, '1ª ronda').replace(/2nd Round/i, '2ª ronda').replace(/3rd Round/i, '3ª ronda');
+  }
+  async function loadArg() {
+    const now = new Date(), from = new Date(now), to = new Date(now);
+    from.setDate(now.getDate() - ARG_BACK); to.setDate(now.getDate() + ARG_FWD);
+    // El scoreboard devuelve los torneos activos en la fecha pedida, con todos sus partidos:
+    // consultamos unas pocas fechas del rango y deduplicamos por id de partido.
+    const probe = [from, now, to];
+    const urls = [];
+    for (const tour of ['atp', 'wta']) for (const d of probe) urls.push(`https://site.api.espn.com/apis/site/v2/sports/tennis/${tour}/scoreboard?dates=${ymd(d)}`);
+    try {
+      const results = await Promise.allSettled(urls.map(u => (window.ARG_SNAPSHOT ? Promise.resolve(window.ARG_SNAPSHOT) : fetch(u).then(r => r.json()))));
+      const seen = new Set(), matches = [];
+      for (const r of results) {
+        if (r.status !== 'fulfilled') continue;
+        for (const ev of (r.value.events || [])) for (const g of (ev.groupings || [])) {
+          const gname = g.grouping?.displayName || '';
+          if (!/singles/i.test(gname)) continue;
+          for (const c of (g.competitions || [])) {
+            if (seen.has(c.id)) continue;
+            const dt = new Date(c.date);
+            if (dt < from || dt > to) continue;
+            const ps = (c.competitors || []).map(x => ({ name: x.athlete?.shortName || x.athlete?.displayName || '?', ar: x.athlete?.flag?.alt === 'Argentina', win: x.winner === true, rank: x.curatedRank?.current, sets: (x.linescores || []).map(l => ({ v: Math.round(l.value), tb: l.tiebreak })) }));
+            if (!ps.some(p => p.ar)) continue;
+            seen.add(c.id);
+            const st = c.status?.type || {};
+            matches.push({ id: c.id, dt, tour: /women/i.test(gname) ? 'WTA' : 'ATP', event: ev.shortName || ev.name, round: roundEs(c.round?.displayName), state: st.state, stName: st.name, detail: st.shortDetail, ps });
+          }
+        }
+      }
+      if (!matches.length) { argList.innerHTML = '<div class="arg-empty">No hay partidos de argentinos en singles en estos días.</div>'; return; }
+      matches.sort((a, b) => b.dt - a.dt);
+      const byDay = new Map();
+      for (const m of matches) { const k = m.dt.toDateString(); if (!byDay.has(k)) byDay.set(k, []); byDay.get(k).push(m); }
+      const today = now.toDateString();
+      argList.innerHTML = [...byDay.entries()].map(([k, ms]) => {
+        const d = new Date(k);
+        const label = k === today ? 'Hoy' : DOW_L[d.getDay()];
+        return `<div class="arg-day"><div class="d">${label}<small>${d.getDate()} ${MON_L[d.getMonth()]}</small></div><div>${ms.map(renderMatch).join('')}</div></div>`;
+      }).join('');
+      argFoot.textContent = 'Datos de ESPN';
+    } catch (err) {
+      argList.innerHTML = `<div class="arg-empty">No se pudieron cargar los partidos. ${err.message}</div>`;
+    }
+  }
+  function renderMatch(m) {
+    const done = m.state === 'post';
+    const who = m.ps.map((p, i) => `${i ? '<span class="vs">vs</span>' : ''}<span class="p ${p.ar ? 'ar' : ''} ${done ? (p.win ? 'w' : 'l') : ''}">${p.name}${p.rank ? `<span class="rk">#${p.rank}</span>` : ''}</span>`).join('');
+    let sc;
+    if (done) {
+      const w = m.ps.find(p => p.win) || m.ps[0], l = m.ps.find(p => p !== w);
+      sc = w.sets.map((s, i) => `${s.v}-${l.sets[i]?.v ?? ''}${s.tb != null || l.sets[i]?.tb != null ? `<span class="t">(${Math.min(s.tb ?? 99, l.sets[i]?.tb ?? 99)})</span>` : ''}`).join(' ');
+      if (/RETIRED|WALKOVER/.test(m.stName)) sc += ` <span class="t">${m.stName === 'STATUS_WALKOVER' ? 'w.o.' : 'ret.'}</span>`;
+    } else if (m.state === 'in') {
+      sc = 'En juego ' + m.ps.map(p => p.sets.map(s => s.v).join(' ')).join(' / ');
+    } else {
+      sc = m.dt.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false }) + ' hs';
+    }
+    return `<div class="arg-match ${done ? '' : 'next'}"><div class="who">${who}</div><div class="sc">${sc}</div><div class="ctx">${m.tour} · ${m.event}${m.round ? ' · ' + m.round : ''}</div></div>`;
+  }
+  loadArg();
+
+  /* ---- Paleta según el Grand Slam en juego o por jugar ----
+     Fechas aproximadas (varían un par de días por año). ?tema=ao|rg|wim|uso|random|auto fuerza una; por defecto Roland Garros. */
+  const SLAMS = [
+    { key: 'ao',  name: 'Australian Open', start: [1, 12],  end: [2, 1]  },
+    { key: 'rg',  name: 'Roland Garros',   start: [5, 24],  end: [6, 7]  },
+    { key: 'wim', name: 'Wimbledon',       start: [6, 29],  end: [7, 12] },
+    { key: 'uso', name: 'US Open',         start: [8, 24],  end: [9, 13] },
+  ];
+  function pickSlam(now = new Date()) {
+    const y = now.getFullYear();
+    const d = (m, dd, yy = y) => new Date(yy, m - 1, dd);
+    for (const s of SLAMS) if (now >= d(...s.start) && now <= d(...s.end, y).setHours(23, 59)) return { ...s, why: 'en juego' };
+    const next = SLAMS.find(s => now < d(...s.start)) || SLAMS[0];
+    const start = now < d(...next.start) ? d(...next.start) : d(...next.start, y + 1);
+    const days = Math.ceil((start - now) / 864e5);
+    return { ...next, why: `próximo · en ${days} días` };
+  }
+  function applySlam(key, why) {
+    const s = SLAMS.find(x => x.key === key) || SLAMS[1];
+    document.documentElement.classList.add('theming');
+    document.documentElement.dataset.slam = s.key;
+    document.getElementById('slamName').textContent = s.name;
+    document.getElementById('slamWhy').textContent = why || '';
+    document.getElementById('slamCap').hidden = !why;
+    requestAnimationFrame(() => document.documentElement.classList.remove('theming'));
+  }
+  const param = new URLSearchParams(location.search).get('tema');
+  if (param === 'random') { const s = SLAMS[Math.floor(Math.random() * 4)]; applySlam(s.key, 'al azar'); }
+  else if (param && SLAMS.some(s => s.key === param)) applySlam(param, 'elegido a mano');
+  else if (param === 'auto') { const s = pickSlam(); applySlam(s.key, s.why); }
+  else applySlam('rg', ''); // por defecto Roland Garros; ?tema=auto elige por calendario
+
+  /* CLIMA — pronóstico + puntaje de estrellas (Open-Meteo)
+     ========================================================== */
+
+  // ---- Configuración: coordenadas de la cancha ----
+  // Tornquist, Buenos Aires (8160)
+  const CLUB_LAT = -38.1006;
+  const CLUB_LON = -62.2214;
+  const WX_DAYS = 16; // Open-Meteo entrega hasta 16 días
+  const WX_SOURCE = `https://open-meteo.com/en/docs?latitude=${CLUB_LAT}&longitude=${CLUB_LON}`;
+  // -------------------------------------------------
+
+  const wxTrack = document.getElementById('wxTrack');
+  const wxFoot = document.getElementById('wxFoot');
+  const wxPrev = document.getElementById('wxPrev');
+  const wxNext = document.getElementById('wxNext');
+
+  // WMO weather code -> emoji + texto  (night = true usa iconos nocturnos)
+  function wxCode(code, night) {
+    if (code === 0) return { i: night ? '🌙' : '☀️', t: 'Despejado', clear: true };
+    if (code === 1) return { i: night ? '🌙' : '🌤️', t: night ? 'Mayormente despejado' : 'Mayormente sol', clear: true };
+    if (code === 2) return { i: night ? '☁️🌙' : '⛅', t: 'Parcial nublado' };
+    if (code === 3) return { i: '☁️', t: 'Nublado', cloud: true };
+    if (code === 45 || code === 48) return { i: '🌫️', t: 'Niebla', fog: true };
+    if (code >= 51 && code <= 57) return { i: '🌦️', t: 'Llovizna', rain: true };
+    if (code >= 61 && code <= 67) return { i: '🌧️', t: 'Lluvia', rain: true };
+    if (code >= 71 && code <= 77) return { i: '🌨️', t: 'Nieve', snow: true };
+    if (code >= 80 && code <= 82) return { i: '🌧️', t: 'Chaparrones', rain: true };
+    if (code >= 85 && code <= 86) return { i: '🌨️', t: 'Nevadas', snow: true };
+    if (code >= 95) return { i: '⛈️', t: 'Tormenta', storm: true };
+    return { i: '🌡️', t: '—' };
+  }
+
+  // penalización por temperatura (°C) — el frío pega fuerte
+  function tempPenalty(t) {
+    if (t < 4) return 2.8;    // helado
+    if (t < 7) return 2.0;    // muy frío
+    if (t < 10) return 1.7;   // frío
+    if (t < 13) return 0.8;   // fresco
+    if (t < 15) return 0.3;   // fresquito
+    if (t <= 28) return 0;    // ideal para jugar
+    if (t <= 31) return 0.5;  // calorcito
+    if (t <= 34) return 1.3;  // calor
+    return 2.6;               // mucho calor
+  }
+
+  // puntaje de 1 a 5 estrellas "para jugar al tenis"
+  function playScore(wind, precipProb, code, temp) {
+    let s = 5;
+    if (wind > 35) s -= 2.5; else if (wind > 25) s -= 1.5; else if (wind > 18) s -= 0.8; else if (wind > 12) s -= 0.3;
+    if (precipProb >= 70) s -= 2.5; else if (precipProb >= 50) s -= 1.5; else if (precipProb >= 30) s -= 0.8; else if (precipProb >= 15) s -= 0.3;
+    const w = wxCode(code);
+    if (w.storm || w.snow) s -= 3;
+    else if (w.rain) s -= 1.5;
+    else if (w.fog) s -= 0.8;
+    else if (w.cloud) s -= 0.3;
+    s -= tempPenalty(temp);
+    return Math.max(1, Math.min(5, Math.round(s)));
+  }
+
+  // colores claros para el veredicto (sobre fondo oscuro)
+  function verdict(stars) {
+    if (stars >= 5) return { t: '¡Ideal!', c: '#b6e05f' };
+    if (stars === 4) return { t: 'Muy bueno', c: '#a6d04e' };
+    if (stars === 3) return { t: 'Se puede', c: '#e0a94e' };
+    if (stars === 2) return { t: 'Complicado', c: '#dd8a55' };
+    return { t: 'Mejor no', c: '#e0776b' };
+  }
+
+  const DOW = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+  const MON = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+
+  function starsHtml(n) {
+    let h = '';
+    for (let i = 1; i <= 5; i++) h += `<span class="${i <= n ? 'on' : 'off'}">★</span>`;
+    return h;
+  }
+
+  // franjas horarias: mañana 6-12, tarde 12-19, noche 19-24
+  const BANDS = [
+    { key: 'mañ', ico: '🌅', name: 'Mañana', from: 6, to: 12 },
+    { key: 'tar', ico: '☀️', name: 'Tarde', from: 12, to: 19 },
+    { key: 'noc', ico: '🌙', name: 'Noche', from: 19, to: 24 },
+  ];
+
+  function bandScore(hourly, dayIso, band) {
+    const idxs = [];
+    for (let i = 0; i < hourly.time.length; i++) {
+      const t = hourly.time[i];
+      if (t.slice(0, 10) === dayIso) {
+        const hr = parseInt(t.slice(11, 13), 10);
+        if (hr >= band.from && hr < band.to) idxs.push(i);
+      }
+    }
+    if (!idxs.length) return null;
+    let windMax = 0, precipMax = 0, tempSum = 0, worstCode = 0;
+    idxs.forEach(i => {
+      windMax = Math.max(windMax, hourly.wind_speed_10m[i] || 0);
+      precipMax = Math.max(precipMax, hourly.precipitation_probability ? (hourly.precipitation_probability[i] || 0) : 0);
+      tempSum += hourly.temperature_2m[i] || 0;
+      worstCode = Math.max(worstCode, hourly.weather_code[i] || 0);
+    });
+    const tavg = Math.round(tempSum / idxs.length);
+    return { stars: playScore(Math.round(windMax), precipMax, worstCode, tavg), temp: tavg, code: worstCode, wind: Math.round(windMax), precip: precipMax };
+  }
+
+  function updateArrows() {
+    const max = wxTrack.scrollWidth - wxTrack.clientWidth - 4;
+    const overflowing = max > 4;
+    wxPrev.hidden = !overflowing;
+    wxNext.hidden = !overflowing;
+    wxPrev.disabled = wxTrack.scrollLeft <= 4;
+    wxNext.disabled = wxTrack.scrollLeft >= max;
+  }
+
+  async function loadWeather() {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${CLUB_LAT}&longitude=${CLUB_LON}`
+      + `&daily=weather_code,temperature_2m_max,temperature_2m_min,wind_speed_10m_max,precipitation_probability_max`
+      + `&hourly=temperature_2m,weather_code,wind_speed_10m,precipitation_probability`
+      + `&timezone=auto&forecast_days=${WX_DAYS}`;
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      const d = data.daily, h = data.hourly;
+      if (!d || !d.time) throw new Error('sin datos');
+
+      const days = d.time.map((iso, idx) => {
+        const wind = Math.round(d.wind_speed_10m_max[idx]);
+        const precip = d.precipitation_probability_max ? (d.precipitation_probability_max[idx] ?? 0) : 0;
+        const code = d.weather_code[idx];
+        const tmax = Math.round(d.temperature_2m_max[idx]);
+        const tmin = Math.round(d.temperature_2m_min[idx]);
+        // puntaje del día = horario jugable (8 a 21 hs), no el máximo de las 24 hs
+        const daytime = h ? bandScore(h, iso, { from: 8, to: 21 }) : null;
+        const stars = daytime ? daytime.stars : playScore(wind, precip, code, tmax);
+        const bands = h ? BANDS.map(b => ({ b, s: bandScore(h, iso, b) })) : [];
+        return { iso, wind, precip, code, tmax, tmin, stars, bands };
+      });
+
+      wxTrack.innerHTML = days.map((day, idx) => {
+        const dt = new Date(day.iso + 'T12:00:00');
+        const w = wxCode(day.code);
+        const label = idx === 0 ? 'Hoy' : DOW[dt.getDay()];
+        const bandsHtml = day.bands.filter(x => x.s).map(x => {
+          const bw = wxCode(x.s.code, x.b.key === 'noc');
+          return `
+          <div class="wx-band">
+            <div class="b-top">
+              <span class="b-ico" title="${bw.t}">${bw.i}</span>
+              <span class="b-name">${x.b.name}</span>
+              <span class="b-stars">${starsHtml(x.s.stars)}</span>
+            </div>
+            <div class="b-sub">🌡️ ${x.s.temp}° · 💨 ${x.s.wind} · 💧 ${x.s.precip}%</div>
+          </div>`;
+        }).join('');
+        return `
+          <div class="wx-card" style="--i:${idx}">
+            <div class="wx-top"><span class="wx-dow">${label}</span><span class="wx-date">${dt.getDate()} ${MON[dt.getMonth()]}</span></div>
+            <div class="wx-ico" title="${w.t}">${w.i}</div>
+            <div class="wx-temp">${day.tmax}°<small> / ${day.tmin}°</small></div>
+            <div class="wx-meta">💨 ${day.wind} km/h · 💧 ${day.precip}%</div>
+            ${bandsHtml ? `<div class="wx-bands">${bandsHtml}</div>` : ''}
+          </div>`;
+      }).join('');
+
+      wxFoot.textContent = `Pronóstico de los próximos ${days.length} días · datos de Open-Meteo`;
+
+      updateArrows();
+    } catch (err) {
+      wxTrack.innerHTML = `<div class="wx-error">No se pudo cargar el clima.<br>${err.message}</div>`;
+    }
+  }
+
+  function scrollCards(dir) {
+    const card = wxTrack.querySelector('.wx-card');
+    const step = card ? (card.offsetWidth + 13) * 3 : 480;
+    wxTrack.scrollBy({ left: dir * step, behavior: 'smooth' });
+  }
+  wxPrev.addEventListener('click', () => scrollCards(-1));
+  wxNext.addEventListener('click', () => scrollCards(1));
+  wxTrack.addEventListener('scroll', updateArrows, { passive: true });
+  window.addEventListener('resize', updateArrows, { passive: true });
+
+  loadWeather();
+</script>
+</body>
+</html>

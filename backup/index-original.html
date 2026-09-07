@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Automoto Tenis — ranking en vivo, turnos, clima y novedades del club.">
+<title>Automoto Tenis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy-950: #16141d;
+    --navy-900: #1e1b2b;   /* fondo de la página */
+    --navy-850: #24212f;   /* superficies / drawer */
+    --navy-800: #2a2740;   /* paneles */
+    --panel-hi: #33304a;
+    --red: #cc5155;
+    --red-strong: #b84a4e;
+    --red-deep: #9e3e42;
+    --lime: #a6d04e;
+    --lime-soft: #c9ea7e;
+    --lime-deep: #8fbf3a;
+    --clay: #c76a3c;
+    --cyan: #5ec2c4;
+    --sand: #e0a94e;
+    --cream: #f4ede2;      /* texto principal */
+    --muted: #a79fb2;
+    --muted-2: #7f7890;
+    --line: rgba(244, 237, 226, 0.10);
+    --line-strong: rgba(244, 237, 226, 0.17);
+    --font-display: 'Sora', 'Helvetica Neue', Arial, sans-serif;
+    --font-body: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    font-family: var(--font-body);
+    background:
+      radial-gradient(820px 460px at 78% 3%, rgba(166, 208, 78, 0.06), transparent 60%),
+      radial-gradient(1000px 560px at 16% 118%, rgba(199, 106, 60, 0.13), transparent 60%),
+      var(--navy-900);
+    color: var(--cream);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body.nav-open { overflow: hidden; }
+
+  ::selection { background: rgba(166, 208, 78, 0.32); }
+
+  a:focus-visible, .card:focus-visible, button:focus-visible {
+    outline: 3px solid var(--lime);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  /* ---- Botón hamburguesa ---- */
+
+  .menu-btn {
+    position: fixed;
+    top: 13px;
+    left: 14px;
+    z-index: 90;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--line-strong);
+    border-radius: 13px;
+    background: rgba(42, 39, 64, 0.62);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+    transition: background 0.2s ease;
+  }
+
+  .menu-btn:hover { background: rgba(51, 48, 74, 0.82); }
+
+  body.nav-open .menu-btn { background: var(--navy-800); }
+
+  .menu-bars span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--cream);
+    border-radius: 2px;
+    transition: transform 0.3s cubic-bezier(0.2, 0.6, 0.3, 1), opacity 0.2s ease;
+  }
+
+  .menu-bars span + span { margin-top: 5px; }
+
+  body.nav-open .menu-bars span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  body.nav-open .menu-bars span:nth-child(2) { opacity: 0; }
+  body.nav-open .menu-bars span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* ---- Redes (header, arriba a la derecha) ---- */
+
+  .social {
+    position: fixed;
+    top: 13px;
+    right: 14px;
+    z-index: 90;
+    display: flex;
+    gap: 8px;
+  }
+
+  .social a {
+    width: 44px;
+    height: 44px;
+    border-radius: 13px;
+    border: 1px solid var(--line-strong);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+    transition: transform 0.18s ease;
+  }
+
+  .social a:hover { transform: translateY(-2px); }
+
+  .social .ig {
+    background: rgba(42, 39, 64, 0.62);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: var(--cream);
+    transition: transform 0.18s ease, background 0.25s ease;
+  }
+  .social .ig:hover {
+    background: linear-gradient(135deg, #feda75 0%, #fa7e1e 22%, #d62976 55%, #962fbf 80%, #4f5bd5 100%);
+  }
+
+  .social .ig svg { width: 22px; height: 22px; display: block; }
+
+  .social .masu { background: rgba(42, 39, 64, 0.62); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: transform 0.18s ease, background 0.25s ease; }
+  .social .masu:hover { background: #10105a; }
+  .social .masu img { width: 66%; height: 66%; object-fit: contain; display: block; }
+
+  /* ---- Drawer lateral ---- */
+
+  .drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 70;
+    width: min(82vw, 300px);
+    background: var(--navy-850);
+    border-right: 1px solid var(--line);
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.5);
+    transform: translateX(-100%);
+    transition: transform 0.32s cubic-bezier(0.2, 0.7, 0.25, 1);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  body.nav-open .drawer { transform: translateX(0); }
+
+  .drawer-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 20px 22px 18px 68px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .drawer-head img { width: 34px; height: auto; display: block; }
+
+  .drawer-head span {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--cream);
+  }
+
+  .drawer-nav {
+    list-style: none;
+    margin: 8px 0;
+    padding: 0;
+  }
+
+  .drawer-nav a,
+  .drawer-nav .soon {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 13px 24px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--cream);
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .drawer-nav a .ico,
+  .drawer-nav .soon .ico { font-size: 18px; width: 22px; text-align: center; }
+
+  .drawer-nav a:hover {
+    background: rgba(244, 237, 226, 0.05);
+    color: var(--lime);
+    border-left-color: var(--lime);
+  }
+
+  .drawer-nav a[aria-current="page"] {
+    color: var(--lime);
+    border-left-color: var(--lime);
+    font-weight: 600;
+  }
+
+  .drawer-nav .soon {
+    color: var(--muted-2);
+    cursor: default;
+  }
+
+  .drawer-nav .soon em {
+    margin-left: auto;
+    font-style: normal;
+    font-size: 9.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: rgba(244, 237, 226, 0.08);
+    color: var(--muted);
+    padding: 3px 8px;
+    border-radius: 999px;
+  }
+
+  .drawer-foot {
+    margin-top: auto;
+    padding: 18px 24px 22px;
+    border-top: 1px solid var(--line);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted-2);
+  }
+
+  .backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    background: rgba(10, 9, 15, 0.6);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  body.nav-open .backdrop { opacity: 1; pointer-events: auto; }
+
+  /* ---- Barra fija superior ---- */
+
+  .topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 11px;
+    background: rgba(26, 24, 35, 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--line);
+    transform: translateY(-100%);
+    transition: transform 0.3s cubic-bezier(0.2, 0.6, 0.3, 1);
+    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.35);
+  }
+
+  .topbar.visible { transform: translateY(0); }
+
+  .topbar a {
+    display: inline-flex;
+    align-items: center;
+    gap: 11px;
+    text-decoration: none;
+  }
+
+  .topbar img { width: 30px; height: auto; display: block; }
+
+  .topbar span {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 12.5px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--cream);
+  }
+
+  a.drawer-head { text-decoration: none; cursor: pointer; }
+  a.drawer-head:hover span { color: var(--lime); }
+
+  /* ---- Hero ---- */
+
+  .hero {
+    position: relative;
+    min-height: 92vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 92px 24px 92px;
+    color: var(--cream);
+    overflow: hidden;
+    background:
+      linear-gradient(180deg,
+        rgba(18, 16, 26, 0.82) 0%,
+        rgba(18, 16, 26, 0.72) 44%,
+        rgba(18, 16, 26, 0.82) 80%,
+        rgba(18, 16, 26, 0.97) 94%,
+        var(--navy-900) 100%),
+      url('assets/court.jpg') center 20% / cover no-repeat;
+  }
+
+  .logo-wrap {
+    position: relative;
+    z-index: 2;
+    width: clamp(170px, 22vw, 210px);
+    margin: 0 auto 20px;
+    filter: drop-shadow(0 18px 34px rgba(0, 0, 0, 0.65));
+  }
+
+  .logo-wrap img { width: 100%; height: auto; display: block; }
+
+  .hero-eyebrow {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-size: 12.5px;
+    color: var(--lime);
+    margin: 0 0 12px;
+    font-weight: 600;
+  }
+
+  .hero-eyebrow::before,
+  .hero-eyebrow::after {
+    content: "";
+    width: 28px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(166, 208, 78, 0.75));
+  }
+
+  .hero-eyebrow::after {
+    background: linear-gradient(to left, transparent, rgba(166, 208, 78, 0.75));
+  }
+
+  .hero h1 {
+    position: relative;
+    z-index: 2;
+    font-family: var(--font-display);
+    font-size: clamp(40px, 8vw, 82px);
+    margin: 0 0 16px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.02;
+    max-width: 12ch;
+    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.45);
+  }
+
+  .hero h1 .accent { color: var(--lime); }
+
+  .hero p.tagline {
+    position: relative;
+    z-index: 2;
+    font-size: clamp(17px, 2.4vw, 23px);
+    line-height: 1.55;
+    color: rgba(244, 237, 226, 0.9);
+    margin: 0 auto;
+    max-width: 540px;
+    font-weight: 400;
+    text-shadow: 0 1px 14px rgba(0, 0, 0, 0.4);
+  }
+
+  .scroll-cue {
+    position: absolute;
+    bottom: 26px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    width: 24px;
+    height: 24px;
+    border-right: 2px solid rgba(244, 237, 226, 0.55);
+    border-bottom: 2px solid rgba(244, 237, 226, 0.55);
+    transform: translateX(-50%) rotate(45deg);
+    animation: cue 1.9s ease-in-out infinite;
+  }
+
+  @keyframes cue {
+    0%, 100% { transform: translateX(-50%) rotate(45deg) translate(0, 0); opacity: 0.5; }
+    50% { transform: translateX(-50%) rotate(45deg) translate(3px, 3px); opacity: 1; }
+  }
+
+  /* ---- Seam (costura de pelota) ---- */
+
+  .seam {
+    max-width: 920px;
+    margin: 0 auto;
+    height: 30px;
+    opacity: 0.4;
+  }
+  .seam svg { width: 100%; height: 100%; display: block; }
+
+  /* ---- Tarjetas ---- */
+
+  .container {
+    max-width: 920px;
+    margin: 40px auto 26px;
+    padding: 0 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 22px;
+  }
+
+  .card {
+    background: var(--navy-850);
+    border-radius: 20px;
+    box-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.2),
+      0 22px 48px -20px rgba(0, 0, 0, 0.6);
+    padding: 30px 26px 28px;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    border: 1px solid var(--line);
+    transition: transform 0.25s cubic-bezier(0.2, 0.6, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(to right, var(--red), var(--lime));
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+
+  a.card:hover {
+    transform: translateY(-5px);
+    border-color: var(--line-strong);
+    box-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.25),
+      0 30px 60px -22px rgba(0, 0, 0, 0.7);
+  }
+
+  a.card:hover::before { opacity: 1; }
+
+  .card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: linear-gradient(160deg, var(--navy-800), var(--panel-hi));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+    margin-bottom: 18px;
+  }
+
+  .card h3 {
+    margin: 0 0 7px;
+    font-family: var(--font-display);
+    font-size: 17.5px;
+    color: var(--cream);
+    font-weight: 700;
+    letter-spacing: -0.2px;
+  }
+
+  .card p {
+    margin: 0;
+    font-size: 13.5px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .card-go {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--lime);
+  }
+
+  .card-go .arrow { transition: transform 0.2s ease; }
+
+  a.card:hover .card-go .arrow { transform: translateX(3px); }
+
+  .card.disabled {
+    opacity: 0.55;
+    cursor: default;
+  }
+
+  .card.disabled .card-icon { filter: grayscale(0.4); }
+
+  /* ---- Badges ---- */
+
+  .badge {
+    position: absolute;
+    top: 22px;
+    right: 22px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--muted);
+    background: rgba(244, 237, 226, 0.07);
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+
+  .badge.live {
+    color: var(--lime);
+    background: rgba(166, 208, 78, 0.13);
+  }
+
+  .badge.open {
+    color: #e79a6c;
+    background: rgba(199, 106, 60, 0.16);
+  }
+
+  .badge.live::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--lime);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(166, 208, 78, 0.5); }
+    50% { box-shadow: 0 0 0 4px rgba(166, 208, 78, 0); }
+  }
+
+  /* ---- Clima ---- */
+
+  .clima {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 10px 20px 56px;
+    scroll-margin-top: 70px;
+  }
+
+  .clima-head { text-align: center; max-width: 560px; margin: 0 auto 30px; }
+
+  .clima-eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--lime);
+    margin: 0 0 8px;
+  }
+
+  .clima-head h2 {
+    font-family: var(--font-display);
+    font-size: clamp(22px, 3.4vw, 30px);
+    font-weight: 800;
+    letter-spacing: -0.4px;
+    color: var(--cream);
+    margin: 0 0 10px;
+  }
+
+  .clima-sub { margin: 0; font-size: 14.5px; line-height: 1.6; color: var(--muted); }
+
+  .wx-carousel { position: relative; }
+
+  .wx-track {
+    display: flex;
+    gap: 13px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    padding: 4px 2px 12px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--line-strong) transparent;
+  }
+  .wx-track::-webkit-scrollbar { height: 7px; }
+  .wx-track::-webkit-scrollbar-thumb { background: rgba(244, 237, 226, 0.18); border-radius: 4px; }
+  .wx-track::-webkit-scrollbar-track { background: transparent; }
+
+  .wx-card {
+    flex: 0 0 auto;
+    width: 190px;
+    scroll-snap-align: start;
+    background: var(--navy-850);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 16px 34px -20px rgba(0, 0, 0, 0.6);
+    padding: 16px 16px 15px;
+    text-align: center;
+  }
+
+  .wx-top { display: flex; align-items: baseline; justify-content: center; gap: 6px; }
+  .wx-dow { font-size: 12.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--cream); }
+  .wx-date { font-size: 10.5px; color: var(--muted-2); }
+  .wx-ico { font-size: 30px; line-height: 1; margin: 8px 0 6px; }
+  .wx-temp { font-family: var(--font-display); font-weight: 700; font-size: 18px; color: var(--cream); }
+  .wx-temp small { font-size: 12px; font-weight: 500; color: var(--muted-2); }
+  .wx-meta { font-size: 11px; color: var(--muted); margin-top: 5px; line-height: 1.5; }
+  .wx-stars { margin-top: 8px; font-size: 14px; letter-spacing: 1px; }
+  .wx-stars .on { color: var(--lime); }
+  .wx-stars .off { color: rgba(244, 237, 226, 0.16); }
+  .wx-verdict { margin-top: 5px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; }
+
+  .wx-bands {
+    margin-top: 11px;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+    display: grid;
+    gap: 11px;
+    text-align: left;
+  }
+  .wx-band .b-top { display: flex; align-items: center; gap: 7px; }
+  .wx-band .b-ico { font-size: 13px; width: 22px; text-align: center; white-space: nowrap; letter-spacing: -2px; flex: none; }
+  .wx-band .b-name { color: var(--cream); font-size: 11.5px; font-weight: 600; }
+  .wx-band .b-stars { margin-left: auto; font-size: 10px; letter-spacing: 0.5px; }
+  .wx-band .b-stars .on { color: var(--lime); }
+  .wx-band .b-stars .off { color: rgba(244, 237, 226, 0.16); }
+  .wx-band .b-sub { margin-top: 3px; padding-left: 29px; font-size: 10px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+  .wx-src {
+    display: inline-block;
+    margin-top: 11px;
+    font-size: 10.5px;
+    color: var(--muted-2);
+    text-decoration: none;
+    border-bottom: 1px dotted rgba(244, 237, 226, 0.25);
+  }
+  .wx-src:hover { color: var(--lime); border-bottom-color: var(--lime); }
+
+  .wx-arrow {
+    position: absolute;
+    top: calc(50% - 20px);
+    transform: translateY(-50%);
+    z-index: 3;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    background: var(--navy-800);
+    color: var(--cream);
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s ease, transform 0.15s ease, opacity 0.15s ease;
+  }
+  .wx-arrow:hover { background: var(--panel-hi); transform: translateY(-50%) scale(1.06); }
+  .wx-arrow[disabled] { opacity: 0; pointer-events: none; }
+  .wx-arrow.prev { left: -10px; }
+  .wx-arrow.next { right: -10px; }
+
+  .wx-loading, .wx-error {
+    width: 100%;
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .wx-error { color: #e08a80; }
+
+  .wx-spinner {
+    width: 26px; height: 26px;
+    border: 3px solid var(--line);
+    border-top-color: var(--lime);
+    border-radius: 50%;
+    margin: 0 auto 14px;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .clima-foot {
+    text-align: center;
+    margin: 18px 0 0;
+    font-size: 12px;
+    color: var(--muted-2);
+  }
+  .clima-foot:empty { display: none; }
+
+  @media (max-width: 560px) {
+    .wx-arrow { display: none; }
+    .wx-card { width: 172px; }
+  }
+
+  /* ---- Footer ---- */
+
+  footer {
+    text-align: center;
+    padding: 8px 20px 46px;
+  }
+
+  footer .rule {
+    width: 56px;
+    height: 3px;
+    border-radius: 2px;
+    margin: 0 auto 18px;
+    background: linear-gradient(to right, var(--red), var(--lime));
+    opacity: 0.7;
+  }
+
+  footer p {
+    margin: 0;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted-2);
+    font-weight: 500;
+  }
+
+  /* ---- Responsive / motion ---- */
+
+  @media (max-width: 560px) {
+    .hero { min-height: 88vh; padding: 78px 20px 78px; }
+    .logo-wrap { width: 155px; }
+    .container { margin-top: 30px; }
+    .seam { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .card, .card-go .arrow, .topbar, .drawer, .backdrop, .menu-bars span, .social a { transition: none; }
+    .badge.live::before, .scroll-cue { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+  <button class="menu-btn" id="menuBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="drawer">
+    <span class="menu-bars"><span></span><span></span><span></span></span>
+  </button>
+
+  <div class="social">
+    <a class="ig" href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener" aria-label="Instagram de Automoto Tenis">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.42.56.21.96.47 1.38.89.42.42.68.82.89 1.38.17.43.37 1.06.42 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.42 2.23-.21.56-.47.96-.89 1.38-.42.42-.82.68-1.38.89-.43.17-1.06.37-2.23.42-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.42-.56-.21-.96-.47-1.38-.89-.42-.42-.68-.82-.89-1.38-.17-.43-.37-1.06-.42-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.42-2.23.21-.56.47-.96.89-1.38.42-.42.82-.68 1.38-.89.43-.17 1.06-.37 2.23-.42 1.27-.06 1.65-.07 4.85-.07M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.13.63c-.79.3-1.46.72-2.13 1.38C1.34 2.68.92 3.35.63 4.13.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.3.79.72 1.46 1.38 2.13.67.66 1.34 1.08 2.13 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56.79-.3 1.46-.72 2.13-1.38.66-.67 1.08-1.34 1.38-2.13.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91-.3-.79-.72-1.46-1.38-2.13-.67-.66-1.34-1.08-2.13-1.38-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0z"/><path d="M12 5.84A6.16 6.16 0 1 0 12 18.16 6.16 6.16 0 0 0 12 5.84zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/><circle cx="18.41" cy="5.59" r="1.44"/></svg>
+    </a>
+    <a class="masu" href="https://www.instagram.com/masu.tenis/" target="_blank" rel="noopener" aria-label="Instagram de Masu Tenis">
+      <img src="assets/masu-mark.png" alt="Masu Tenis">
+    </a>
+  </div>
+
+  <nav class="drawer" id="drawer" aria-hidden="true" aria-label="Menú principal">
+    <a class="drawer-head" href="index.html" aria-label="Ir al inicio">
+      <img src="assets/logo.png" alt="">
+      <span>Automoto Tenis</span>
+    </a>
+    <ul class="drawer-nav">
+      <li><a href="index.html" aria-current="page"><span class="ico">🏠</span> Inicio</a></li>
+      <li><a href="rankings.html"><span class="ico">🏆</span> Ranking</a></li>
+      <li><a href="index.html#clima"><span class="ico">🌦️</span> Clima para jugar</a></li>
+      <li><a href="https://darturnos.com/AutomotoTenis/" target="_blank" rel="noopener"><span class="ico">📅</span> Turnos de cancha</a></li>
+      <li><a href="cartelera.html"><span class="ico">📣</span> Cartelera</a></li>
+      <li><a href="info.html"><span class="ico">ℹ️</span> Info del club</a></li>
+    </ul>
+    <div class="drawer-foot">Temporada 2026</div>
+  </nav>
+
+  <div class="backdrop" id="backdrop"></div>
+
+  <div class="topbar" id="topbar" aria-hidden="true">
+    <a href="index.html" aria-label="Ir al inicio">
+      <img src="assets/logo.png" alt="">
+      <span>Automoto Tenis</span>
+    </a>
+  </div>
+
+  <div class="hero">
+    <div class="logo-wrap">
+      <img src="assets/logo.png" alt="Automoto Tenis">
+    </div>
+    <p class="hero-eyebrow">Bienvenidos</p>
+    <h1>Automoto Club Deportivo <span class="accent">Tenis</span></h1>
+    <p class="tagline">Ranking, turnos, clima y toda la actividad del club en un solo lugar.</p>
+    <span class="scroll-cue" aria-hidden="true"></span>
+  </div>
+
+  <div class="container">
+    <div class="cards">
+      <a class="card" href="rankings.html">
+        <span class="badge live">En vivo</span>
+        <div class="card-icon">🏆</div>
+        <h3>Ranking</h3>
+        <p>Posiciones actualizadas de Categorías A, B y C, con ascensos, descensos y promoción.</p>
+        <span class="card-go">Ver tabla <span class="arrow">→</span></span>
+      </a>
+      <a class="card" href="cartelera.html">
+        <div class="card-icon">📣</div>
+        <h3>Cartelera</h3>
+        <p>Novedades, torneos y avisos del club, con lo más importante fijado arriba.</p>
+        <span class="card-go">Ver cartelera <span class="arrow">→</span></span>
+      </a>
+      <a class="card" href="https://darturnos.com/AutomotoTenis/" target="_blank" rel="noopener">
+        <span class="badge open">Reservar ↗</span>
+        <div class="card-icon">📅</div>
+        <h3>Turnos de cancha</h3>
+        <p>Reservá tu horario para jugar en darturnos.com.</p>
+        <span class="card-go">Reservar turno <span class="arrow">→</span></span>
+      </a>
+      <a class="card" href="info.html">
+        <div class="card-icon">ℹ️</div>
+        <h3>Info del club</h3>
+        <p>Cuota y alias de pago, cuidado de la cancha y teléfonos útiles.</p>
+        <span class="card-go">Ver info <span class="arrow">→</span></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="seam" aria-hidden="true"><svg viewBox="0 0 1200 30" preserveAspectRatio="none"><path d="M0,15 C 300,-3 500,33 700,15 S 1050,-3 1200,15" fill="none" stroke="#a6d04e" stroke-width="1.5"/></svg></div>
+
+  <!-- ======= CLIMA ======= -->
+  <section class="clima" id="clima">
+    <div class="clima-inner">
+      <div class="clima-head">
+        <p class="clima-eyebrow">Clima para jugar</p>
+        <h2>¿Está lindo para el tenis?</h2>
+        <p class="clima-sub">Pronóstico de los próximos días con un puntaje de estrellas pensado para jugar: poco viento, sin lluvia y con sol = 5 estrellas.</p>
+      </div>
+      <div class="wx-carousel">
+        <button class="wx-arrow prev" id="wxPrev" type="button" aria-label="Días anteriores" hidden>‹</button>
+        <div class="wx-track" id="wxTrack">
+          <div class="wx-loading"><div class="wx-spinner"></div>Cargando el pronóstico…</div>
+        </div>
+        <button class="wx-arrow next" id="wxNext" type="button" aria-label="Más días" hidden>›</button>
+      </div>
+      <p class="clima-foot" id="wxFoot"></p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="rule"></div>
+    <p>Automoto Tenis &middot; Temporada 2026</p>
+  </footer>
+
+<script>
+  /* ---- Menú lateral ---- */
+  const body = document.body;
+  const menuBtn = document.getElementById('menuBtn');
+  const drawer = document.getElementById('drawer');
+  const backdrop = document.getElementById('backdrop');
+
+  function openNav() {
+    body.classList.add('nav-open');
+    menuBtn.setAttribute('aria-expanded', 'true');
+    menuBtn.setAttribute('aria-label', 'Cerrar menú');
+    drawer.setAttribute('aria-hidden', 'false');
+  }
+
+  function closeNav() {
+    body.classList.remove('nav-open');
+    menuBtn.setAttribute('aria-expanded', 'false');
+    menuBtn.setAttribute('aria-label', 'Abrir menú');
+    drawer.setAttribute('aria-hidden', 'true');
+  }
+
+  menuBtn.addEventListener('click', () => {
+    body.classList.contains('nav-open') ? closeNav() : openNav();
+  });
+  backdrop.addEventListener('click', closeNav);
+  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && body.classList.contains('nav-open')) closeNav();
+  });
+
+  /* ---- Barra fija superior (aparece al pasar el hero) ---- */
+  const topbar = document.getElementById('topbar');
+  const hero = document.querySelector('.hero');
+
+  function update() {
+    topbar.classList.toggle('visible', window.scrollY > hero.offsetHeight - 120);
+  }
+
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update, { passive: true });
+  window.addEventListener('load', update);
+  update();
+
+  /* ==========================================================
+     CLIMA — pronóstico + puntaje de estrellas (Open-Meteo)
+     ========================================================== */
+
+  // ---- Configuración: coordenadas de la cancha ----
+  // Tornquist, Buenos Aires (8160)
+  const CLUB_LAT = -38.1006;
+  const CLUB_LON = -62.2214;
+  const WX_DAYS = 16; // Open-Meteo entrega hasta 16 días
+  const WX_SOURCE = `https://open-meteo.com/en/docs?latitude=${CLUB_LAT}&longitude=${CLUB_LON}`;
+  // -------------------------------------------------
+
+  const wxTrack = document.getElementById('wxTrack');
+  const wxFoot = document.getElementById('wxFoot');
+  const wxPrev = document.getElementById('wxPrev');
+  const wxNext = document.getElementById('wxNext');
+
+  // WMO weather code -> emoji + texto  (night = true usa iconos nocturnos)
+  function wxCode(code, night) {
+    if (code === 0) return { i: night ? '🌙' : '☀️', t: 'Despejado', clear: true };
+    if (code === 1) return { i: night ? '🌙' : '🌤️', t: night ? 'Mayormente despejado' : 'Mayormente sol', clear: true };
+    if (code === 2) return { i: night ? '☁️🌙' : '⛅', t: 'Parcial nublado' };
+    if (code === 3) return { i: '☁️', t: 'Nublado', cloud: true };
+    if (code === 45 || code === 48) return { i: '🌫️', t: 'Niebla', fog: true };
+    if (code >= 51 && code <= 57) return { i: '🌦️', t: 'Llovizna', rain: true };
+    if (code >= 61 && code <= 67) return { i: '🌧️', t: 'Lluvia', rain: true };
+    if (code >= 71 && code <= 77) return { i: '🌨️', t: 'Nieve', snow: true };
+    if (code >= 80 && code <= 82) return { i: '🌧️', t: 'Chaparrones', rain: true };
+    if (code >= 85 && code <= 86) return { i: '🌨️', t: 'Nevadas', snow: true };
+    if (code >= 95) return { i: '⛈️', t: 'Tormenta', storm: true };
+    return { i: '🌡️', t: '—' };
+  }
+
+  // penalización por temperatura (°C) — el frío pega fuerte
+  function tempPenalty(t) {
+    if (t < 4) return 2.8;    // helado
+    if (t < 7) return 2.0;    // muy frío
+    if (t < 10) return 1.7;   // frío
+    if (t < 13) return 0.8;   // fresco
+    if (t < 15) return 0.3;   // fresquito
+    if (t <= 28) return 0;    // ideal para jugar
+    if (t <= 31) return 0.5;  // calorcito
+    if (t <= 34) return 1.3;  // calor
+    return 2.6;               // mucho calor
+  }
+
+  // puntaje de 1 a 5 estrellas "para jugar al tenis"
+  function playScore(wind, precipProb, code, temp) {
+    let s = 5;
+    if (wind > 35) s -= 2.5; else if (wind > 25) s -= 1.5; else if (wind > 18) s -= 0.8; else if (wind > 12) s -= 0.3;
+    if (precipProb >= 70) s -= 2.5; else if (precipProb >= 50) s -= 1.5; else if (precipProb >= 30) s -= 0.8; else if (precipProb >= 15) s -= 0.3;
+    const w = wxCode(code);
+    if (w.storm || w.snow) s -= 3;
+    else if (w.rain) s -= 1.5;
+    else if (w.fog) s -= 0.8;
+    else if (w.cloud) s -= 0.3;
+    s -= tempPenalty(temp);
+    return Math.max(1, Math.min(5, Math.round(s)));
+  }
+
+  // colores claros para el veredicto (sobre fondo oscuro)
+  function verdict(stars) {
+    if (stars >= 5) return { t: '¡Ideal!', c: '#b6e05f' };
+    if (stars === 4) return { t: 'Muy bueno', c: '#a6d04e' };
+    if (stars === 3) return { t: 'Se puede', c: '#e0a94e' };
+    if (stars === 2) return { t: 'Complicado', c: '#dd8a55' };
+    return { t: 'Mejor no', c: '#e0776b' };
+  }
+
+  const DOW = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+  const MON = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+
+  function starsHtml(n) {
+    let h = '';
+    for (let i = 1; i <= 5; i++) h += `<span class="${i <= n ? 'on' : 'off'}">★</span>`;
+    return h;
+  }
+
+  // franjas horarias: mañana 6-12, tarde 12-19, noche 19-24
+  const BANDS = [
+    { key: 'mañ', ico: '🌅', name: 'Mañana', from: 6, to: 12 },
+    { key: 'tar', ico: '☀️', name: 'Tarde', from: 12, to: 19 },
+    { key: 'noc', ico: '🌙', name: 'Noche', from: 19, to: 24 },
+  ];
+
+  function bandScore(hourly, dayIso, band) {
+    const idxs = [];
+    for (let i = 0; i < hourly.time.length; i++) {
+      const t = hourly.time[i];
+      if (t.slice(0, 10) === dayIso) {
+        const hr = parseInt(t.slice(11, 13), 10);
+        if (hr >= band.from && hr < band.to) idxs.push(i);
+      }
+    }
+    if (!idxs.length) return null;
+    let windMax = 0, precipMax = 0, tempSum = 0, worstCode = 0;
+    idxs.forEach(i => {
+      windMax = Math.max(windMax, hourly.wind_speed_10m[i] || 0);
+      precipMax = Math.max(precipMax, hourly.precipitation_probability ? (hourly.precipitation_probability[i] || 0) : 0);
+      tempSum += hourly.temperature_2m[i] || 0;
+      worstCode = Math.max(worstCode, hourly.weather_code[i] || 0);
+    });
+    const tavg = Math.round(tempSum / idxs.length);
+    return { stars: playScore(Math.round(windMax), precipMax, worstCode, tavg), temp: tavg, code: worstCode, wind: Math.round(windMax), precip: precipMax };
+  }
+
+  function updateArrows() {
+    const max = wxTrack.scrollWidth - wxTrack.clientWidth - 4;
+    const overflowing = max > 4;
+    wxPrev.hidden = !overflowing;
+    wxNext.hidden = !overflowing;
+    wxPrev.disabled = wxTrack.scrollLeft <= 4;
+    wxNext.disabled = wxTrack.scrollLeft >= max;
+  }
+
+  async function loadWeather() {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${CLUB_LAT}&longitude=${CLUB_LON}`
+      + `&daily=weather_code,temperature_2m_max,temperature_2m_min,wind_speed_10m_max,precipitation_probability_max`
+      + `&hourly=temperature_2m,weather_code,wind_speed_10m,precipitation_probability`
+      + `&timezone=auto&forecast_days=${WX_DAYS}`;
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      const d = data.daily, h = data.hourly;
+      if (!d || !d.time) throw new Error('sin datos');
+
+      const days = d.time.map((iso, idx) => {
+        const wind = Math.round(d.wind_speed_10m_max[idx]);
+        const precip = d.precipitation_probability_max ? (d.precipitation_probability_max[idx] ?? 0) : 0;
+        const code = d.weather_code[idx];
+        const tmax = Math.round(d.temperature_2m_max[idx]);
+        const tmin = Math.round(d.temperature_2m_min[idx]);
+        // puntaje del día = horario jugable (8 a 21 hs), no el máximo de las 24 hs
+        const daytime = h ? bandScore(h, iso, { from: 8, to: 21 }) : null;
+        const stars = daytime ? daytime.stars : playScore(wind, precip, code, tmax);
+        const bands = h ? BANDS.map(b => ({ b, s: bandScore(h, iso, b) })) : [];
+        return { iso, wind, precip, code, tmax, tmin, stars, bands };
+      });
+
+      wxTrack.innerHTML = days.map((day, idx) => {
+        const dt = new Date(day.iso + 'T12:00:00');
+        const w = wxCode(day.code);
+        const label = idx === 0 ? 'Hoy' : DOW[dt.getDay()];
+        const bandsHtml = day.bands.filter(x => x.s).map(x => {
+          const bw = wxCode(x.s.code, x.b.key === 'noc');
+          return `
+          <div class="wx-band">
+            <div class="b-top">
+              <span class="b-ico" title="${bw.t}">${bw.i}</span>
+              <span class="b-name">${x.b.name}</span>
+              <span class="b-stars">${starsHtml(x.s.stars)}</span>
+            </div>
+            <div class="b-sub">🌡️ ${x.s.temp}° · 💨 ${x.s.wind} · 💧 ${x.s.precip}%</div>
+          </div>`;
+        }).join('');
+        return `
+          <div class="wx-card">
+            <div class="wx-top"><span class="wx-dow">${label}</span><span class="wx-date">${dt.getDate()} ${MON[dt.getMonth()]}</span></div>
+            <div class="wx-ico" title="${w.t}">${w.i}</div>
+            <div class="wx-temp">${day.tmax}°<small> / ${day.tmin}°</small></div>
+            <div class="wx-meta">💨 ${day.wind} km/h · 💧 ${day.precip}%</div>
+            ${bandsHtml ? `<div class="wx-bands">${bandsHtml}</div>` : ''}
+          </div>`;
+      }).join('');
+
+      wxFoot.textContent = `Pronóstico de los próximos ${days.length} días · datos de Open-Meteo`;
+
+      updateArrows();
+    } catch (err) {
+      wxTrack.innerHTML = `<div class="wx-error">No se pudo cargar el clima.<br>${err.message}</div>`;
+    }
+  }
+
+  function scrollCards(dir) {
+    const card = wxTrack.querySelector('.wx-card');
+    const step = card ? (card.offsetWidth + 13) * 3 : 480;
+    wxTrack.scrollBy({ left: dir * step, behavior: 'smooth' });
+  }
+  wxPrev.addEventListener('click', () => scrollCards(-1));
+  wxNext.addEventListener('click', () => scrollCards(1));
+  wxTrack.addEventListener('scroll', updateArrows, { passive: true });
+  window.addEventListener('resize', updateArrows, { passive: true });
+
+  loadWeather();
+</script>
+
+</body>
+</html>

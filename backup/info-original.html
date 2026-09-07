@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Info del club Automoto Tenis — cuota y alias de pago, cuidado de la cancha y contactos.">
+<title>Automoto Tenis — Info del club</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy-950: #1b1927;
+    --navy-900: #252233;
+    --navy-800: #322e45;
+    --red: #c14649;
+    --red-strong: #b23f43;
+    --red-deep: #96363a;
+    --lime: #9ac746;
+    --lime-deep: #6faa2a;
+    --bg: #f5f6f8;
+    --bg-alt: #eceef2;
+    --surface: #ffffff;
+    --line: rgba(37, 34, 51, 0.08);
+    --ink: #23242c;
+    --muted: #6b7078;
+    --font-display: 'Sora', 'Helvetica Neue', Arial, sans-serif;
+    --font-body: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    --shadow: 0 1px 2px rgba(20, 20, 40, 0.05), 0 18px 44px -14px rgba(20, 20, 40, 0.28);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  body.nav-open { overflow: hidden; }
+  ::selection { background: rgba(154, 199, 70, 0.35); }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--lime);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  /* ===== Header compartido (idéntico en todas las páginas) ===== */
+  .menu-btn {
+    position: fixed; top: 13px; left: 14px; z-index: 90;
+    width: 44px; height: 44px; border: none; border-radius: 13px;
+    background: rgba(37, 34, 51, 0.5); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2); transition: background 0.2s ease;
+  }
+  .menu-btn:hover { background: rgba(37, 34, 51, 0.72); }
+  body.nav-open .menu-btn { background: var(--navy-900); }
+  .menu-bars span {
+    display: block; width: 20px; height: 2px; background: #fff; border-radius: 2px;
+    transition: transform 0.3s cubic-bezier(0.2, 0.6, 0.3, 1), opacity 0.2s ease;
+  }
+  .menu-bars span + span { margin-top: 5px; }
+  body.nav-open .menu-bars span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  body.nav-open .menu-bars span:nth-child(2) { opacity: 0; }
+  body.nav-open .menu-bars span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .social { position: fixed; top: 13px; right: 14px; z-index: 90; display: flex; gap: 8px; }
+  .social a {
+    width: 44px; height: 44px; border-radius: 13px; display: flex; align-items: center; justify-content: center;
+    overflow: hidden; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2); transition: transform 0.18s ease;
+  }
+  .social a:hover { transform: translateY(-2px); }
+  .social .ig { background: rgba(37, 34, 51, 0.5); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); color: #fff; transition: transform 0.18s ease, background 0.25s ease; }
+  .social .ig:hover { background: linear-gradient(135deg, #feda75 0%, #fa7e1e 22%, #d62976 55%, #962fbf 80%, #4f5bd5 100%); }
+  .social .ig svg { width: 22px; height: 22px; display: block; }
+  .social .masu { background: rgba(37, 34, 51, 0.5); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: transform 0.18s ease, background 0.25s ease; }
+  .social .masu:hover { background: #10105a; }
+  .social .masu img { width: 66%; height: 66%; object-fit: contain; display: block; }
+
+  .drawer {
+    position: fixed; top: 0; left: 0; bottom: 0; z-index: 70; width: min(82vw, 300px);
+    background: var(--surface); box-shadow: 0 0 60px rgba(20, 20, 40, 0.35);
+    transform: translateX(-100%); transition: transform 0.32s cubic-bezier(0.2, 0.7, 0.25, 1);
+    display: flex; flex-direction: column; overflow-y: auto;
+  }
+  body.nav-open .drawer { transform: translateX(0); }
+  .drawer-head { display: flex; align-items: center; gap: 12px; padding: 20px 22px 18px 68px; border-bottom: 1px solid var(--line); }
+  .drawer-head img { width: 34px; height: auto; display: block; }
+  .drawer-head span { font-family: var(--font-display); font-weight: 700; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--navy-900); }
+  .drawer-nav { list-style: none; margin: 8px 0; padding: 0; }
+  .drawer-nav a, .drawer-nav .soon {
+    display: flex; align-items: center; gap: 13px; padding: 13px 24px; font-size: 15px; font-weight: 500;
+    color: var(--ink); text-decoration: none; border-left: 3px solid transparent;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .drawer-nav a .ico, .drawer-nav .soon .ico { font-size: 18px; width: 22px; text-align: center; }
+  .drawer-nav a:hover { background: var(--bg); color: var(--red); border-left-color: var(--red); }
+  .drawer-nav a[aria-current="page"] { color: var(--red); border-left-color: var(--lime); font-weight: 600; }
+  .drawer-nav .soon { color: #9aa0aa; cursor: default; }
+  .drawer-nav .soon em { margin-left: auto; font-style: normal; font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; background: #eef0f3; color: #8b909a; padding: 3px 8px; border-radius: 999px; }
+  .drawer-foot { margin-top: auto; padding: 18px 24px 22px; border-top: 1px solid var(--line); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #a2a7b0; }
+  .backdrop { position: fixed; inset: 0; z-index: 60; background: rgba(18, 17, 27, 0.45); opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+  body.nav-open .backdrop { opacity: 1; pointer-events: auto; }
+  .topbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50; display: flex; align-items: center; justify-content: center; gap: 11px;
+    background: rgba(37, 34, 51, 0.93); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 11px 16px;
+    transform: translateY(-100%); transition: transform 0.3s cubic-bezier(0.2, 0.6, 0.3, 1); box-shadow: 0 6px 22px rgba(20, 20, 40, 0.3);
+  }
+  .topbar.visible { transform: translateY(0); }
+  .topbar img { width: 30px; height: auto; display: block; }
+  .topbar a { display: inline-flex; align-items: center; gap: 11px; text-decoration: none; }
+  .topbar span { font-family: var(--font-display); font-weight: 700; font-size: 12.5px; letter-spacing: 2.5px; text-transform: uppercase; color: #fff; }
+  a.drawer-head { text-decoration: none; cursor: pointer; }
+  a.drawer-head:hover span { color: var(--red); }
+  /* ===== fin header compartido ===== */
+
+  /* ---- Hero ---- */
+  .hero {
+    background:
+      radial-gradient(700px 380px at 50% -14%, rgba(154, 199, 70, 0.13), transparent 62%),
+      radial-gradient(620px 380px at 88% 118%, rgba(193, 70, 73, 0.30), transparent 58%),
+      radial-gradient(480px 320px at 8% 104%, rgba(193, 70, 73, 0.14), transparent 55%),
+      linear-gradient(165deg, #2b2840 0%, var(--navy-900) 55%, var(--navy-950) 100%);
+    color: #fff; padding: 62px 24px 56px; text-align: center; position: relative; overflow: hidden;
+  }
+  .hero-eyebrow {
+    position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; gap: 14px;
+    text-transform: uppercase; letter-spacing: 4px; font-size: 11px; color: var(--lime); margin: 0 0 10px; font-weight: 600;
+  }
+  .hero-eyebrow::before, .hero-eyebrow::after { content: ""; width: 30px; height: 1px; background: linear-gradient(to right, transparent, rgba(154, 199, 70, 0.7)); }
+  .hero-eyebrow::after { background: linear-gradient(to left, transparent, rgba(154, 199, 70, 0.7)); }
+  .hero h1 { position: relative; z-index: 2; font-family: var(--font-display); font-size: clamp(26px, 4vw, 38px); margin: 0 0 8px; font-weight: 800; letter-spacing: -0.5px; line-height: 1.1; }
+  .hero p.subtitle { position: relative; z-index: 2; font-size: 14.5px; color: rgba(255, 255, 255, 0.72); margin: 0; }
+
+  /* ---- Contenido ---- */
+  .container { max-width: 860px; margin: -34px auto 40px; padding: 0 20px; position: relative; z-index: 2; }
+
+  .section-card {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow);
+    padding: 30px 30px 28px; margin-bottom: 24px; scroll-margin-top: 70px;
+  }
+  .section-card > .sec-head { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+  .sec-ico {
+    width: 46px; height: 46px; border-radius: 13px; flex: none;
+    background: linear-gradient(160deg, var(--navy-800), var(--navy-900));
+    display: flex; align-items: center; justify-content: center; font-size: 22px;
+  }
+  .sec-head h2 { margin: 0; font-family: var(--font-display); font-size: 21px; font-weight: 700; color: var(--navy-900); letter-spacing: -0.3px; }
+  .sec-head p { margin: 3px 0 0; font-size: 13px; color: var(--muted); }
+
+  .placeholder-note {
+    font-size: 12px; color: var(--red-deep); background: #fbecec; border: 1px dashed rgba(193,70,73,0.4);
+    padding: 8px 12px; border-radius: 10px; margin-bottom: 18px;
+  }
+
+  /* pagos */
+  .pay-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+  .pay-table td { padding: 12px 4px; border-bottom: 1px solid var(--line); font-size: 14.5px; }
+  .pay-table tr:last-child td { border-bottom: none; }
+  .pay-table td.val { text-align: right; font-weight: 700; color: var(--navy-900); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .pay-table td .muted { color: var(--muted); font-size: 12px; display: block; margin-top: 2px; }
+
+  .alias-box {
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px;
+  }
+  .alias-box .lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); font-weight: 700; }
+  .alias-box .alias { font-family: var(--font-display); font-size: 19px; font-weight: 700; color: var(--navy-900); letter-spacing: 0.3px; }
+  .alias-box .who { font-size: 12.5px; color: var(--muted); }
+  .copy-btn {
+    margin-left: auto; display: inline-flex; align-items: center; gap: 7px; cursor: pointer;
+    background: var(--navy-900); color: #fff; border: none; border-radius: 999px; padding: 10px 18px;
+    font-family: var(--font-body); font-size: 13px; font-weight: 600; transition: background 0.15s ease, transform 0.15s ease;
+  }
+  .copy-btn:hover { background: var(--navy-800); transform: translateY(-1px); }
+  .copy-btn.done { background: var(--lime-deep); }
+
+  /* cancha */
+  .care-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 22px; }
+  .care-item { display: flex; gap: 12px; align-items: flex-start; }
+  .care-item .ck {
+    flex: none; width: 24px; height: 24px; border-radius: 7px; background: #edf6dc; color: var(--lime-deep);
+    display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; margin-top: 1px;
+  }
+  .care-item.no .ck { background: #fbecec; color: var(--red); }
+  .care-item h4 { margin: 0 0 3px; font-size: 14.5px; font-weight: 700; color: var(--navy-900); }
+  .care-item p { margin: 0; font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+  /* contactos */
+  .contact-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+  .contact-card { border: 1px solid var(--line); border-radius: 16px; padding: 18px; background: var(--surface); }
+  .contact-card .role { font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--lime-deep); font-weight: 700; }
+  .contact-card .name { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--navy-900); margin: 4px 0 12px; }
+  .contact-actions { display: flex; gap: 8px; }
+  .contact-actions a {
+    flex: 1; text-align: center; text-decoration: none; font-size: 13px; font-weight: 600; padding: 9px 10px; border-radius: 10px;
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+  .contact-actions a:hover { transform: translateY(-1px); }
+  .btn-wa { background: #e4f3e6; color: #2f7d3a; }
+  .btn-call { background: var(--bg-alt); color: var(--navy-900); }
+
+  footer { text-align: center; padding: 24px 20px 44px; }
+  footer .rule { width: 56px; height: 3px; border-radius: 2px; margin: 0 auto 18px; background: linear-gradient(to right, var(--red), var(--lime)); opacity: 0.6; }
+  footer p { margin: 0; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: #9aa0aa; font-weight: 500; }
+
+  @media (max-width: 620px) {
+    .care-grid { grid-template-columns: 1fr; }
+    .section-card { padding: 24px 20px 22px; }
+    .alias-box .copy-btn { margin-left: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .topbar, .drawer, .backdrop, .menu-bars span, .social a, .copy-btn, .contact-actions a { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+  <button class="menu-btn" id="menuBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="drawer">
+    <span class="menu-bars"><span></span><span></span><span></span></span>
+  </button>
+
+  <div class="social">
+    <a class="ig" href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener" aria-label="Instagram de Automoto Tenis">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.42.56.21.96.47 1.38.89.42.42.68.82.89 1.38.17.43.37 1.06.42 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.42 2.23-.21.56-.47.96-.89 1.38-.42.42-.82.68-1.38.89-.43.17-1.06.37-2.23.42-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.42-.56-.21-.96-.47-1.38-.89-.42-.42-.68-.82-.89-1.38-.17-.43-.37-1.06-.42-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.42-2.23.21-.56.47-.96.89-1.38.42-.42.82-.68 1.38-.89.43-.17 1.06-.37 2.23-.42 1.27-.06 1.65-.07 4.85-.07M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.13.63c-.79.3-1.46.72-2.13 1.38C1.34 2.68.92 3.35.63 4.13.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.3.79.72 1.46 1.38 2.13.67.66 1.34 1.08 2.13 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56.79-.3 1.46-.72 2.13-1.38.66-.67 1.08-1.34 1.38-2.13.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91-.3-.79-.72-1.46-1.38-2.13-.67-.66-1.34-1.08-2.13-1.38-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0z"/><path d="M12 5.84A6.16 6.16 0 1 0 12 18.16 6.16 6.16 0 0 0 12 5.84zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/><circle cx="18.41" cy="5.59" r="1.44"/></svg>
+    </a>
+    <a class="masu" href="https://www.instagram.com/masu.tenis/" target="_blank" rel="noopener" aria-label="Instagram de Masu Tenis">
+      <img src="assets/masu-mark.png" alt="Masu Tenis">
+    </a>
+  </div>
+
+  <nav class="drawer" id="drawer" aria-hidden="true" aria-label="Menú principal">
+    <a class="drawer-head" href="index.html" aria-label="Ir al inicio">
+      <img src="assets/logo.png" alt="">
+      <span>Automoto Tenis</span>
+    </a>
+    <ul class="drawer-nav">
+      <li><a href="index.html"><span class="ico">🏠</span> Inicio</a></li>
+      <li><a href="rankings.html"><span class="ico">🏆</span> Ranking</a></li>
+      <li><a href="index.html#clima"><span class="ico">🌦️</span> Clima para jugar</a></li>
+      <li><a href="https://darturnos.com/AutomotoTenis/" target="_blank" rel="noopener"><span class="ico">📅</span> Turnos de cancha</a></li>
+      <li><a href="cartelera.html"><span class="ico">📣</span> Cartelera</a></li>
+      <li><a href="info.html" aria-current="page"><span class="ico">ℹ️</span> Info del club</a></li>
+    </ul>
+    <div class="drawer-foot">Temporada 2026</div>
+  </nav>
+
+  <div class="backdrop" id="backdrop"></div>
+
+  <div class="topbar" id="topbar" aria-hidden="true">
+    <a href="index.html" aria-label="Ir al inicio">
+      <img src="assets/logo.png" alt="">
+      <span>Automoto Tenis</span>
+    </a>
+  </div>
+
+  <div class="hero">
+    <p class="hero-eyebrow">El club</p>
+    <h1>Info del club</h1>
+    <p class="subtitle">Todo lo práctico, a mano.</p>
+  </div>
+
+  <div class="container">
+
+    <!-- ===== Pagos ===== -->
+    <section class="section-card" id="pagos">
+      <div class="sec-head">
+        <div class="sec-ico">💳</div>
+        <div>
+          <h2>Cuota y alias de pago</h2>
+          <p>Valores de la temporada y datos para transferir.</p>
+        </div>
+      </div>
+
+      <div class="placeholder-note">⚠️ Valores y alias de ejemplo — reemplazar por los reales del club.</div>
+
+      <table class="pay-table">
+        <tr><td>Cuota mensual — socio<span class="muted">Acceso a canchas y actividades</span></td><td class="val">$ XX.XXX</td></tr>
+        <tr><td>Cuota mensual — menores / estudiantes</td><td class="val">$ XX.XXX</td></tr>
+        <tr><td>Matrícula anual</td><td class="val">$ XX.XXX</td></tr>
+        <tr><td>Alquiler de cancha — no socios<span class="muted">Por hora</span></td><td class="val">$ X.XXX</td></tr>
+        <tr><td>Escuela de tenis — clases<span class="muted">Consultar con el profe</span></td><td class="val">a convenir</td></tr>
+      </table>
+
+      <div class="alias-box">
+        <div>
+          <div class="lbl">Alias para transferir</div>
+          <div class="alias" id="aliasText">AUTOMOTO.TENIS.MP</div>
+          <div class="who">Titular: Club Automoto · CBU/CVU a solicitar por privado</div>
+        </div>
+        <button class="copy-btn" id="copyAlias" type="button">
+          <span id="copyLabel">Copiar alias</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ===== Cuidado de la cancha ===== -->
+    <section class="section-card" id="cancha">
+      <div class="sec-head">
+        <div class="sec-ico">🧹</div>
+        <div>
+          <h2>Cuidado de la cancha</h2>
+          <p>El polvo de ladrillo se mantiene entre todos. Unas pocas cosas hacen la diferencia.</p>
+        </div>
+      </div>
+
+      <div class="care-grid">
+        <div class="care-item">
+          <span class="ck">✓</span>
+          <div><h4>Pasá la red al terminar</h4><p>Arrastrá la red (drag) por toda la cancha para emparejar el polvillo y borrar las pisadas.</p></div>
+        </div>
+        <div class="care-item">
+          <span class="ck">✓</span>
+          <div><h4>Barré las líneas</h4><p>Con el cepillo, dejá las líneas limpias y visibles para el que juega después.</p></div>
+        </div>
+        <div class="care-item">
+          <span class="ck">✓</span>
+          <div><h4>Regá si está seca</h4><p>Una cancha bien regada juega mejor y levanta menos tierra. Si el canchero no está, ayudá con el riego.</p></div>
+        </div>
+        <div class="care-item">
+          <span class="ck">✓</span>
+          <div><h4>Zapatillas de polvo de ladrillo</h4><p>Suela adecuada: cuida la superficie y evita resbalones.</p></div>
+        </div>
+        <div class="care-item no">
+          <span class="ck">✕</span>
+          <div><h4>No juegues con la cancha encharcada</h4><p>Si quedó agua, esperá que drene: jugar sobre barro arruina la carpeta.</p></div>
+        </div>
+        <div class="care-item no">
+          <span class="ck">✕</span>
+          <div><h4>No dejes basura ni botellas</h4><p>Llevate lo tuyo. Los tachos están en la entrada de las canchas.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Contactos ===== -->
+    <section class="section-card" id="contacto">
+      <div class="sec-head">
+        <div class="sec-ico">📇</div>
+        <div>
+          <h2>Teléfonos y contactos</h2>
+          <p>¿Una duda? Escribile a quien corresponde.</p>
+        </div>
+      </div>
+
+      <div class="placeholder-note">⚠️ Nombres y teléfonos de ejemplo — reemplazar por los reales.</div>
+
+      <div class="contact-grid">
+        <div class="contact-card">
+          <div class="role">Organizador de la liga</div>
+          <div class="name">Gonza</div>
+          <div class="contact-actions">
+            <a class="btn-wa" href="https://wa.me/5492915555555" target="_blank" rel="noopener">WhatsApp</a>
+            <a class="btn-call" href="tel:+5492915555555">Llamar</a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="role">Subcomisión / cuotas</div>
+          <div class="name">Tesorería</div>
+          <div class="contact-actions">
+            <a class="btn-wa" href="https://wa.me/5492915555555" target="_blank" rel="noopener">WhatsApp</a>
+            <a class="btn-call" href="tel:+5492915555555">Llamar</a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="role">Turnos y cancha</div>
+          <div class="name">Seba</div>
+          <div class="contact-actions">
+            <a class="btn-wa" href="https://wa.me/5492915555555" target="_blank" rel="noopener">WhatsApp</a>
+            <a class="btn-call" href="tel:+5492915555555">Llamar</a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="role">Escuela de tenis</div>
+          <div class="name">Profes</div>
+          <div class="contact-actions">
+            <a class="btn-wa" href="https://wa.me/5492915555555" target="_blank" rel="noopener">WhatsApp</a>
+            <a class="btn-call" href="tel:+5492915555555">Llamar</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <footer>
+    <div class="rule"></div>
+    <p>Automoto Tenis &middot; Temporada 2026</p>
+  </footer>
+
+<script>
+  /* ---- Header compartido: menú lateral + barra fija ---- */
+  const body = document.body;
+  const menuBtn = document.getElementById('menuBtn');
+  const drawer = document.getElementById('drawer');
+  const backdrop = document.getElementById('backdrop');
+  const topbar = document.getElementById('topbar');
+
+  function openNav() {
+    body.classList.add('nav-open');
+    menuBtn.setAttribute('aria-expanded', 'true');
+    menuBtn.setAttribute('aria-label', 'Cerrar menú');
+    drawer.setAttribute('aria-hidden', 'false');
+  }
+  function closeNav() {
+    body.classList.remove('nav-open');
+    menuBtn.setAttribute('aria-expanded', 'false');
+    menuBtn.setAttribute('aria-label', 'Abrir menú');
+    drawer.setAttribute('aria-hidden', 'true');
+  }
+  menuBtn.addEventListener('click', () => { body.classList.contains('nav-open') ? closeNav() : openNav(); });
+  backdrop.addEventListener('click', closeNav);
+  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && body.classList.contains('nav-open')) closeNav(); });
+
+  function onScroll() { topbar.classList.toggle('visible', window.scrollY > 120); }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* ---- Copiar alias (con fallback para mobile / HTTP) ---- */
+  const copyBtn = document.getElementById('copyAlias');
+  const copyLabel = document.getElementById('copyLabel');
+
+  // fallback que funciona en contextos no seguros (HTTP) y en móviles
+  function legacyCopy(text) {
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.top = '0';
+      ta.style.left = '0';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      ta.setSelectionRange(0, text.length); // iOS
+      const ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      return ok;
+    } catch (e) { return false; }
+  }
+
+  async function copyAlias() {
+    const alias = document.getElementById('aliasText').textContent.trim();
+    let ok = false;
+    // método moderno solo en contexto seguro (HTTPS o localhost)
+    if (navigator.clipboard && window.isSecureContext) {
+      try { await navigator.clipboard.writeText(alias); ok = true; } catch (e) { ok = false; }
+    }
+    if (!ok) ok = legacyCopy(alias);
+
+    copyBtn.classList.add('done');
+    copyLabel.textContent = ok ? '¡Copiado!' : 'Copiá: ' + alias;
+    setTimeout(() => { copyBtn.classList.remove('done'); copyLabel.textContent = 'Copiar alias'; }, ok ? 1800 : 3500);
+  }
+
+  copyBtn.addEventListener('click', copyAlias);
+</script>
+
+</body>
+</html>
