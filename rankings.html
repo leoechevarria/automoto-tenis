@@ -364,6 +364,7 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
   document.getElementById('openRes').addEventListener('click', () => {
     rCat.value = currentCat;
     const t = new Date(); document.getElementById('rDate').value = `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}-${String(t.getDate()).padStart(2, '0')}`;
+    [['s1a', 6], ['s1b', 4], ['s2a', 6], ['s2b', 4], ['s3a', ''], ['s3b', '']].forEach(([id, v]) => { document.getElementById(id).value = v; });
     fillPlayers(); dlg.showModal();
   });
   document.getElementById('resCancel').addEventListener('click', () => dlg.close());
