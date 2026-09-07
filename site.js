@@ -73,11 +73,16 @@
   /* ---- Desplegable del masthead ---- */
   document.querySelectorAll('.menu').forEach(menu => {
     const btn = menu.querySelector('.menu-btn');
+    let hoverAt = 0;
     const set = open => { menu.classList.toggle('open', open); btn.setAttribute('aria-expanded', String(open)); };
-    btn.addEventListener('click', () => set(!menu.classList.contains('open')));
+    btn.addEventListener('click', () => {
+      // si se acaba de abrir por hover, el click no lo cierra (si no parece roto)
+      if (menu.classList.contains('open') && performance.now() - hoverAt < 600) return;
+      set(!menu.classList.contains('open'));
+    });
     if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
-      let t; menu.addEventListener('pointerenter', () => { clearTimeout(t); set(true); });
-      menu.addEventListener('pointerleave', () => { t = setTimeout(() => set(false), 180); });
+      let t; menu.addEventListener('pointerenter', () => { clearTimeout(t); if (!menu.classList.contains('open')) { hoverAt = performance.now(); set(true); } });
+      menu.addEventListener('pointerleave', () => { t = setTimeout(() => set(false), 250); });
     }
     document.addEventListener('click', e => { if (!menu.contains(e.target)) set(false); });
     document.addEventListener('keydown', e => { if (e.key === 'Escape') set(false); });
