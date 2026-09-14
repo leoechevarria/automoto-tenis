@@ -64,7 +64,7 @@ h1, h2, h3 { font-family: var(--font-display); font-style: normal; line-height: 
 .mast { border-bottom: 3px solid var(--color-ink); background: var(--color-paper); }
 .mast-top { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); padding: var(--space-md) 0; border-bottom: 1px solid var(--color-rule); font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-ink-2); text-transform: uppercase; letter-spacing: 0.06em; }
 .mast-brand { display: flex; align-items: center; gap: 14px; color: var(--color-ink); font-weight: 500; font-size: var(--text-sm); }
-.mast-brand img { width: 64px; height: 64px; }
+.mast-brand img { width: 84px; height: 84px; }
 .mast-top { padding: var(--space-sm) 0; }
 .mast-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); }
 .mast-nav { display: flex; flex-wrap: wrap; gap: 0 var(--space-lg); padding: 10px 0; }
@@ -175,7 +175,7 @@ body { transition: opacity 200ms var(--ease-out); }
   .social img { width: 22px; height: 22px; }
   .mast-top { padding-right: 96px; }
   .mast-brand { font-size: 0.72rem; gap: 10px; letter-spacing: 0.04em; }
-  .mast-brand img { width: 48px; height: 48px; }
+  .mast-brand img { width: 60px; height: 60px; }
   .page-head { grid-template-columns: minmax(0, 1fr); padding-top: var(--space-xl); }
   .page-head .meta { justify-self: start; text-align: left; }
   footer .cols { grid-template-columns: minmax(0, 1fr); }
