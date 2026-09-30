@@ -194,6 +194,18 @@ dialog.nov-dlg[open]::backdrop { animation: dlg-fade 280ms var(--ease-out); }
 .demo-bar { position: sticky; top: 0; z-index: 50; background: oklch(80% 0.12 85); color: var(--color-ink); text-align: center; font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.05em; padding: 8px var(--space-md); }
 .demo-bar a { text-decoration: underline; margin-left: 8px; }
 
+/* ---- Cambios de la semana (tabla y rating) ---- */
+:root { --up: oklch(50% 0.13 150); --dn: oklch(52% 0.17 28); }
+td.pos { white-space: nowrap; }
+.mv { display: inline-block; margin-left: 6px; font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; vertical-align: 2px; }
+.dl { display: inline-block; margin-right: 10px; font-family: var(--font-mono); font-size: 0.78rem; font-weight: 500; vertical-align: 3px; }
+.mv.up, .dl.up { color: var(--up); }
+.mv.dn, .dl.dn { color: var(--dn); }
+.vs-sem { font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-ink-3); margin-top: 2px; }
+.temp-sel { display: inline-flex; align-items: center; gap: var(--space-sm); font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-ink-2); }
+.temp-sel select { font: inherit; font-family: var(--font-body); font-size: 16px; text-transform: none; letter-spacing: 0; padding: 8px 10px; border: 1px solid var(--color-ink); background: var(--color-paper); color: var(--color-ink); min-height: 44px; }
+.liga-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: start; gap: var(--space-md); }
+
 /* ---- Selectores de la liga (rama y categoría) ---- */
 #nav { display: grid; gap: var(--space-md); border-bottom: 0; }
 #nav .seg { display: inline-flex; justify-self: start; border: 2px solid var(--color-ink); }

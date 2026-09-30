@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Automoto Tenis — Ranking</title>
+<title>Automoto Tenis — Tabla</title>
 <link rel="icon" href="assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon-192.png">
 <link rel="apple-touch-icon" href="assets/favicon-180.png">
@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=202609301427">
+<link rel="stylesheet" href="site.css?v=202609301431">
 <style>
 .page-head .meta .dot { transition: background-color 300ms var(--ease-out); }
 .rank-wrap { padding: var(--space-lg) 0 var(--space-3xl); }
@@ -80,11 +80,11 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
       <div class="menu">
         <button type="button" class="menu-btn" aria-current="page" aria-expanded="false" aria-haspopup="true">Liga <span class="chev" aria-hidden="true">▾</span></button>
         <div class="menu-list">
-          <a href="rankings.html" aria-current="page">Ranking</a>
+          <a href="rankings.html" aria-current="page">Tabla</a>
           <a href="fixture.html">Fixture</a>
-          <a href="rating.html">Rating</a>
           <a href="rankings.html#cargar">Cargá tu resultado</a>
           <a href="reglas.html">Reglas de la liga</a>
+          <a href="rating.html">Rating (ELO)</a>
         </div>
       </div>
       <a href="novedades.html">Novedades</a>
@@ -121,11 +121,11 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
   </div>
   <div class="drawer-group">
     <span class="k">Liga</span>
-      <a href="rankings.html" aria-current="page">Ranking</a>
+      <a href="rankings.html" aria-current="page">Tabla</a>
       <a href="fixture.html">Fixture</a>
-      <a href="rating.html">Rating</a>
       <a href="rankings.html#cargar">Cargá tu resultado</a>
       <a href="reglas.html">Reglas de la liga</a>
+      <a href="rating.html">Rating (ELO)</a>
   </div>
   <div class="drawer-group">
     <span class="k">El club</span>
@@ -144,7 +144,7 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
 
 <main class="wrap">
   <div class="page-head reveal" style="--i:0">
-    <div><h1>Ranking de la liga</h1><p class="sub" id="subtitle">Caballeros · Categoría A</p></div>
+    <div><h1>Tabla de la liga</h1><p class="sub" id="subtitle">Caballeros · Categoría A</p></div>
     <p class="meta"><span class="dot" id="status-dot"></span><span id="status-text">Actualizando…</span></p>
   </div>
   <div class="load-cta reveal" id="cargar" style="--i:1">
@@ -175,9 +175,9 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
     </form>
   </dialog>
   <div class="rank-wrap reveal" style="--i:2">
-    <nav id="nav" aria-label="Rama y categoría"></nav>
+    <div class="liga-bar"><nav id="nav" aria-label="Rama y categoría"></nav><div id="tempSel"></div></div>
     <div class="legend" id="legend"></div>
-    <div id="content"><div class="state"><div class="spinner"></div>Cargando ranking…</div></div>
+    <div id="content"><div class="state"><div class="spinner"></div>Cargando la tabla…</div></div>
   </div>
 </main>
 <!-- layout:footer -->
@@ -187,7 +187,7 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="liga.js?v=202609301427"></script>
+<script src="liga.js?v=202609301431"></script>
 <script>
   const navEl = document.getElementById('nav');
   const subtitleEl = document.getElementById('subtitle');
@@ -197,6 +197,8 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
   const statusText = document.getElementById('status-text');
 
   let currentCat = DEFAULT_CATEGORY;
+  let temporadaSel = null;
+  const tempSelEl = document.getElementById('tempSel');
   let model = null;       // formato nuevo: { temporada, rows, rules }
   let legacy = false;     // true = planilla anterior (pestañas Ranking_A/B/C)
 
@@ -210,10 +212,14 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
     return { ...r, above: idx > 0 ? `Categoría ${CATEGORIES[same[idx - 1]].cat}` : null, below: idx < same.length - 1 ? `Categoría ${CATEGORIES[same[idx + 1]].cat}` : null };
   }
 
-  async function tableRows(key) {
+  async function tableRows(key, temporada) {
     if (!legacy && !model) {
       model = await loadModel();
       legacy = !model;
+      if (model) {
+        temporadaSel = temporadaElegida(model);
+        temporadaSelect(tempSelEl, model, x => x.conTabla, temporadaSel, t => { temporadaSel = t; loadRanking(); });
+      }
       renderNav();
     }
     if (legacy) {
@@ -223,7 +229,7 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
       if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e?.error?.message || `HTTP ${res.status}`); }
       return ((await res.json()).values || []).slice(1).filter(r => r[0] && r[0].trim()).map(r => ({ jugador: r[0], pj: n(r[1]), pg: n(r[2]), pp: n(r[3]), np: n(r[4]), pts: n(r[5]) }));
     }
-    return sortRows(model.rows.filter(r => r.key === key));
+    return sortRows(model.rowsFor(temporada || temporadaSel).filter(r => r.key === key));
   }
 
   function renderNav() { ligaNav(navEl, currentCat, visibleKeys()); }
@@ -253,6 +259,9 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
       contentEl.innerHTML = `<div class="state">Todavía no hay jugadores inscriptos en ${escapeHtml(label(key))}.</div>`;
       return;
     }
+    const semana = model && !legacy ? semanaTabla(model, temporadaSel, key, rows) : null;
+    const hayCambios = semana && [...semana.values()].some(c => c.dPts || c.dPos);
+    if (hayCambios) { const lu = lunesDeEstaSemana(); legendEl.insertAdjacentHTML('afterbegin', `<div class="legend-item">Cambios desde el lunes ${lu.getDate()}/${lu.getMonth() + 1}</div>`); }
     let html = `
       <table>
         <thead>
@@ -270,6 +279,7 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
         <tbody>`;
     rows.forEach((r, i) => {
       const rank = i + 1;
+      const c = semana ? semana.get(r.jugador) : null;
       const winRate = r.pj > 0 ? Math.round((r.pg / r.pj) * 100) : 0;
       const isAscend = cfg.up > 0 && cfg.above && rank <= cfg.up;
       const isAscendPromo = cfg.promoUp > 0 && cfg.above && rank > cfg.up && rank <= cfg.up + cfg.promoUp;
@@ -281,8 +291,8 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
       else if (isAscendPromo || isDescendPromo) { rowClass = 'promo'; tag = '<span class="tag promo">Promoción</span>'; }
       html += `
         <tr class="rank-${rank} ${rowClass}">
-          <td class="pos"><span class="pos-badge">${rank}</span></td>
-          <td><div class="player">${escapeHtml(r.jugador)}</div>${tag}</td>
+          <td class="pos"><span class="pos-badge">${rank}</span>${c && c.dPos ? `<span class="mv ${c.dPos > 0 ? 'up' : 'dn'}">${c.dPos > 0 ? '▲' : '▼'}${Math.abs(c.dPos)}</span>` : ''}</td>
+          <td><div class="player">${escapeHtml(r.jugador)}</div>${c && c.partidos.length ? `<div class="vs-sem">(${c.partidos.map(escapeHtml).join(' · ')})</div>` : ''}${tag}</td>
           <td class="num">${r.pj}</td>
           <td class="num">${r.pg}</td>
           <td class="num">${r.pp}</td>
@@ -291,7 +301,7 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
             <div class="gp-ratio">${r.pg}/${r.pp} <span class="gp-pct">${winRate}%</span></div>
             <div class="win-rate-bar"><div class="win-rate-fill" style="width:${winRate}%"></div></div>
           </td>
-          <td class="num pts">${r.pts}</td>
+          <td class="num pts">${c && c.dPts ? `<span class="dl ${c.dPts > 0 ? 'up' : 'dn'}">${c.dPts > 0 ? '+' : '−'}${Math.abs(c.dPts)}</span>` : ''}${r.pts}</td>
         </tr>`;
     });
     contentEl.innerHTML = html + '</tbody></table>';
@@ -299,19 +309,19 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
 
   function renderError(message) {
     legendEl.innerHTML = '';
-    contentEl.innerHTML = `<div class="state error">No se pudo cargar el ranking.<br>${escapeHtml(message)}</div>`;
+    contentEl.innerHTML = `<div class="state error">No se pudo cargar la tabla.<br>${escapeHtml(message)}</div>`;
     statusDot.classList.remove('live');
     statusText.textContent = 'Error de conexión';
   }
 
   async function loadRanking(refresh) {
-    if (refresh) model = null;
+    if (refresh) { model = null; }
     const key = currentCat;
-    contentEl.innerHTML = `<div class="state"><div class="spinner"></div>Cargando ranking…</div>`;
+    contentEl.innerHTML = `<div class="state"><div class="spinner"></div>Cargando la tabla…</div>`;
     try {
       const rows = await tableRows(key);
       if (key !== currentCat) return;
-      subtitleEl.textContent = label(key) + (model?.temporada ? ` · ${model.temporada}` : '');
+      subtitleEl.textContent = label(key) + (temporadaSel ? ` · ${temporadaSel}` : '');
       renderTable(rows, key);
       statusDot.classList.add('live');
       statusText.textContent = 'Actualizado ' + new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
@@ -345,7 +355,7 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
   async function fillPlayers() {
     const key = rCat.value;
     let names = [];
-    try { names = (await tableRows(key)).map(r => r.jugador).sort((a, b) => a.localeCompare(b)); } catch (e) { names = []; }
+    try { names = (await tableRows(key, model?.temporada)).map(r => r.jugador).sort((a, b) => a.localeCompare(b)); } catch (e) { names = []; }
     for (const sel of [rWin, rLose]) {
       const cur = sel.value;
       sel.innerHTML = '<option value="">Elegí…</option>' + names.map(n => `<option>${escapeHtml(n)}</option>`).join('') + '<option value="__otro">Otro / no está en la lista</option>';
@@ -418,6 +428,6 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
     dlg.close();
   });
 </script>
-<script src="site.js?v=202609301427"></script>
+<script src="site.js?v=202609301431"></script>
 </body>
 </html>

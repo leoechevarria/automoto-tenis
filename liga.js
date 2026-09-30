@@ -48,11 +48,14 @@
     const activa = filaActiva[0];
     const pts = { g: n(filaActiva[4]) || 100, p: n(filaActiva[5]) || 40, np: filaActiva[6] !== undefined && filaActiva[6] !== '' ? n(filaActiva[6]) : -20 };
     const keyOf = (rama, cat) => Object.keys(CATEGORIES).find(k => CATEGORIES[k].rama === rama && CATEGORIES[k].cat === cat);
-    const rows = ins.filter(r => r[0] === activa && r[3]).map(r => ({ key: keyOf(r[1], r[2]), jugador: r[3], pj: n(r[4]), pg: n(r[5]), pp: n(r[6]), np: n(r[7]), pts: n(r[8]), puesto: n(r[12]) || null })).filter(r => r.key);
+    if (DEMO) partidos.push(...partidosDemo(jugadores, activa));
+    const rowsFor = t => ins.filter(r => r[0] === t && r[3]).map(r => ({ key: keyOf(r[1], r[2]), jugador: r[3], pj: n(r[4]), pg: n(r[5]), pp: n(r[6]), np: n(r[7]), pts: n(r[8]), puesto: n(r[12]) || null })).filter(r => r.key);
+    const rows = rowsFor(activa);
+    const ptsDe = t => { const f = temps.find(r => r[0] === t) || []; return { g: n(f[4]) || 100, p: n(f[5]) || 40, np: f[6] !== undefined && f[6] !== '' ? n(f[6]) : -20 }; };
+    const temporadas = temps.filter(r => r[0]).map(r => ({ nombre: r[0], estado: estado(r), conTabla: conInscriptos(r[0]), conPartidos: partidos.some(p => p[0] === r[0]) }));
     const rules = {};
     cats.forEach(r => { const k = keyOf(r[0], r[1]); if (k && r.slice(2).some(v => v !== '' && v != null)) rules[k] = { up: n(r[2]), down: n(r[3]), promoUp: n(r[4]), promoDown: n(r[5]) }; });
-    if (DEMO) partidos.push(...partidosDemo(jugadores, activa));
-    return { temporada: activa, enJuego: estado(filaActiva) === 'activa', pts, rows, rules, partidos, jugadores, ins };
+    return { temporada: activa, enJuego: estado(filaActiva) === 'activa', pts, rows, rules, partidos, jugadores, ins, rowsFor, ptsDe, temporadas, keyOf };
   }
 
   // Orden: el puesto final oficial si la temporada lo tiene; si no, puntos, ganados, menos no presentados.
@@ -210,3 +213,47 @@
     const url = new URL(location.href); url.searchParams.delete('demo');
     document.body.insertAdjacentHTML('afterbegin', `<div class="demo-bar">Modo demo: partidos inventados, solo en este navegador. <a href="${url.pathname}${url.search}${url.hash}">Salir</a></div>`);
   });
+
+  /* ---- Temporada elegida: ?t=<nombre> en la dirección; por defecto la activa ---- */
+  function temporadaElegida(m) {
+    const t = new URLSearchParams(location.search).get('t');
+    return m.temporadas.some(x => x.nombre === t) ? t : m.temporada;
+  }
+  function elegirTemporada(t, m) {
+    const url = new URL(location.href);
+    if (t === m.temporada) url.searchParams.delete('t'); else url.searchParams.set('t', t);
+    history.replaceState(null, '', url);
+  }
+  // Selector: <select> con las temporadas que cumplen el filtro; onChange(nombre)
+  function temporadaSelect(el, m, filtro, actual, onChange) {
+    const lista = m.temporadas.filter(filtro);
+    if (lista.length < 2) { el.innerHTML = ''; return; }
+    el.innerHTML = `<label class="temp-sel">Temporada <select>${lista.map(x => `<option${x.nombre === actual ? ' selected' : ''}>${escapeHtml(x.nombre)}</option>`).join('')}</select></label>`;
+    el.querySelector('select').addEventListener('change', e => { elegirTemporada(e.target.value, m); onChange(e.target.value); });
+  }
+
+  /* ---- Cambios de la semana en la tabla de la liga (mismas reglas que el rating) ----
+     Puntos y puestos netos desde el lunes a las 0 h; lista de partidos de la semana por jugador. */
+  function semanaTabla(m, temporada, key, rows, lunes = lunesDeEstaSemana()) {
+    if (!rows.length || rows.every(r => r.puesto)) return null;       // temporada cerrada: orden oficial fijo
+    const pts = m.ptsDe(temporada);
+    const cambio = new Map(rows.map(r => [r.jugador, { pts: 0, pg: 0, pp: 0, np: 0, partidos: [] }]));
+    for (const r of m.partidos) {
+      if (r[0] !== temporada || m.keyOf(r[1], r[2]) !== key || (r[3] || 'Liga') !== 'Liga' || /^s/i.test(r[13] || '')) continue;
+      const fecha = parseFecha(r[7]) || parseFecha(r[6]);
+      if (!fecha || fecha < lunes) continue;
+      const a = r[8], b = r[9], gan = ganadorDe(r), wo = /^s/i.test(r[12] || '');
+      if (!gan && !wo) continue;                                          // pendiente
+      for (const [yo, rival] of [[a, b], [b, a]]) {
+        const c = cambio.get(yo); if (!c) continue;
+        if (gan === yo) { c.pts += pts.g; c.pg++; c.partidos.push(wo ? `ganó por W.O. a ${rival}` : `venció a ${rival}`); }
+        else if (wo) { c.pts += pts.np; c.np++; c.partidos.push(gan ? `no se presentó ante ${rival}` : `no se presentaron`); }
+        else { c.pts += pts.p; c.pp++; c.partidos.push(`perdió con ${rival}`); }
+      }
+    }
+    const lunesRows = sortRows(rows.map(r => { const c = cambio.get(r.jugador); return { ...r, pts: r.pts - c.pts, pg: r.pg - c.pg, pp: r.pp - c.pp, np: r.np - c.np }; }));
+    const antes = new Map(lunesRows.map((r, i) => [r.jugador, i + 1]));
+    const out = new Map();
+    rows.forEach((r, i) => { const c = cambio.get(r.jugador); out.set(r.jugador, { dPts: c.pts, dPos: antes.get(r.jugador) - (i + 1), partidos: c.partidos }); });
+    return out;
+  }

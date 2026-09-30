@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Automoto Tenis — Rating</title>
+<title>Automoto Tenis — Rating (ELO)</title>
 <link rel="icon" href="assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon-192.png">
 <link rel="apple-touch-icon" href="assets/favicon-180.png">
@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=202609301427">
+<link rel="stylesheet" href="site.css?v=202609301431">
 <style>
 .page-head .meta .dot { transition: background-color 300ms var(--ease-out); }
 .rank-wrap { padding: var(--space-lg) 0 var(--space-3xl); }
@@ -69,14 +69,7 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
 .res .impact .up { color: var(--color-accent-deep); font-weight: 500; }
 .res .impact .dn { color: var(--color-ink-3); }
 .res .impact .k { font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-ink-3); }
-.rating-page { --up: oklch(50% 0.13 150); --dn: oklch(52% 0.17 28); }
-.rating-page td.pos { width: 64px; white-space: nowrap; }
 .rating-page .pos-badge { font-size: 1.05rem; color: var(--color-ink-2); }
-.rating-page .mv { display: inline-block; margin-left: 6px; font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; vertical-align: 2px; }
-.rating-page .dl { display: inline-block; margin-right: 10px; font-family: var(--font-mono); font-size: 0.78rem; font-weight: 500; vertical-align: 3px; }
-.rating-page .up { color: var(--up); }
-.rating-page .dn { color: var(--dn); }
-.rating-page .vs-sem { font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-ink-3); margin-top: 2px; }
 </style>
 </head>
 <body>
@@ -88,11 +81,11 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
       <div class="menu">
         <button type="button" class="menu-btn" aria-current="page" aria-expanded="false" aria-haspopup="true">Liga <span class="chev" aria-hidden="true">▾</span></button>
         <div class="menu-list">
-          <a href="rankings.html">Ranking</a>
+          <a href="rankings.html">Tabla</a>
           <a href="fixture.html">Fixture</a>
-          <a href="rating.html" aria-current="page">Rating</a>
           <a href="rankings.html#cargar">Cargá tu resultado</a>
           <a href="reglas.html">Reglas de la liga</a>
+          <a href="rating.html" aria-current="page">Rating (ELO)</a>
         </div>
       </div>
       <a href="novedades.html">Novedades</a>
@@ -129,11 +122,11 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
   </div>
   <div class="drawer-group">
     <span class="k">Liga</span>
-      <a href="rankings.html">Ranking</a>
+      <a href="rankings.html">Tabla</a>
       <a href="fixture.html">Fixture</a>
-      <a href="rating.html" aria-current="page">Rating</a>
       <a href="rankings.html#cargar">Cargá tu resultado</a>
       <a href="reglas.html">Reglas de la liga</a>
+      <a href="rating.html" aria-current="page">Rating (ELO)</a>
   </div>
   <div class="drawer-group">
     <span class="k">El club</span>
@@ -152,7 +145,7 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
 
 <main class="wrap">
   <div class="page-head reveal" style="--i:0">
-    <div><h1>Rating</h1><p class="sub" id="subtitle">Caballeros</p></div>
+    <div><h1>Rating (ELO)</h1><p class="sub" id="subtitle">Caballeros</p></div>
     <p class="meta"><span class="dot" id="status-dot"></span><span id="status-text">Actualizando…</span></p>
   </div>
   <div class="rank-wrap reveal rating-page" style="--i:1">
@@ -177,7 +170,7 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="liga.js?v=202609301427"></script>
+<script src="liga.js?v=202609301431"></script>
 <script>
   const navEl = document.getElementById('nav'), subtitleEl = document.getElementById('subtitle');
   const legendEl = document.getElementById('legend'), contentEl = document.getElementById('content');
@@ -224,6 +217,6 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
   load();
   setInterval(() => load(true), REFRESH_MS);
 </script>
-<script src="site.js?v=202609301427"></script>
+<script src="site.js?v=202609301431"></script>
 </body>
 </html>

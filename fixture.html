@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=202609301427">
+<link rel="stylesheet" href="site.css?v=202609301431">
 <style>
 .fixture { padding: 0 0 var(--space-3xl); }
 .fx-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: var(--space-md); border-bottom: 3px solid var(--color-ink); padding-bottom: var(--space-sm); }
@@ -48,11 +48,11 @@ main { padding-bottom: var(--space-3xl); }
       <div class="menu">
         <button type="button" class="menu-btn" aria-current="page" aria-expanded="false" aria-haspopup="true">Liga <span class="chev" aria-hidden="true">▾</span></button>
         <div class="menu-list">
-          <a href="rankings.html">Ranking</a>
+          <a href="rankings.html">Tabla</a>
           <a href="fixture.html" aria-current="page">Fixture</a>
-          <a href="rating.html">Rating</a>
           <a href="rankings.html#cargar">Cargá tu resultado</a>
           <a href="reglas.html">Reglas de la liga</a>
+          <a href="rating.html">Rating (ELO)</a>
         </div>
       </div>
       <a href="novedades.html">Novedades</a>
@@ -89,11 +89,11 @@ main { padding-bottom: var(--space-3xl); }
   </div>
   <div class="drawer-group">
     <span class="k">Liga</span>
-      <a href="rankings.html">Ranking</a>
+      <a href="rankings.html">Tabla</a>
       <a href="fixture.html" aria-current="page">Fixture</a>
-      <a href="rating.html">Rating</a>
       <a href="rankings.html#cargar">Cargá tu resultado</a>
       <a href="reglas.html">Reglas de la liga</a>
+      <a href="rating.html">Rating (ELO)</a>
   </div>
   <div class="drawer-group">
     <span class="k">El club</span>
@@ -116,7 +116,7 @@ main { padding-bottom: var(--space-3xl); }
     <p class="meta"><span class="dot" id="status-dot"></span><span id="status-text">Actualizando…</span></p>
   </div>
   <div class="reveal" style="--i:1; padding-top: var(--space-lg)">
-    <nav id="nav" aria-label="Rama y categoría"></nav>
+    <div class="liga-bar"><nav id="nav" aria-label="Rama y categoría"></nav><div id="tempSel"></div></div>
     <div class="fx-tools" id="fxTools" hidden><label class="fx-filter">Ver partidos de <select id="fxPlayer"><option value="">Todos</option></select></label></div>
     <div id="fxList"><div class="state"><div class="spinner"></div>Cargando el fixture…</div></div>
   </div>
@@ -129,11 +129,12 @@ main { padding-bottom: var(--space-3xl); }
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="liga.js?v=202609301427"></script>
+<script src="liga.js?v=202609301431"></script>
 <script>
   const navEl = document.getElementById('nav'), subtitleEl = document.getElementById('subtitle');
   const statusDot = document.getElementById('status-dot'), statusText = document.getElementById('status-text');
-  let model = null, currentCat = keyFromHash();
+  let model = null, currentCat = keyFromHash(), temporadaSel = null;
+  const tempSelEl = document.getElementById('tempSel');
   /* ---- Fixture: partidos de la categoría en la temporada activa, por ronda ---- */
   const fxList = document.getElementById('fxList'), fxPlayer = document.getElementById('fxPlayer'), fxTools = document.getElementById('fxTools');
   let fxKey = null;
@@ -141,9 +142,9 @@ main { padding-bottom: var(--space-3xl); }
     const cfg = CATEGORIES[key];
     if (!model || !cfg) return;
     const hoy = new Date(); hoy.setHours(0, 0, 0, 0);
-    const ms = (model.partidos || []).filter(r => r[0] === model.temporada && r[1] === cfg.rama && r[2] === cfg.cat && (r[3] || 'Liga') === 'Liga' && !(r[13] || '').toLowerCase().startsWith('s') && r[8] && r[9]);
+    const ms = (model.partidos || []).filter(r => r[0] === temporadaSel && r[1] === cfg.rama && r[2] === cfg.cat && ['Liga', 'Promoción'].includes(r[3] || 'Liga') && !(r[13] || '').toLowerCase().startsWith('s') && r[8] && r[9]);
     fxTools.hidden = !ms.length;
-    if (!ms.length) { fxList.innerHTML = `<div class="state">Todavía no está cargado el fixture de ${escapeHtml(cfg.rama)} · Categoría ${cfg.cat}${model.temporada ? ' para ' + escapeHtml(model.temporada) : ''}.</div>`; return; }
+    if (!ms.length) { fxList.innerHTML = `<div class="state">Todavía no está cargado el fixture de ${escapeHtml(cfg.rama)} · Categoría ${cfg.cat}${temporadaSel ? ' para ' + escapeHtml(temporadaSel) : ''}.</div>`; return; }
     if (fxKey !== key) {   // cambió la categoría: rearmar la lista de jugadores
       fxKey = key;
       const names = [...new Set(ms.flatMap(r => [r[8], r[9]]))].sort((a, b) => a.localeCompare(b));
@@ -180,9 +181,11 @@ main { padding-bottom: var(--space-3xl); }
     if (refresh || !model) {
       try { model = await loadModel(); } catch (e) { model = null; }
       if (!model) { document.getElementById('fxList').innerHTML = '<div class="state error">No se pudo cargar la planilla.</div>'; statusText.textContent = 'Error de conexión'; return; }
+      temporadaSel = temporadaElegida(model);
+      temporadaSelect(tempSelEl, model, x => x.conTabla || x.conPartidos, temporadaSel, t => { temporadaSel = t; fxKey = null; load(); });
     }
     ligaNav(navEl, currentCat, Object.keys(CATEGORIES));
-    subtitleEl.textContent = `${CATEGORIES[currentCat].rama} · Categoría ${CATEGORIES[currentCat].cat}` + (model.temporada ? ` · ${model.temporada}` : '');
+    subtitleEl.textContent = `${CATEGORIES[currentCat].rama} · Categoría ${CATEGORIES[currentCat].cat}` + (temporadaSel ? ` · ${temporadaSel}` : '');
     renderFixture(currentCat);
     statusDot.classList.add('live');
     statusText.textContent = 'Actualizado ' + new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
@@ -192,6 +195,6 @@ main { padding-bottom: var(--space-3xl); }
   load();
   setInterval(() => load(true), REFRESH_MS);
 </script>
-<script src="site.js?v=202609301427"></script>
+<script src="site.js?v=202609301431"></script>
 </body>
 </html>
