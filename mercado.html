@@ -16,6 +16,7 @@
 <style>
 main { padding-bottom: var(--space-3xl); }
 .tabs { margin-top: var(--space-lg); }
+.items .empty { grid-column: 1 / -1; padding: var(--space-lg); }
 .items { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 3px solid var(--color-ink); border-left: 1px solid var(--color-rule); }
 .item { display: grid; grid-template-rows: auto 1fr auto; gap: var(--space-sm); padding: var(--space-md); border-right: 1px solid var(--color-rule); border-bottom: 1px solid var(--color-rule); min-width: 0; }
 .item[hidden] { display: none; }
@@ -40,43 +41,74 @@ main { padding-bottom: var(--space-3xl); }
 </style>
 </head>
 <body>
-<header class="mast">
-  <div class="wrap">
-    <div class="mast-top">
-      <a class="mast-brand" href="index.html"><img src="assets/logo.png" alt="">Automoto Club Deportivo · Subcomisión de Tenis</a>
-      <span class="loc">Tornquist, Buenos Aires</span>
-    </div>
-    <div class="mast-row">
-      <nav class="mast-nav" aria-label="Secciones">
-        <a href="index.html">Inicio</a>
-        <a href="rankings.html">Ranking</a>
-        <a href="cartelera.html">Cartelera</a>
-        <a href="https://darturnos.com/AutomotoTenis/" target="_blank" rel="noopener">Turnos</a>
-        <a href="mercado.html" aria-current="page">Mercado</a>
-        <div class="menu">
-          <button type="button" class="menu-btn" aria-expanded="false" aria-haspopup="true">Más info <span class="chev" aria-hidden="true">▾</span></button>
-          <div class="menu-list" role="menu">
-            <a role="menuitem" href="info.html#pagos">Cuota y alias de pago</a>
-            <a role="menuitem" href="info.html#cancha">Cuidado de la cancha</a>
-            <a role="menuitem" href="info.html#contacto">Teléfonos y contactos</a>
-            <a role="menuitem" href="subcomision.html">Subcomisión de Tenis</a>
-            <a role="menuitem" href="reglas.html">Reglas de la liga</a>
-          </div>
+<!-- layout:header -->
+<header class="mast" id="mast">
+  <div class="wrap mast-in">
+    <a class="mast-brand" href="index.html" aria-label="Automoto Tenis, inicio"><img src="assets/logo.png" alt=""><span>Automoto Club Deportivo<b>Subcomisión de Tenis</b></span></a>
+    <nav class="mast-nav" aria-label="Secciones">
+      <div class="menu">
+        <button type="button" class="menu-btn" aria-expanded="false" aria-haspopup="true">Liga <span class="chev" aria-hidden="true">▾</span></button>
+        <div class="menu-list">
+          <a href="rankings.html">Ranking</a>
+          <a href="rankings.html#cargar">Cargá tu resultado</a>
+          <a href="reglas.html">Reglas de la liga</a>
         </div>
-        <a href="index.html#clima">Clima</a>
-      </nav>
+      </div>
+      <a href="novedades.html">Novedades</a>
+      <a href="mercado.html" aria-current="page">Mercado</a>
+      <div class="menu">
+        <button type="button" class="menu-btn" aria-expanded="false" aria-haspopup="true">El club <span class="chev" aria-hidden="true">▾</span></button>
+        <div class="menu-list">
+          <a href="info.html#pagos">Cuota y alias de pago</a>
+          <a href="info.html#cancha">Cuidado de la cancha</a>
+          <a href="info.html#contacto">Teléfonos y contactos</a>
+          <a href="subcomision.html">Subcomisión de Tenis</a>
+        </div>
+      </div>
+    </nav>
+    <div class="mast-end">
+      <a class="btn fill turno" href="https://darturnos.com/AutomotoTenis/" target="_blank" rel="noopener">Reservar turno ↗</a>
       <div class="social">
         <a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener" aria-label="Instagram de Automoto Tenis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
         <a href="https://www.instagram.com/masu.tenis/" target="_blank" rel="noopener" aria-label="Instagram de Masu Tenis" class="masu"><img src="assets/masu-mark.png" alt=""></a>
       </div>
+      <button type="button" class="nav-toggle" aria-controls="drawer" aria-expanded="false" aria-label="Abrir menú"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     </div>
   </div>
 </header>
+<div class="drawer-backdrop" id="drawerBackdrop"></div>
+<nav class="drawer" id="drawer" aria-label="Menú" aria-hidden="true">
+  <div class="drawer-head"><strong>Menú</strong><button type="button" class="drawer-close" aria-label="Cerrar menú">✕</button></div>
+  <a class="btn fill turno" href="https://darturnos.com/AutomotoTenis/" target="_blank" rel="noopener">Reservar turno ↗</a>
+  <div class="drawer-group">
+    <a class="big" href="index.html">Inicio</a>
+    <a class="big" href="novedades.html">Novedades</a>
+    <a class="big" href="mercado.html" aria-current="page">Mercado del usado</a>
+  </div>
+  <div class="drawer-group">
+    <span class="k">Liga</span>
+      <a href="rankings.html">Ranking</a>
+      <a href="rankings.html#cargar">Cargá tu resultado</a>
+      <a href="reglas.html">Reglas de la liga</a>
+  </div>
+  <div class="drawer-group">
+    <span class="k">El club</span>
+      <a href="info.html#pagos">Cuota y alias de pago</a>
+      <a href="info.html#cancha">Cuidado de la cancha</a>
+      <a href="info.html#contacto">Teléfonos y contactos</a>
+      <a href="subcomision.html">Subcomisión de Tenis</a>
+  </div>
+  <div class="social">
+        <a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener" aria-label="Instagram de Automoto Tenis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="https://www.instagram.com/masu.tenis/" target="_blank" rel="noopener" aria-label="Instagram de Masu Tenis" class="masu"><img src="assets/masu-mark.png" alt=""></a>
+      </div>
+</nav>
+<!-- /layout:header -->
 
 <main class="wrap">
   <div class="page-head reveal" style="--i:0">
     <div><h1>Mercado del usado</h1><p class="sub">Raquetas, zapatillas y bolsos que venden socios y profes del club. Se arregla directo con quien vende.</p></div>
-    <p class="meta"><b>6 publicaciones</b> · de ejemplo</p>
+    <p class="meta" id="mCount">Compra · venta</p>
   </div>
   <nav class="tabs reveal" id="filtros" aria-label="Filtrar" style="--i:1">
     <button type="button" class="active" data-cat="todo">Todo</button>
@@ -85,37 +117,7 @@ main { padding-bottom: var(--space-3xl); }
     <button type="button" data-cat="bolsos">Bolsos</button>
   </nav>
   <p class="note reveal" style="--i:1; margin-top: var(--space-md)">Publicaciones de ejemplo, para ver cómo queda la sección</p>
-  <div class="items reveal" id="items" style="--i:2">
-      <article class="item" data-cat="raquetas">
-        <a class="ph" href="assets/mercado/raqueta-wilson.jpg" target="_blank" rel="noopener"><img src="assets/mercado/raqueta-wilson.jpg" alt="Wilson Blade 98 v8" loading="lazy"></a>
-        <div><span class="cat">Raqueta</span><h3>Wilson Blade 98 v8</h3><p>Grip 2, 305 g. Encordada con Luxilon a 24 kg. Muy poco uso, sin golpes en el marco.</p></div>
-        <div class="foot"><span class="price">$ 260.000</span><span class="who">Vende <a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener">Gonza</a></span></div>
-      </article>
-      <article class="item" data-cat="raquetas">
-        <a class="ph" href="assets/mercado/raqueta-yonex.jpg" target="_blank" rel="noopener"><img src="assets/mercado/raqueta-yonex.jpg" alt="Yonex VCORE 100" loading="lazy"></a>
-        <div><span class="cat">Raqueta</span><h3>Yonex VCORE 100</h3><p>Grip 3, 300 g. Dos temporadas de uso, marco impecable. Va con funda.</p></div>
-        <div class="foot"><span class="price">$ 210.000</span><span class="who">Vende <a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener">Seba</a></span></div>
-      </article>
-      <article class="item" data-cat="raquetas">
-        <a class="ph" href="assets/mercado/raqueta-head.jpg" target="_blank" rel="noopener"><img src="assets/mercado/raqueta-head.jpg" alt="Head Ti.S6 + tubo de pelotas" loading="lazy"></a>
-        <div><span class="cat">Raqueta</span><h3>Head Ti.S6 + tubo de pelotas</h3><p>Ideal para arrancar: liviana y con mucha potencia. Incluye tubo de pelotas nuevo.</p></div>
-        <div class="foot"><span class="price">$ 95.000</span><span class="who">Vende <a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener">Masu Tenis</a></span></div>
-      </article>
-      <article class="item" data-cat="zapatillas">
-        <a class="ph" href="assets/mercado/zapas-wilson.jpg" target="_blank" rel="noopener"><img src="assets/mercado/zapas-wilson.jpg" alt="Wilson Rush Pro 4.0" loading="lazy"></a>
-        <div><span class="cat">Zapatillas</span><h3>Wilson Rush Pro 4.0</h3><p>Talle 39 (mujer). Suela para polvo de ladrillo, usadas tres meses.</p></div>
-        <div class="foot"><span class="price">$ 110.000</span><span class="who">Vende <a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener">Lu</a></span></div>
-      </article>
-      <article class="item" data-cat="zapatillas">
-        <a class="ph" href="assets/mercado/zapas-babolat.jpg" target="_blank" rel="noopener"><img src="assets/mercado/zapas-babolat.jpg" alt="Babolat Propulse Fury" loading="lazy"></a>
-        <div><span class="cat">Zapatillas</span><h3>Babolat Propulse Fury</h3><p>Talle 43, para polvo de ladrillo. Usadas una temporada, suela entera.</p></div>
-        <div class="foot"><span class="price">$ 90.000</span><span class="who">Vende <a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener">Pablo</a></span></div>
-      </article>
-      <article class="item" data-cat="bolsos">
-        <a class="ph" href="assets/mercado/bolso-wilson.jpg" target="_blank" rel="noopener"><img src="assets/mercado/bolso-wilson.jpg" alt="Bolso Wilson Tour 6R" loading="lazy"></a>
-        <div><span class="cat">Bolso</span><h3>Bolso Wilson Tour 6R</h3><p>Seis raquetas, compartimento térmico y bolsillo para zapatillas. Sin roturas ni cierres rotos.</p></div>
-        <div class="foot"><span class="price">$ 75.000</span><span class="who">Vende <a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener">Vale</a></span></div>
-      </article>
+  <div class="items reveal" id="items" style="--i:2"><p class="empty">Cargando…</p>
   </div>
   <div class="howto reveal" style="--i:3">
     <span class="k">Publicar</span>
@@ -127,17 +129,35 @@ main { padding-bottom: var(--space-3xl); }
   </div>
   <p class="credits">Fotos de ejemplo: Wikimedia Commons, licencias CC BY-SA / libre uso (<a href="https://commons.wikimedia.org/wiki/File:Wilson_Tennis_Racquet_1.jpg" target="_blank" rel="noopener">1</a>, <a href="https://commons.wikimedia.org/wiki/File:Tennis_racket_and_ball.JPG" target="_blank" rel="noopener">2</a>, <a href="https://commons.wikimedia.org/wiki/File:Tennis_Racket_and_Balls.jpg" target="_blank" rel="noopener">3</a>, <a href="https://commons.wikimedia.org/wiki/File:Wilson_Rush_Pro_tennis_shoes.jpg" target="_blank" rel="noopener">4</a>, <a href="https://commons.wikimedia.org/wiki/File:ChaussuresTennis.jpg" target="_blank" rel="noopener">5</a>, <a href="https://commons.wikimedia.org/wiki/File:Wilson_Sporting_Goods_orange_tennis_bagA.jpg" target="_blank" rel="noopener">6</a>). Reemplazar por fotos reales al publicar.</p>
 </main>
+<!-- layout:footer -->
 <footer>
-  <div class="wrap cols">
-    <div><strong>Automoto Club Deportivo</strong><a href="subcomision.html">Subcomisión de Tenis</a> · Tornquist, Buenos Aires · <a href="reglas.html">Reglas de la liga</a></div>
+  <div class="wrap foot-cols">
+    <div><strong>Automoto Club Deportivo</strong><a href="subcomision.html">Subcomisión de Tenis</a><br>Tornquist, Buenos Aires</div>
+    <div class="links"><strong>Accesos</strong><a href="info.html#pagos">Cuota y alias de pago</a><a href="info.html#contacto">Teléfonos y contactos</a><a href="reglas.html">Reglas de la liga</a><a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener">Instagram @automototenis</a></div>
+    <div><strong>¿Algo anda mal en la página?</strong>Avisanos por <a href="https://ig.me/m/automototenis" target="_blank" rel="noopener">mensaje de Instagram</a>.</div>
   </div>
 </footer>
+<!-- /layout:footer -->
 <script>
+  const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const CAT = { raquetas: 'Raqueta', zapatillas: 'Zapatillas', bolsos: 'Bolso', otros: 'Otros' };
+  const itemsEl = document.getElementById('items');
+  fetch('data/mercado.json', { cache: 'no-cache' }).then(r => r.json()).then(d => {
+    const items = (d.items || []).slice().sort((a, b) => (b.publicado || '').localeCompare(a.publicado || ''));
+    itemsEl.innerHTML = items.length ? items.map(it => `
+      <article class="item" data-cat="${esc(it.categoria)}">
+        <a class="ph" href="${esc(it.foto)}" target="_blank" rel="noopener"><img src="${esc(it.foto)}" alt="${esc(it.titulo)}" loading="lazy"></a>
+        <div><span class="cat">${esc(CAT[it.categoria] || it.categoria)}</span><h3>${esc(it.titulo)}</h3><p>${esc(it.texto)}</p></div>
+        <div class="foot"><span class="price">${esc(it.precio)}</span><span class="who">Vende ${esc(it.vende)}</span></div>
+      </article>`).join('') : '<p class="empty">No hay publicaciones por ahora.</p>';
+    document.getElementById('mCount').innerHTML = `<b>${items.length} publicaciones</b>${items.some(i => i.ejemplo) ? ' · de ejemplo' : ''}`;
+    document.querySelector('.note').hidden = !items.some(i => i.ejemplo);
+  }).catch(() => { itemsEl.innerHTML = '<p class="empty">No se pudieron cargar las publicaciones.</p>'; });
   const filtros = document.getElementById('filtros');
   filtros.addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return;
     filtros.querySelectorAll('button').forEach(x => x.classList.toggle('active', x === b));
-    document.querySelectorAll('#items .item').forEach(it => { it.hidden = b.dataset.cat !== 'todo' && it.dataset.cat !== b.dataset.cat; });
+    itemsEl.querySelectorAll('.item').forEach(it => { it.hidden = b.dataset.cat !== 'todo' && it.dataset.cat !== b.dataset.cat; });
   });
 </script>
 <script src="site.js"></script>

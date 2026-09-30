@@ -1,0 +1,71 @@
+{
+  "_nota": "Publicaciones del mercado del usado. mercado.html y la home leen este archivo.",
+  "items": [
+    {
+      "id": "raqueta-wilson",
+      "categoria": "raquetas",
+      "titulo": "Wilson Blade 98 v8",
+      "texto": "Grip 2, 305 g. Encordada con Luxilon a 24 kg. Muy poco uso, sin golpes en el marco.",
+      "precio": "$ 260.000",
+      "vende": "Gonza",
+      "foto": "assets/mercado/raqueta-wilson.jpg",
+      "publicado": "2026-09-20",
+      "ejemplo": true
+    },
+    {
+      "id": "raqueta-yonex",
+      "categoria": "raquetas",
+      "titulo": "Yonex VCORE 100",
+      "texto": "Grip 3, 300 g. Dos temporadas de uso, marco impecable. Va con funda.",
+      "precio": "$ 210.000",
+      "vende": "Seba",
+      "foto": "assets/mercado/raqueta-yonex.jpg",
+      "publicado": "2026-09-20",
+      "ejemplo": true
+    },
+    {
+      "id": "raqueta-head",
+      "categoria": "raquetas",
+      "titulo": "Head Ti.S6 + tubo de pelotas",
+      "texto": "Ideal para arrancar: liviana y con mucha potencia. Incluye tubo de pelotas nuevo.",
+      "precio": "$ 95.000",
+      "vende": "Masu Tenis",
+      "foto": "assets/mercado/raqueta-head.jpg",
+      "publicado": "2026-09-20",
+      "ejemplo": true
+    },
+    {
+      "id": "zapas-wilson",
+      "categoria": "zapatillas",
+      "titulo": "Wilson Rush Pro 4.0",
+      "texto": "Talle 39 (mujer). Suela para polvo de ladrillo, usadas tres meses.",
+      "precio": "$ 110.000",
+      "vende": "Lu",
+      "foto": "assets/mercado/zapas-wilson.jpg",
+      "publicado": "2026-09-20",
+      "ejemplo": true
+    },
+    {
+      "id": "zapas-babolat",
+      "categoria": "zapatillas",
+      "titulo": "Babolat Propulse Fury",
+      "texto": "Talle 43, para polvo de ladrillo. Usadas una temporada, suela entera.",
+      "precio": "$ 90.000",
+      "vende": "Pablo",
+      "foto": "assets/mercado/zapas-babolat.jpg",
+      "publicado": "2026-09-20",
+      "ejemplo": true
+    },
+    {
+      "id": "bolso-wilson",
+      "categoria": "bolsos",
+      "titulo": "Bolso Wilson Tour 6R",
+      "texto": "Seis raquetas, compartimento térmico y bolsillo para zapatillas. Sin roturas ni cierres rotos.",
+      "precio": "$ 75.000",
+      "vende": "Vale",
+      "foto": "assets/mercado/bolso-wilson.jpg",
+      "publicado": "2026-09-20",
+      "ejemplo": true
+    }
+  ]
+}

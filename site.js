@@ -38,7 +38,7 @@
   const easeOut = t => 1 - Math.pow(1 - t, 4);
   function scrollToEl(el) {
     const mast = document.querySelector('.mast');
-    const target = el.getBoundingClientRect().top + scrollY - (mast ? 12 : 0) - 8;
+    const target = el.getBoundingClientRect().top + scrollY - (mast ? mast.offsetHeight : 0) - 24;
     if (reduce) { scrollTo(0, target); land(el); return; }
     const start = scrollY, dist = target - start, dur = Math.min(900, 350 + Math.abs(dist) * 0.25);
     let t0;
@@ -61,7 +61,6 @@
     if (samePage && url.hash) {
       const el = document.querySelector(url.hash); if (!el) return;
       e.preventDefault(); history.pushState(null, '', url.hash); openFoldFor(url.hash); scrollToEl(el);
-      setCurrent(url.hash);
     } else if (url.origin === location.origin && !url.hash && !reduce) {
       /* salida: la página se apaga antes de cambiar */
       e.preventDefault(); document.documentElement.classList.add('leaving');
@@ -107,20 +106,33 @@
   openFoldFor(location.hash);
   if (location.hash) { const el = document.querySelector(location.hash); if (el) setTimeout(() => scrollToEl(el), 80); }
 
-  /* ---- Link activo según la sección visible (solo en la home) ---- */
-  const links = [...document.querySelectorAll('.mast-nav a[href^="#"]')];
-  function setCurrent(hash) {
-    document.querySelectorAll('.mast-nav a').forEach(a => a.removeAttribute('aria-current'));
-    const a = document.querySelector(`.mast-nav a[href="${hash}"]`) || document.querySelector('.mast-nav a[data-home]');
-    if (a) a.setAttribute('aria-current', 'page');
+  /* ---- Header fijo: sombra cuando la página ya bajó ---- */
+  const mastEl = document.querySelector('.mast');
+  if (mastEl) {
+    const stuck = () => mastEl.classList.toggle('is-stuck', scrollY > 4);
+    addEventListener('scroll', stuck, { passive: true }); stuck();
   }
-  if (links.length && 'IntersectionObserver' in window) {
-    const secs = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
-    const io = new IntersectionObserver(entries => {
-      const vis = entries.filter(x => x.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if (vis) setCurrent('#' + vis.target.id);
-      else if (scrollY < 200) setCurrent('#');
-    }, { rootMargin: '-35% 0px -55% 0px', threshold: [0, 0.2, 0.5] });
-    secs.forEach(s => io.observe(s));
+
+  /* ---- Menú lateral (celulares) ---- */
+  const drawer = document.getElementById('drawer');
+  const toggle = document.querySelector('.nav-toggle');
+  const backdrop = document.getElementById('drawerBackdrop');
+  if (drawer && toggle) {
+    const setDrawer = open => {
+      drawer.classList.toggle('is-open', open);
+      backdrop.classList.toggle('is-open', open);
+      document.documentElement.classList.toggle('drawer-open', open);
+      drawer.setAttribute('aria-hidden', String(!open));
+      toggle.setAttribute('aria-expanded', String(open));
+      if (open) drawer.querySelector('.drawer-close').focus(); else toggle.focus({ preventScroll: true });
+    };
+    toggle.addEventListener('click', () => setDrawer(true));
+    drawer.querySelector('.drawer-close').addEventListener('click', () => setDrawer(false));
+    backdrop.addEventListener('click', () => setDrawer(false));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && drawer.classList.contains('is-open')) setDrawer(false); });
+    drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      if (drawer.classList.contains('is-open')) { drawer.classList.remove('is-open'); backdrop.classList.remove('is-open'); document.documentElement.classList.remove('drawer-open'); drawer.setAttribute('aria-hidden', 'true'); toggle.setAttribute('aria-expanded', 'false'); }
+    }));
+    matchMedia('(min-width: 1041px)').addEventListener('change', e => { if (e.matches && drawer.classList.contains('is-open')) setDrawer(false); });
   }
 })();

@@ -49,38 +49,69 @@ main { padding-bottom: var(--space-3xl); }
 </style>
 </head>
 <body>
-<header class="mast">
-  <div class="wrap">
-    <div class="mast-top">
-      <a class="mast-brand" href="index.html"><img src="assets/logo.png" alt="">Automoto Club Deportivo · Subcomisión de Tenis</a>
-      <span class="loc">Tornquist, Buenos Aires</span>
-    </div>
-    <div class="mast-row">
-      <nav class="mast-nav" aria-label="Secciones">
-        <a href="index.html">Inicio</a>
-        <a href="rankings.html">Ranking</a>
-        <a href="cartelera.html">Cartelera</a>
-        <a href="https://darturnos.com/AutomotoTenis/" target="_blank" rel="noopener">Turnos</a>
-        <a href="mercado.html">Mercado</a>
-        <div class="menu">
-          <button type="button" class="menu-btn" aria-current="page" aria-expanded="false" aria-haspopup="true">Más info <span class="chev" aria-hidden="true">▾</span></button>
-          <div class="menu-list" role="menu">
-            <a role="menuitem" href="info.html#pagos">Cuota y alias de pago</a>
-            <a role="menuitem" href="info.html#cancha">Cuidado de la cancha</a>
-            <a role="menuitem" href="info.html#contacto">Teléfonos y contactos</a>
-            <a role="menuitem" href="subcomision.html">Subcomisión de Tenis</a>
-            <a role="menuitem" href="reglas.html">Reglas de la liga</a>
-          </div>
+<!-- layout:header -->
+<header class="mast" id="mast">
+  <div class="wrap mast-in">
+    <a class="mast-brand" href="index.html" aria-label="Automoto Tenis, inicio"><img src="assets/logo.png" alt=""><span>Automoto Club Deportivo<b>Subcomisión de Tenis</b></span></a>
+    <nav class="mast-nav" aria-label="Secciones">
+      <div class="menu">
+        <button type="button" class="menu-btn" aria-expanded="false" aria-haspopup="true">Liga <span class="chev" aria-hidden="true">▾</span></button>
+        <div class="menu-list">
+          <a href="rankings.html">Ranking</a>
+          <a href="rankings.html#cargar">Cargá tu resultado</a>
+          <a href="reglas.html">Reglas de la liga</a>
         </div>
-        <a href="index.html#clima">Clima</a>
-      </nav>
+      </div>
+      <a href="novedades.html">Novedades</a>
+      <a href="mercado.html">Mercado</a>
+      <div class="menu">
+        <button type="button" class="menu-btn" aria-current="page" aria-expanded="false" aria-haspopup="true">El club <span class="chev" aria-hidden="true">▾</span></button>
+        <div class="menu-list">
+          <a href="info.html#pagos">Cuota y alias de pago</a>
+          <a href="info.html#cancha">Cuidado de la cancha</a>
+          <a href="info.html#contacto">Teléfonos y contactos</a>
+          <a href="subcomision.html" aria-current="page">Subcomisión de Tenis</a>
+        </div>
+      </div>
+    </nav>
+    <div class="mast-end">
+      <a class="btn fill turno" href="https://darturnos.com/AutomotoTenis/" target="_blank" rel="noopener">Reservar turno ↗</a>
       <div class="social">
         <a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener" aria-label="Instagram de Automoto Tenis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
         <a href="https://www.instagram.com/masu.tenis/" target="_blank" rel="noopener" aria-label="Instagram de Masu Tenis" class="masu"><img src="assets/masu-mark.png" alt=""></a>
       </div>
+      <button type="button" class="nav-toggle" aria-controls="drawer" aria-expanded="false" aria-label="Abrir menú"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     </div>
   </div>
 </header>
+<div class="drawer-backdrop" id="drawerBackdrop"></div>
+<nav class="drawer" id="drawer" aria-label="Menú" aria-hidden="true">
+  <div class="drawer-head"><strong>Menú</strong><button type="button" class="drawer-close" aria-label="Cerrar menú">✕</button></div>
+  <a class="btn fill turno" href="https://darturnos.com/AutomotoTenis/" target="_blank" rel="noopener">Reservar turno ↗</a>
+  <div class="drawer-group">
+    <a class="big" href="index.html">Inicio</a>
+    <a class="big" href="novedades.html">Novedades</a>
+    <a class="big" href="mercado.html">Mercado del usado</a>
+  </div>
+  <div class="drawer-group">
+    <span class="k">Liga</span>
+      <a href="rankings.html">Ranking</a>
+      <a href="rankings.html#cargar">Cargá tu resultado</a>
+      <a href="reglas.html">Reglas de la liga</a>
+  </div>
+  <div class="drawer-group">
+    <span class="k">El club</span>
+      <a href="info.html#pagos">Cuota y alias de pago</a>
+      <a href="info.html#cancha">Cuidado de la cancha</a>
+      <a href="info.html#contacto">Teléfonos y contactos</a>
+      <a href="subcomision.html" aria-current="page">Subcomisión de Tenis</a>
+  </div>
+  <div class="social">
+        <a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener" aria-label="Instagram de Automoto Tenis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="https://www.instagram.com/masu.tenis/" target="_blank" rel="noopener" aria-label="Instagram de Masu Tenis" class="masu"><img src="assets/masu-mark.png" alt=""></a>
+      </div>
+</nav>
+<!-- /layout:header -->
 
 <main class="wrap">
   <div class="page-head reveal" style="--i:0">
@@ -89,7 +120,7 @@ main { padding-bottom: var(--space-3xl); }
   </div>
   <p class="note reveal" style="--i:1; margin-top: var(--space-lg)">Nombres, actas y números de ejemplo · reemplazar por los reales</p>
 
-  <details class="fold sec revealNone" id="integrantes" open style="--i:1">
+  <details class="fold sec reveal" id="integrantes" open style="--i:1">
       <summary><div><h2>Integrantes</h2><p>Elegidos en la asamblea de socios de la sección. Mandato de dos años.</p></div><span class="chev">▾</span></summary>
       <div class="fold-body"><div>
     <div class="people">
@@ -104,7 +135,7 @@ main { padding-bottom: var(--space-3xl); }
         </div></div>
     </details>
 
-  <details class="fold sec revealNone" id="actas" style="--i:2">
+  <details class="fold sec reveal" id="actas" style="--i:2">
       <summary><div><h2>Actas</h2><p>Resumen de lo que se trató y se resolvió en cada reunión.</p></div><span class="chev">▾</span></summary>
       <div class="fold-body"><div>
     <div class="acta"><span class="d">2 sep 2026</span><div><h3>Cancha 3, riego y Nacionales</h3><p>Se aprobó el presupuesto final para la carpeta de la cancha 3. Se confirmó el riego programado. Se organiza una rifa para el viaje de los sub-12 a Rosario.</p></div><a class="btn" href="#">Leer acta</a></div>
@@ -113,7 +144,7 @@ main { padding-bottom: var(--space-3xl); }
         </div></div>
     </details>
 
-  <details class="fold sec revealNone" id="cuentas" style="--i:3">
+  <details class="fold sec reveal" id="cuentas" style="--i:3">
       <summary><div><h2>Cuentas del mes</h2><p>Agosto 2026. Lo que entró, lo que salió y lo que quedó.</p></div><span class="chev">▾</span></summary>
       <div class="fold-body"><div>
     <table class="doc">
@@ -130,11 +161,15 @@ main { padding-bottom: var(--space-3xl); }
         </div></div>
     </details>
 </main>
+<!-- layout:footer -->
 <footer>
-  <div class="wrap cols">
-    <div><strong>Automoto Club Deportivo</strong><a href="subcomision.html">Subcomisión de Tenis</a> · Tornquist, Buenos Aires · <a href="reglas.html">Reglas de la liga</a></div>
+  <div class="wrap foot-cols">
+    <div><strong>Automoto Club Deportivo</strong><a href="subcomision.html">Subcomisión de Tenis</a><br>Tornquist, Buenos Aires</div>
+    <div class="links"><strong>Accesos</strong><a href="info.html#pagos">Cuota y alias de pago</a><a href="info.html#contacto">Teléfonos y contactos</a><a href="reglas.html">Reglas de la liga</a><a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener">Instagram @automototenis</a></div>
+    <div><strong>¿Algo anda mal en la página?</strong>Avisanos por <a href="https://ig.me/m/automototenis" target="_blank" rel="noopener">mensaje de Instagram</a>.</div>
   </div>
 </footer>
+<!-- /layout:footer -->
 <script src="site.js"></script>
 </body>
 </html>

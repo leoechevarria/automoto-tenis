@@ -1,0 +1,40 @@
+{
+  "_nota": "Fuente única de anuncios y eventos. La home y novedades.html leen este archivo. Más adelante lo escribe el importador de Instagram. Fechas en formato AAAA-MM-DD.",
+  "anuncios": [
+    { "id": "sub12-nacionales", "publicado": "2026-09-28", "etiqueta": "Escuela", "fijado": true, "ejemplo": true,
+      "titulo": "Los sub-12 van a los Nacionales",
+      "texto": "Cuatro chicos de la escuelita clasificaron al Nacional de menores en Rosario. La subcomisión organiza una rifa para ayudar con el viaje." },
+    { "id": "cancha-3", "publicado": "2026-09-26", "etiqueta": "Obras", "ejemplo": true,
+      "titulo": "Avances en la cancha 3",
+      "texto": "Ya está nivelada la base y esta semana entra el polvo de ladrillo. Si el clima acompaña, se estrena a fin de octubre con un torneo relámpago." },
+    { "id": "cuota-octubre", "publicado": "2026-09-25", "etiqueta": "Cuota", "ejemplo": true,
+      "titulo": "Vence la cuota de octubre",
+      "texto": "Hasta el 10 sin recargo. El alias está en El club." },
+    { "id": "riego", "publicado": "2026-09-18", "etiqueta": "Cancha", "ejemplo": true,
+      "titulo": "Riego automático nuevo",
+      "texto": "Ya funciona el riego programado de las 7 y de las 19. Si ven la cancha encharcada a esa hora, esperen que drene." },
+    { "id": "cierre-apertura", "publicado": "2026-09-10", "etiqueta": "Liga", "ejemplo": true,
+      "titulo": "Cierre del Apertura: cargá tus resultados",
+      "texto": "Quedan dos semanas para terminar la fase regular. Los partidos que no se jueguen se computan como no presentado." }
+  ],
+  "eventos": [
+    { "id": "asado-oct", "fecha": "2026-10-04", "hora": "13 hs", "lugar": "Quincho del club", "ejemplo": true,
+      "titulo": "Asado de tenis",
+      "texto": "Anotarse con Seba hasta el jueves." },
+    { "id": "pacifico-bb", "fecha": "2026-10-10", "hasta": "2026-10-12", "lugar": "Club Pacífico, Bahía Blanca", "ejemplo": true,
+      "titulo": "Torneo del Pacífico",
+      "texto": "Fin de semana largo, singles y dobles por categoría. Vamos en combi desde el club." },
+    { "id": "final-invernal", "fecha": "2026-10-18", "hora": "15 hs", "lugar": "Cancha 1", "ejemplo": true,
+      "titulo": "Final de la Copa Invernal",
+      "texto": "Categorías A y B. Después, entrega de premios." },
+    { "id": "clinica-profes", "fecha": "2026-10-25", "hora": "10 hs", "lugar": "Canchas 1 y 2", "ejemplo": true,
+      "titulo": "Clínica con los profes",
+      "texto": "Saque y devolución, para todas las categorías. Cupo de 16 jugadores." },
+    { "id": "relampago-c3", "fecha": "2026-10-31", "hora": "9 hs", "lugar": "Cancha 3", "ejemplo": true,
+      "titulo": "Torneo relámpago: estreno de la cancha 3",
+      "texto": "Dobles mixtos por sorteo. Inscripción en el club." },
+    { "id": "asado-sep", "fecha": "2026-09-20", "hora": "13 hs", "lugar": "Quincho del club", "ejemplo": true,
+      "titulo": "Asado de primavera",
+      "texto": "Gracias a todos los que vinieron." }
+  ]
+}
