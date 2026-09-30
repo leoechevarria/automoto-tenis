@@ -61,6 +61,30 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
 .res .preview { font-family: var(--font-mono); font-size: var(--text-xs); white-space: pre-line; overflow-wrap: anywhere; border-left: 3px solid var(--color-accent); padding: 8px 12px; color: var(--color-ink-2); background: var(--color-paper-2); }
 .res .acts { display: flex; gap: var(--space-sm); justify-content: flex-end; flex-wrap: wrap; }
 @media (max-width: 640px) { .load-cta { grid-template-columns: minmax(0, 1fr); } .res .sets { grid-template-columns: minmax(0, 1fr); } }
+.tabs .rating-tab { color: var(--color-accent-deep); }
+.tabs .rating-first { margin-left: auto; }
+td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; font-weight: 400; color: var(--color-ink-3); }
+.fixture { padding: 0 0 var(--space-3xl); }
+.fx-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: var(--space-md); border-bottom: 3px solid var(--color-ink); padding-bottom: var(--space-sm); }
+.fx-head h2 { font-size: var(--text-2xl); font-weight: 800; text-transform: uppercase; }
+.fx-filter { display: flex; align-items: center; gap: var(--space-sm); font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-ink-2); }
+.fx-filter select { font: inherit; font-family: var(--font-body); font-size: 16px; text-transform: none; letter-spacing: 0; padding: 8px 10px; border: 1px solid var(--color-ink); background: var(--color-paper); color: var(--color-ink); min-height: 44px; }
+.fx-round { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 10fr); gap: var(--space-lg); padding: var(--space-md) 0; border-bottom: 1px solid var(--color-rule); }
+.fx-round.now { background: var(--color-paper-2); box-shadow: 0 0 0 var(--space-md) var(--color-paper-2); }
+.fx-round .r { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; text-transform: uppercase; line-height: 1; }
+.fx-round .r small { display: block; font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 400; letter-spacing: 0.04em; color: var(--color-ink-3); margin-top: 4px; }
+.fx-round .r .live { display: inline-block; margin-top: 6px; font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.06em; color: var(--color-accent-deep); }
+.fx-match { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-md); align-items: baseline; padding: 6px 0; }
+.fx-match + .fx-match { border-top: 1px solid var(--color-rule); }
+.fx-match .who { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: baseline; }
+.fx-match .p { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; text-transform: uppercase; }
+.fx-match .p.w { color: var(--color-accent-deep); }
+.fx-match .p.l { color: var(--color-ink-3); font-weight: 600; }
+.fx-match .vs { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-ink-3); }
+.fx-match .sc { font-family: var(--font-mono); font-size: var(--text-sm); font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }
+.fx-match .sc.pend { color: var(--color-ink-3); }
+.fx-match.mine .p { text-decoration: underline; text-decoration-color: var(--color-accent); text-underline-offset: 4px; }
+@media (max-width: 640px) { .fx-round { grid-template-columns: minmax(0, 1fr); gap: var(--space-sm); } .fx-match { grid-template-columns: minmax(0, 1fr); gap: 2px; } .fx-match .sc { text-align: left; } }
 </style>
 </head>
 <body>
@@ -73,6 +97,7 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
         <button type="button" class="menu-btn" aria-current="page" aria-expanded="false" aria-haspopup="true">Liga <span class="chev" aria-hidden="true">▾</span></button>
         <div class="menu-list">
           <a href="rankings.html" aria-current="page">Ranking</a>
+          <a href="rankings.html#fixture">Fixture</a>
           <a href="rankings.html#cargar">Cargá tu resultado</a>
           <a href="reglas.html">Reglas de la liga</a>
         </div>
@@ -112,6 +137,7 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
   <div class="drawer-group">
     <span class="k">Liga</span>
       <a href="rankings.html" aria-current="page">Ranking</a>
+      <a href="rankings.html#fixture">Fixture</a>
       <a href="rankings.html#cargar">Cargá tu resultado</a>
       <a href="reglas.html">Reglas de la liga</a>
   </div>
@@ -166,6 +192,13 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
     <div class="legend" id="legend"></div>
     <div id="content"><div class="state"><div class="spinner"></div>Cargando ranking…</div></div>
   </div>
+  <section class="fixture" id="fixture" hidden>
+    <div class="fx-head">
+      <h2>Fixture</h2>
+      <label class="fx-filter">Ver partidos de <select id="fxPlayer"><option value="">Todos</option></select></label>
+    </div>
+    <div id="fxList"></div>
+  </section>
 </main>
 <!-- layout:footer -->
 <footer>
@@ -190,6 +223,7 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
     db: { rama: 'Damas', cat: 'B' },
   };
   const ALIAS = { a: 'ca', b: 'cb', c: 'cc' };
+  const RATING = { rc: 'Caballeros', rd: 'Damas' }; // vistas de rating Glicko-2 por rama
   // Reglas de ascenso/descenso si la planilla no tiene la pestaña Categorías (REGLAS - LIGA 2026).
   const DEFAULT_RULES = {
     ca: { up: 0, down: 3, promoUp: 0, promoDown: 2 },
@@ -231,16 +265,16 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
 
   /* ---- Datos: formato nuevo (una sola planilla por temporadas) o planilla anterior ---- */
   async function loadModel() {
-    const ranges = ['Temporadas!A2:D', 'Inscripciones!A2:I', 'Categorías!A2:F'].map(r => 'ranges=' + encodeURIComponent(r)).join('&');
+    const ranges = ['Temporadas!A2:D', 'Inscripciones!A2:I', 'Categorías!A2:F', 'Partidos!A2:N', 'Jugadores!A2:C'].map(r => 'ranges=' + encodeURIComponent(r)).join('&');
     const res = await fetch(`${SHEETS}/values:batchGet?${ranges}&key=${API_KEY}`);
     if (!res.ok) return null; // las pestañas no existen: planilla anterior
-    const [temps, ins, cats] = (await res.json()).valueRanges.map(v => v.values || []);
+    const [temps, ins, cats, partidos, jugadores] = (await res.json()).valueRanges.map(v => v.values || []);
     const activa = (temps.find(r => (r[3] || '').trim().toLowerCase() === 'activa') || temps[temps.length - 1] || [])[0];
     const keyOf = (rama, cat) => Object.keys(CATEGORIES).find(k => CATEGORIES[k].rama === rama && CATEGORIES[k].cat === cat);
     const rows = ins.filter(r => r[0] === activa && r[3]).map(r => ({ key: keyOf(r[1], r[2]), jugador: r[3], pj: n(r[4]), pg: n(r[5]), pp: n(r[6]), np: n(r[7]), pts: n(r[8]) })).filter(r => r.key);
     const rules = {};
     cats.forEach(r => { const k = keyOf(r[0], r[1]); if (k && r.slice(2).some(v => v !== '' && v != null)) rules[k] = { up: n(r[2]), down: n(r[3]), promoUp: n(r[4]), promoDown: n(r[5]) }; });
-    return { temporada: activa, rows, rules };
+    return { temporada: activa, rows, rules, partidos, jugadores, ins };
   }
 
   async function tableRows(key) {
@@ -261,9 +295,9 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
   }
 
   function renderNav() {
-    navEl.innerHTML = visibleKeys()
-      .map(key => `<button data-cat="${key}" class="${key === currentCat ? 'active' : ''}">${shortLabel(key)}</button>`)
-      .join('');
+    const btn = (key, text, extra = '') => `<button data-cat="${key}" class="${key === currentCat ? 'active' : ''}${extra}">${text}</button>`;
+    navEl.innerHTML = visibleKeys().map(key => btn(key, shortLabel(key))).join('')
+      + (legacy ? '' : Object.entries(RATING).map(([k, rama], i) => btn(k, `Rating ${rama.toLowerCase()}`, ' rating-tab' + (i ? '' : ' rating-first'))).join(''));
     navEl.querySelectorAll('button').forEach(btn => btn.addEventListener('click', () => { location.hash = btn.dataset.cat; }));
   }
 
@@ -352,6 +386,8 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
       if (key !== currentCat) return;
       subtitleEl.textContent = label(key) + (model?.temporada ? ` · ${model.temporada}` : '');
       renderTable(rows, key);
+      renderFixture(key);
+      if (location.hash === '#fixture' && !fxSection.hidden && !loadRanking.scrolled) { loadRanking.scrolled = true; fxSection.scrollIntoView({ behavior: 'smooth' }); }
       statusDot.classList.add('live');
       statusText.textContent = 'Actualizado ' + new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
     } catch (err) {
@@ -359,13 +395,153 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
     }
   }
 
+
+  /* ==========================================================
+     RATING GLICKO-2
+     Se calcula en el navegador con la pestaña Partidos: todos los tipos
+     (liga, promoción, copa, amistoso…), sin walkovers, anulados ni pendientes.
+     Períodos de un mes. Rating inicial según la categoría del jugador.
+     ========================================================== */
+  const G2 = { scale: 173.7178, tau: 0.5, sigma: 0.06, rd: 200, seed: { A: 1700, B: 1500, C: 1300 } };
+  const parseFecha = s => { const m = String(s || '').match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/); return m ? new Date(+m[3], +m[2] - 1, +m[1]) : null; };
+  const g2g = phi => 1 / Math.sqrt(1 + 3 * phi * phi / (Math.PI * Math.PI));
+  const g2E = (mu, muj, phij) => 1 / (1 + Math.exp(-g2g(phij) * (mu - muj)));
+
+  function g2update(p, games) {
+    let vinv = 0, sum = 0;
+    for (const o of games) { const E = g2E(p.mu, o.mu, o.phi), g = g2g(o.phi); vinv += g * g * E * (1 - E); sum += g * (o.s - E); }
+    const v = 1 / vinv, delta = v * sum, a = Math.log(p.sigma * p.sigma), t2 = G2.tau * G2.tau, phi2 = p.phi * p.phi;
+    const f = x => { const ex = Math.exp(x); return ex * (delta * delta - phi2 - v - ex) / (2 * (phi2 + v + ex) ** 2) - (x - a) / t2; };
+    let A = a, B;
+    if (delta * delta > phi2 + v) B = Math.log(delta * delta - phi2 - v);
+    else { let k = 1; while (f(a - k * G2.tau) < 0) k++; B = a - k * G2.tau; }
+    let fA = f(A), fB = f(B);
+    for (let i = 0; i < 100 && Math.abs(B - A) > 1e-6; i++) {
+      const C = A + (A - B) * fA / (fB - fA), fC = f(C);
+      if (fC * fB <= 0) { A = B; fA = fB; } else fA /= 2;
+      B = C; fB = fC;
+    }
+    const sigma = Math.exp(A / 2), phiStar = Math.sqrt(phi2 + sigma * sigma);
+    const phi = 1 / Math.sqrt(1 / (phiStar * phiStar) + 1 / v);
+    return { mu: p.mu + phi * phi * sum, phi, sigma };
+  }
+
+  function computeRating(rama) {
+    const m = model;
+    // categoría de cada jugador: la última inscripción, o la categoría actual en Jugadores
+    const catOf = new Map();
+    (m.jugadores || []).forEach(r => { if (r[0]) catOf.set(r[0], r[2]); });
+    (m.ins || []).forEach(r => { if (r[3] && r[1] === rama) catOf.set(r[3], r[2]); });
+    const matches = (m.partidos || []).map(r => ({
+      rama: r[1], cat: r[2], a: r[8], b: r[9], ganador: r[11], wo: (r[12] || '').toLowerCase().startsWith('s'), anulado: (r[13] || '').toLowerCase().startsWith('s'),
+      fecha: parseFecha(r[7]) || parseFecha(r[6]) || parseFecha(r[5]),
+    })).filter(x => x.rama === rama && x.a && x.b && x.ganador && !x.wo && !x.anulado && x.fecha && (x.ganador === x.a || x.ganador === x.b))
+      .sort((x, y) => x.fecha - y.fecha);
+    const P = new Map();
+    const get = (name, cat) => {
+      if (!P.has(name)) P.set(name, { name, cat: catOf.get(name) || cat, mu: ((G2.seed[catOf.get(name) || cat] || 1500) - 1500) / G2.scale, phi: G2.rd / G2.scale, sigma: G2.sigma, n: 0, w: 0, hist: [] });
+      return P.get(name);
+    };
+    if (!matches.length) return [];
+    const key = d => d.getFullYear() * 12 + d.getMonth();
+    const now = new Date(), first = key(matches[0].fecha), last = key(now);
+    let i = 0;
+    for (let period = first; period <= last; period++) {
+      const games = new Map();
+      for (; i < matches.length && key(matches[i].fecha) === period; i++) {
+        const x = matches[i], A = get(x.a, x.cat), B = get(x.b, x.cat), sa = x.ganador === x.a ? 1 : 0;
+        if (!games.has(A.name)) games.set(A.name, []);
+        if (!games.has(B.name)) games.set(B.name, []);
+        games.get(A.name).push({ mu: B.mu, phi: B.phi, s: sa });   // valores del rival antes del período
+        games.get(B.name).push({ mu: A.mu, phi: A.phi, s: 1 - sa });
+        A.n++; B.n++; A.w += sa; B.w += 1 - sa;
+      }
+      const updates = [];
+      for (const p of P.values()) updates.push([p, games.has(p.name) ? g2update(p, games.get(p.name)) : null]);
+      for (const [p, u] of updates) {
+        if (u) Object.assign(p, u);
+        else p.phi = Math.min(Math.sqrt(p.phi * p.phi + p.sigma * p.sigma), 350 / G2.scale); // sin partidos: crece la incertidumbre
+      }
+    }
+    return [...P.values()].map(p => ({ ...p, rating: Math.round(1500 + G2.scale * p.mu), rd: Math.round(G2.scale * p.phi) }))
+      .sort((a, b) => b.rating - a.rating);
+  }
+
+  async function loadRating() {
+    const key = currentCat;
+    contentEl.innerHTML = `<div class="state"><div class="spinner"></div>Calculando el rating…</div>`;
+    try {
+      if (!model) { model = await loadModel(); legacy = !model; renderNav(); }
+      if (legacy) { setCategory(DEFAULT_CATEGORY); return; }
+      if (key !== currentCat) return;
+      const list = computeRating(RATING[key]);
+      legendEl.innerHTML = list.length ? '<div class="legend-item"><span class="legend-swatch promo"></span> Provisorio: menos de 5 partidos</div>' : '';
+      if (!list.length) { contentEl.innerHTML = `<div class="state">Todavía no hay partidos jugados de ${RATING[key].toLowerCase()}.</div>`; return; }
+      contentEl.innerHTML = `<table class="rating-table"><thead><tr>
+          <th class="num">#</th><th>Jugador</th><th class="num">Cat.</th><th class="num">PJ</th><th class="num">G/P</th><th class="num">Rating</th>
+        </tr></thead><tbody>${list.map((p, i) => `
+        <tr class="${p.n < 5 ? 'promo' : ''}">
+          <td class="pos"><span class="pos-badge">${i + 1}</span></td>
+          <td><div class="player">${escapeHtml(p.name)}</div>${p.n < 5 ? '<span class="tag promo">Provisorio</span>' : ''}</td>
+          <td class="num">${escapeHtml(p.cat || '')}</td>
+          <td class="num">${p.n}</td>
+          <td class="num gp"><div class="gp-ratio">${p.w}/${p.n - p.w}</div></td>
+          <td class="num pts">${p.rating}<span class="rd"> ±${p.rd}</span></td>
+        </tr>`).join('')}</tbody></table>`;
+      statusDot.classList.add('live');
+      statusText.textContent = 'Actualizado ' + new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+    } catch (err) { renderError(err.message || 'Error desconocido'); }
+  }
+
+
+  /* ---- Fixture: partidos de la categoría en la temporada activa, por ronda ---- */
+  const fxSection = document.getElementById('fixture'), fxList = document.getElementById('fxList'), fxPlayer = document.getElementById('fxPlayer');
+  let fxKey = null;
+  function renderFixture(key) {
+    const cfg = CATEGORIES[key];
+    if (legacy || !model || !cfg) { fxSection.hidden = true; return; }
+    const hoy = new Date(); hoy.setHours(0, 0, 0, 0);
+    const ms = (model.partidos || []).filter(r => r[0] === model.temporada && r[1] === cfg.rama && r[2] === cfg.cat && (r[3] || 'Liga') === 'Liga' && !(r[13] || '').toLowerCase().startsWith('s') && r[8] && r[9]);
+    if (!ms.length) { fxSection.hidden = true; return; }
+    fxSection.hidden = false;
+    if (fxKey !== key) {   // cambió la categoría: rearmar la lista de jugadores
+      fxKey = key;
+      const names = [...new Set(ms.flatMap(r => [r[8], r[9]]))].sort((a, b) => a.localeCompare(b));
+      fxPlayer.innerHTML = '<option value="">Todos</option>' + names.map(n => `<option>${escapeHtml(n)}</option>`).join('');
+    }
+    const who = fxPlayer.value;
+    const rounds = new Map();
+    ms.forEach(r => { const k = r[4] || '—'; if (!rounds.has(k)) rounds.set(k, []); rounds.get(k).push(r); });
+    const fmt = d => d ? `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}` : '';
+    fxList.innerHTML = [...rounds.entries()].sort((a, b) => (parseInt(a[0], 10) || 0) - (parseInt(b[0], 10) || 0)).map(([ronda, list]) => {
+      const d1 = parseFecha(list[0][5]), d2 = parseFecha(list[0][6]);
+      const now = d1 && d2 && hoy >= d1 && hoy <= d2;
+      const shown = who ? list.filter(r => r[8] === who || r[9] === who) : list;
+      if (!shown.length) return '';
+      return `<div class="fx-round${now ? ' now' : ''}" ${now ? 'id="fx-now"' : ''}>
+        <div class="r">Ronda ${escapeHtml(ronda)}<small>${fmt(d1)}${d2 ? ' al ' + fmt(d2) : ''}</small>${now ? '<span class="live">En juego</span>' : ''}</div>
+        <div>${shown.map(r => {
+          const [a, b, sets, gan] = [r[8], r[9], r[10], r[11]];
+          const wo = (r[12] || '').toLowerCase().startsWith('s');
+          const cls = n => gan ? (n === gan ? 'w' : 'l') : '';
+          let sc;
+          if (wo) sc = gan ? `W.O. · ganó ${escapeHtml(gan)}` : 'No se presentaron';
+          else if (gan) sc = escapeHtml(String(sets || '').split(',').map(x => x.trim()).filter(Boolean).join('  '));
+          else sc = d2 && hoy > d2 ? 'Sin resultado' : 'Pendiente';
+          return `<div class="fx-match${who ? ' mine' : ''}"><div class="who"><span class="p ${cls(a)}">${escapeHtml(a)}</span><span class="vs">vs</span><span class="p ${cls(b)}">${escapeHtml(b)}</span></div><div class="sc${gan || wo ? '' : ' pend'}">${sc}</div></div>`;
+        }).join('')}</div>
+      </div>`;
+    }).join('');
+  }
+  fxPlayer.addEventListener('change', () => renderFixture(currentCat));
+
   function setCategory(key) {
     key = ALIAS[key] || key;
-    if (!CATEGORIES[key]) key = DEFAULT_CATEGORY;
+    if (!CATEGORIES[key] && !RATING[key]) key = DEFAULT_CATEGORY;
     currentCat = key;
     renderNav();
-    subtitleEl.textContent = label(key);
-    loadRanking();
+    subtitleEl.textContent = RATING[key] ? `Rating · ${RATING[key]}` : label(key);
+    if (RATING[key]) { fxSection.hidden = true; loadRating(); } else loadRanking();
   }
 
   window.addEventListener('hashchange', () => {
@@ -373,7 +549,7 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
   });
 
   setCategory(location.hash.replace('#', '') || DEFAULT_CATEGORY);
-  setInterval(() => loadRanking(true), REFRESH_MS);
+  setInterval(() => { model = null; RATING[currentCat] ? loadRating() : loadRanking(true); }, REFRESH_MS);
 
 
   /* ---- Cargá tu resultado → WhatsApp ---- */
@@ -409,7 +585,7 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
   addEventListener('hashchange', () => { if (location.hash === '#cargar') document.getElementById('openRes').click(); });
   document.getElementById('openRes').addEventListener('click', () => {
     rCat.innerHTML = visibleKeys().map(k => `<option value="${k}">${label(k)}</option>`).join('');
-    rCat.value = currentCat;
+    rCat.value = CATEGORIES[currentCat] ? currentCat : DEFAULT_CATEGORY;
     const t = new Date(); document.getElementById('rDate').value = `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}-${String(t.getDate()).padStart(2, '0')}`;
     [['s1a', 6], ['s1b', 4], ['s2a', 6], ['s2b', 4], ['s3a', ''], ['s3b', '']].forEach(([id, v]) => { document.getElementById(id).value = v; });
     fillPlayers(); dlg.showModal();
