@@ -148,6 +148,7 @@ footer .links a { display: block; padding: 3px 0; }
 .post h3 { font-size: 1.5rem; font-weight: 700; text-transform: uppercase; margin: 2px 0 4px; }
 .post.pinned h3 { color: var(--color-accent-deep); }
 .post p { margin: 0; color: var(--color-ink-2); font-size: var(--text-sm); max-width: 62ch; }
+.post { display: block; }
 .ev { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: var(--space-md); padding: var(--space-md) 0; border-bottom: 1px solid var(--color-rule); }
 .ev .d { text-align: center; border-right: 1px solid var(--color-rule); }
 .ev .d b { display: block; font-family: var(--font-display); font-size: 2rem; font-weight: 800; line-height: 1; }
@@ -158,6 +159,36 @@ footer .links a { display: block; padding: 3px 0; }
 .ev.past { opacity: 0.6; }
 .empty { padding: var(--space-lg) 0; color: var(--color-ink-2); font-size: var(--text-sm); border-bottom: 1px solid var(--color-rule); }
 @media (max-width: 860px) { .split { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---- Tarjetas de novedades: resumen clickeable y popup ---- */
+.nov-link { display: block; color: inherit; cursor: pointer; transition: background-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out); }
+.ev.nov-link { display: grid; }
+.nov-link .txt { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+@media (hover: hover) { .nov-link:hover { background: var(--color-paper-2); box-shadow: 0 0 0 var(--space-sm) var(--color-paper-2); } .nov-link:hover h3 { color: var(--color-accent-deep); } }
+.nov-link:active { background: var(--color-paper-3); box-shadow: 0 0 0 var(--space-sm) var(--color-paper-3); }
+html.dlg-open { overflow: hidden; }
+dialog.nov-dlg { border: 3px solid var(--color-ink); background: var(--color-paper); color: var(--color-ink); padding: 0; width: min(640px, 100vw - 32px); max-width: none; max-height: min(86vh, 900px); overflow: hidden; }
+dialog.nov-dlg::backdrop { background: oklch(15% 0.03 60 / 0.62); backdrop-filter: blur(2px); }
+dialog.nov-dlg[open] { animation: dlg-in 280ms var(--ease-out); }
+dialog.nov-dlg[open]::backdrop { animation: dlg-fade 280ms var(--ease-out); }
+@keyframes dlg-in { from { opacity: 0; transform: translateY(12px) scale(0.98); } to { opacity: 1; transform: none; } }
+@keyframes dlg-fade { from { opacity: 0; } to { opacity: 1; } }
+.dlg-in { position: relative; display: grid; gap: var(--space-sm); padding: var(--space-xl); max-height: min(86vh, 900px); overflow-y: auto; overscroll-behavior: contain; }
+.dlg-close { position: absolute; top: var(--space-md); right: var(--space-md); width: 44px; height: 44px; display: grid; place-items: center; background: var(--color-paper); border: 1px solid var(--color-rule); color: var(--color-ink); font-size: 1.1rem; cursor: pointer; transition: transform var(--dur-fast) var(--ease-out), border-color var(--dur-fast); }
+@media (hover: hover) { .dlg-close:hover { border-color: var(--color-ink); } }
+.dlg-close:active { transform: scale(0.96); }
+.dlg-in .k { font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-ink-3); padding-right: 56px; }
+.dlg-in .k.pinned { color: var(--color-accent-deep); }
+.dlg-in h2 { font-size: clamp(2rem, 5vw, 2.8rem); font-weight: 800; text-transform: uppercase; padding-right: 48px; text-wrap: balance; }
+.dlg-in .when { margin: 0; font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-accent-deep); }
+.dlg-date { display: flex; align-items: center; gap: var(--space-md); padding-bottom: var(--space-sm); border-bottom: 3px solid var(--color-ink); margin-bottom: var(--space-sm); padding-right: 56px; }
+.dlg-date b { font-family: var(--font-display); font-size: 4rem; font-weight: 800; line-height: 0.85; color: var(--color-accent-deep); }
+.dlg-date span { font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-ink-2); line-height: 1.5; }
+.dlg-img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border: 1px solid var(--color-rule); margin-bottom: var(--space-sm); }
+.dlg-body { border-top: 1px solid var(--color-rule); padding-top: var(--space-md); margin-top: var(--space-xs); }
+.dlg-body p { margin: 0 0 var(--space-md); max-width: 62ch; color: var(--color-ink-2); font-size: var(--text-md); }
+.dlg-in .note { margin: 0; }
+@media (max-width: 560px) { .dlg-in { padding: var(--space-lg); } dialog.nov-dlg { width: calc(100vw - 16px); max-height: 92vh; } .dlg-in { max-height: 92vh; } }
 
 /* ---- Desplegables dentro de la página (details) ---- */
 details.fold { border-bottom: 1px solid var(--color-rule); }

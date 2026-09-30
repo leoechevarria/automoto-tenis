@@ -291,6 +291,7 @@
       if (e) {
         const d = N.day(e.fecha);
         ev.href = 'novedades.html#' + e.id;
+        ev.dataset.nid = e.id;
         ev.innerHTML = `<span class="k">Próximo evento</span><div class="d"><b>${d.getDate()}</b><small>${N.MES[d.getMonth()]}</small></div>
           <div><h3>${N.esc(e.titulo)}</h3><p>${N.esc(N.cuando(e))}</p></div>`;
       } else ev.innerHTML = '<span class="k">Próximo evento</span><p>No hay eventos programados.</p>';

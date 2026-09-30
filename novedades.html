@@ -135,11 +135,11 @@ details.past-list summary { cursor: pointer; font-family: var(--font-mono); font
       document.getElementById('listAnuncios').innerHTML = anuncios.length ? anuncios.map(N.anuncio).join('') : '<p class="empty">No hay anuncios por ahora.</p>';
       document.getElementById('listEventos').innerHTML = proximos.length ? proximos.map(N.evento).join('') : '<p class="empty">No hay eventos programados.</p>';
       if (pasados.length) {
-        document.getElementById('listPasados').innerHTML = pasados.map(e => N.evento(e).replace('class="ev"', 'class="ev past"')).join('');
+        document.getElementById('listPasados').innerHTML = pasados.map(e => N.evento(e, ' past')).join('');
         document.getElementById('pastWrap').hidden = false;
       }
       document.getElementById('novNote').hidden = !N.hayEjemplos([...anuncios, ...proximos]);
-      if (location.hash) { const el = document.querySelector(location.hash); if (el) setTimeout(() => el.scrollIntoView({ block: 'start' }), 100); }
+      N.openFromHash();
     } catch (err) {
       document.getElementById('listAnuncios').innerHTML = '<p class="empty">No se pudieron cargar las novedades. Probá de nuevo en un rato.</p>';
       document.getElementById('listEventos').innerHTML = '';
