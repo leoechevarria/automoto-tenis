@@ -35,7 +35,7 @@
 
   /* ---- Datos: formato nuevo (una sola planilla por temporadas) o planilla anterior ---- */
   async function loadModel() {
-    const ranges = ['Temporadas!A2:G', 'Inscripciones!A2:M', 'Categorías!A2:F', 'Partidos!A2:P', 'Jugadores!A2:C'].map(r => 'ranges=' + encodeURIComponent(r)).join('&');
+    const ranges = ['Temporadas!A2:G', 'Inscripciones!A2:M', 'Categorías!A2:F', 'Partidos!A2:P', 'Jugadores!A2:D'].map(r => 'ranges=' + encodeURIComponent(r)).join('&');
     const res = await fetch(`${SHEETS}/values:batchGet?${ranges}&key=${API_KEY}`);
     if (!res.ok) return null; // las pestañas no existen: planilla anterior
     const [temps, ins, cats, partidos, jugadores] = (await res.json()).valueRanges.map(v => v.values || []);
@@ -81,12 +81,13 @@
   const eloBase = (rama, cat) => (ELO.base[rama] || {})[cat] || 1200;
   const parseFecha = s => { const m = String(s || '').match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/); return m ? new Date(+m[3], +m[2] - 1, +m[1]) : null; };
 
-  function computeRating(rama, extra = []) {
+  // todos = true: incluye a los jugadores activos sin partidos, con el rating inicial de su categoría.
+  function computeRating(rama, extra = [], todos = false) {
     const m = model;
-    // categoría actual (para mostrar): la última inscripción; si no hay, la de Jugadores
+    // categoría actual (para mostrar): la de Jugadores; si no está ahí, la última inscripción
     const catActual = new Map();
-    (m.jugadores || []).forEach(r => { if (r[0] && r[1] === rama) catActual.set(r[0], r[2]); });
     (m.ins || []).forEach(r => { if (r[3] && r[1] === rama) catActual.set(r[3], r[2]); });
+    (m.jugadores || []).forEach(r => { if (r[0] && r[1] === rama && r[2]) catActual.set(r[0], r[2]); });
     const matches = (m.partidos || []).map((r, i) => ({
       orden: i, rama: r[1], cat: r[2], tipo: (r[3] || 'Liga').trim(), a: r[8], b: r[9], ganador: ganadorDe(r),
       wo: (r[12] || '').toLowerCase().startsWith('s'), anulado: (r[13] || '').toLowerCase().startsWith('s'),
@@ -107,7 +108,16 @@
       A.rating += kA * (sA - eA); B.rating += kB * (sB - eB);
       A.n++; B.n++; A.w += sA; B.w += sB;
     }
-    return [...P.values()].map(p => ({ ...p, rating: Math.round(p.rating) })).sort((a, b) => b.rating - a.rating || a.name.localeCompare(b.name));
+    if (todos) {
+      const activos = new Set((m.jugadores || []).filter(r => r[0] && r[1] === rama && !/^no$/i.test((r[3] || '').trim())).map(r => r[0]));
+      (m.ins || []).forEach(r => { if (r[3] && r[1] === rama && r[0] === m.temporada) activos.add(r[3]); });
+      for (const name of activos) if (!P.has(name) && catActual.get(name)) get(name, catActual.get(name));
+    }
+    const orden = { A: 0, B: 1, C: 2 };
+    const list = [...P.values()].map(p => ({ ...p, rating: Math.round(p.rating) }))
+      .sort((a, b) => b.rating - a.rating || (orden[a.cat] ?? 9) - (orden[b.cat] ?? 9) || a.name.localeCompare(b.name));
+    list.forEach((p, i) => { p.pos = i && list[i - 1].rating === p.rating ? list[i - 1].pos : i + 1; }); // empates: mismo puesto
+    return list;
   }
 
 
