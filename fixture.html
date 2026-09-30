@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Automoto Tenis — Fixture</title>
+<link rel="icon" href="assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/favicon-192.png">
+<link rel="apple-touch-icon" href="assets/favicon-180.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#143a2a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+.fixture { padding: 0 0 var(--space-3xl); }
+.fx-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: var(--space-md); border-bottom: 3px solid var(--color-ink); padding-bottom: var(--space-sm); }
+.fx-head h2 { font-size: var(--text-2xl); font-weight: 800; text-transform: uppercase; }
+.fx-filter { display: flex; align-items: center; gap: var(--space-sm); font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-ink-2); }
+.fx-filter select { font: inherit; font-family: var(--font-body); font-size: 16px; text-transform: none; letter-spacing: 0; padding: 8px 10px; border: 1px solid var(--color-ink); background: var(--color-paper); color: var(--color-ink); min-height: 44px; }
+.fx-round { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 10fr); gap: var(--space-lg); padding: var(--space-md) 0; border-bottom: 1px solid var(--color-rule); }
+.fx-round.now { background: var(--color-paper-2); box-shadow: 0 0 0 var(--space-md) var(--color-paper-2); }
+.fx-round .r { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; text-transform: uppercase; line-height: 1; }
+.fx-round .r small { display: block; font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 400; letter-spacing: 0.04em; color: var(--color-ink-3); margin-top: 4px; }
+.fx-round .r .live { display: inline-block; margin-top: 6px; font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.06em; color: var(--color-accent-deep); }
+.fx-match { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-md); align-items: baseline; padding: 6px 0; }
+.fx-match + .fx-match { border-top: 1px solid var(--color-rule); }
+.fx-match .who { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: baseline; }
+.fx-match .p { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; text-transform: uppercase; }
+.fx-match .p.w { color: var(--color-accent-deep); }
+.fx-match .p.l { color: var(--color-ink-3); font-weight: 600; }
+.fx-match .vs { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-ink-3); }
+.fx-match .sc { font-family: var(--font-mono); font-size: var(--text-sm); font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }
+.fx-match .sc.pend { color: var(--color-ink-3); }
+.fx-match.mine .p { text-decoration: underline; text-decoration-color: var(--color-accent); text-underline-offset: 4px; }
+@media (max-width: 640px) { .fx-round { grid-template-columns: minmax(0, 1fr); gap: var(--space-sm); } .fx-match { grid-template-columns: minmax(0, 1fr); gap: 2px; } .fx-match .sc { text-align: left; } }
+.fx-tools { display: flex; justify-content: flex-end; padding: var(--space-md) 0 0; }
+main { padding-bottom: var(--space-3xl); }
+</style>
+</head>
+<body>
+<!-- layout:header -->
+<header class="mast" id="mast">
+  <div class="wrap mast-in">
+    <a class="mast-brand" href="index.html" aria-label="Automoto Tenis, inicio"><img src="assets/logo.png" alt=""><span>Automoto Club Deportivo<b>Tenis</b></span></a>
+    <nav class="mast-nav" aria-label="Secciones">
+      <div class="menu">
+        <button type="button" class="menu-btn" aria-current="page" aria-expanded="false" aria-haspopup="true">Liga <span class="chev" aria-hidden="true">▾</span></button>
+        <div class="menu-list">
+          <a href="rankings.html">Ranking</a>
+          <a href="fixture.html" aria-current="page">Fixture</a>
+          <a href="rating.html">Rating</a>
+          <a href="rankings.html#cargar">Cargá tu resultado</a>
+          <a href="reglas.html">Reglas de la liga</a>
+        </div>
+      </div>
+      <a href="novedades.html">Novedades</a>
+      <a href="mercado.html">Mercado</a>
+      <div class="menu">
+        <button type="button" class="menu-btn" aria-expanded="false" aria-haspopup="true">El club <span class="chev" aria-hidden="true">▾</span></button>
+        <div class="menu-list">
+          <a href="info.html#pagos">Cuota y alias de pago</a>
+          <a href="info.html#cancha">Cuidado de la cancha</a>
+          <a href="info.html#contacto">Teléfonos y contactos</a>
+          <a href="info.html#ubicacion">Cómo llegar</a>
+          <a href="subcomision.html">Subcomisión de Tenis</a>
+        </div>
+      </div>
+    </nav>
+    <div class="mast-end">
+      <a class="btn fill turno" href="https://darturnos.com/AutomotoTenis/" target="_blank" rel="noopener">Reservar turno ↗</a>
+      <div class="social">
+        <a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener" aria-label="Instagram de Automoto Tenis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="https://www.instagram.com/masu.tenis/" target="_blank" rel="noopener" aria-label="Instagram de Masu Tenis" class="masu"><img src="assets/masu-mark.png" alt=""></a>
+      </div>
+      <button type="button" class="nav-toggle" aria-controls="drawer" aria-expanded="false" aria-label="Abrir menú"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    </div>
+  </div>
+</header>
+<div class="drawer-backdrop" id="drawerBackdrop"></div>
+<nav class="drawer" id="drawer" aria-label="Menú" aria-hidden="true">
+  <div class="drawer-head"><strong>Menú</strong><button type="button" class="drawer-close" aria-label="Cerrar menú">✕</button></div>
+  <a class="btn fill turno" href="https://darturnos.com/AutomotoTenis/" target="_blank" rel="noopener">Reservar turno ↗</a>
+  <div class="drawer-group">
+    <a class="big" href="index.html">Inicio</a>
+    <a class="big" href="novedades.html">Novedades</a>
+    <a class="big" href="mercado.html">Mercado del usado</a>
+  </div>
+  <div class="drawer-group">
+    <span class="k">Liga</span>
+      <a href="rankings.html">Ranking</a>
+      <a href="fixture.html" aria-current="page">Fixture</a>
+      <a href="rating.html">Rating</a>
+      <a href="rankings.html#cargar">Cargá tu resultado</a>
+      <a href="reglas.html">Reglas de la liga</a>
+  </div>
+  <div class="drawer-group">
+    <span class="k">El club</span>
+      <a href="info.html#pagos">Cuota y alias de pago</a>
+      <a href="info.html#cancha">Cuidado de la cancha</a>
+      <a href="info.html#contacto">Teléfonos y contactos</a>
+      <a href="info.html#ubicacion">Cómo llegar</a>
+      <a href="subcomision.html">Subcomisión de Tenis</a>
+  </div>
+  <div class="social">
+        <a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener" aria-label="Instagram de Automoto Tenis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="https://www.instagram.com/masu.tenis/" target="_blank" rel="noopener" aria-label="Instagram de Masu Tenis" class="masu"><img src="assets/masu-mark.png" alt=""></a>
+      </div>
+</nav>
+<!-- /layout:header -->
+
+<main class="wrap">
+  <div class="page-head reveal" style="--i:0">
+    <div><h1>Fixture</h1><p class="sub" id="subtitle">Caballeros · Categoría A</p></div>
+    <p class="meta"><span class="dot" id="status-dot"></span><span id="status-text">Actualizando…</span></p>
+  </div>
+  <div class="reveal" style="--i:1; padding-top: var(--space-lg)">
+    <nav id="nav" aria-label="Rama y categoría"></nav>
+    <div class="fx-tools" id="fxTools" hidden><label class="fx-filter">Ver partidos de <select id="fxPlayer"><option value="">Todos</option></select></label></div>
+    <div id="fxList"><div class="state"><div class="spinner"></div>Cargando el fixture…</div></div>
+  </div>
+</main>
+
+<!-- layout:footer -->
+<footer>
+  <div class="wrap foot-cols">
+    <div><strong>Automoto Club Deportivo · Tenis</strong><a href="https://maps.app.goo.gl/wUV2pwQLxERQxQDT8" target="_blank" rel="noopener">Tornquist, Provincia de Buenos Aires</a></div>
+  </div>
+</footer>
+<!-- /layout:footer -->
+<script src="liga.js"></script>
+<script>
+  const navEl = document.getElementById('nav'), subtitleEl = document.getElementById('subtitle');
+  const statusDot = document.getElementById('status-dot'), statusText = document.getElementById('status-text');
+  let model = null, currentCat = keyFromHash();
+  /* ---- Fixture: partidos de la categoría en la temporada activa, por ronda ---- */
+  const fxList = document.getElementById('fxList'), fxPlayer = document.getElementById('fxPlayer'), fxTools = document.getElementById('fxTools');
+  let fxKey = null;
+  function renderFixture(key) {
+    const cfg = CATEGORIES[key];
+    if (!model || !cfg) return;
+    const hoy = new Date(); hoy.setHours(0, 0, 0, 0);
+    const ms = (model.partidos || []).filter(r => r[0] === model.temporada && r[1] === cfg.rama && r[2] === cfg.cat && (r[3] || 'Liga') === 'Liga' && !(r[13] || '').toLowerCase().startsWith('s') && r[8] && r[9]);
+    fxTools.hidden = !ms.length;
+    if (!ms.length) { fxList.innerHTML = `<div class="state">Todavía no está cargado el fixture de ${escapeHtml(cfg.rama)} · Categoría ${cfg.cat}${model.temporada ? ' para ' + escapeHtml(model.temporada) : ''}.</div>`; return; }
+    if (fxKey !== key) {   // cambió la categoría: rearmar la lista de jugadores
+      fxKey = key;
+      const names = [...new Set(ms.flatMap(r => [r[8], r[9]]))].sort((a, b) => a.localeCompare(b));
+      fxPlayer.innerHTML = '<option value="">Todos</option>' + names.map(n => `<option>${escapeHtml(n)}</option>`).join('');
+    }
+    const who = fxPlayer.value;
+    const rounds = new Map();
+    ms.forEach(r => { const k = r[4] || '—'; if (!rounds.has(k)) rounds.set(k, []); rounds.get(k).push(r); });
+    const fmt = d => d ? `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}` : '';
+    fxList.innerHTML = [...rounds.entries()].sort((a, b) => (parseInt(a[0], 10) || 0) - (parseInt(b[0], 10) || 0)).map(([ronda, list]) => {
+      const d1 = parseFecha(list[0][5]), d2 = parseFecha(list[0][6]);
+      const now = d1 && d2 && hoy >= d1 && hoy <= d2;
+      const shown = who ? list.filter(r => r[8] === who || r[9] === who) : list;
+      if (!shown.length) return '';
+      return `<div class="fx-round${now ? ' now' : ''}" ${now ? 'id="fx-now"' : ''}>
+        <div class="r">Ronda ${escapeHtml(ronda)}<small>${fmt(d1)}${d2 ? ' al ' + fmt(d2) : ''}</small>${now ? '<span class="live">En juego</span>' : ''}</div>
+        <div>${shown.map(r => {
+          const [a, b, sets, gan] = [r[8], r[9], r[10], ganadorDe(r)];
+          const wo = (r[12] || '').toLowerCase().startsWith('s');
+          const cls = n => gan ? (n === gan ? 'w' : 'l') : '';
+          let sc;
+          if (wo) sc = gan ? `W.O. · ganó ${escapeHtml(gan)}` : 'No se presentaron';
+          else if (gan) sc = escapeHtml(String(sets || '').split(',').map(x => x.trim()).filter(Boolean).join('  '));
+          else sc = d2 && hoy > d2 ? 'Sin resultado' : 'Pendiente';
+          return `<div class="fx-match${who ? ' mine' : ''}"><div class="who"><span class="p ${cls(a)}">${escapeHtml(a)}</span><span class="vs">vs</span><span class="p ${cls(b)}">${escapeHtml(b)}</span></div><div class="sc${gan || wo ? '' : ' pend'}">${sc}</div></div>`;
+        }).join('')}</div>
+      </div>`;
+    }).join('');
+  }
+  fxPlayer.addEventListener('change', () => renderFixture(currentCat));
+
+
+  async function load(refresh) {
+    if (refresh || !model) {
+      try { model = await loadModel(); } catch (e) { model = null; }
+      if (!model) { document.getElementById('fxList').innerHTML = '<div class="state error">No se pudo cargar la planilla.</div>'; statusText.textContent = 'Error de conexión'; return; }
+    }
+    ligaNav(navEl, currentCat, Object.keys(CATEGORIES));
+    subtitleEl.textContent = `${CATEGORIES[currentCat].rama} · Categoría ${CATEGORIES[currentCat].cat}` + (model.temporada ? ` · ${model.temporada}` : '');
+    renderFixture(currentCat);
+    statusDot.classList.add('live');
+    statusText.textContent = 'Actualizado ' + new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+    const now = document.getElementById('fx-now'); if (now && !load.scrolled) { load.scrolled = true; now.scrollIntoView({ block: 'center' }); }
+  }
+  addEventListener('hashchange', () => { currentCat = keyFromHash(); load(); });
+  load();
+  setInterval(() => load(true), REFRESH_MS);
+</script>
+<script src="site.js"></script>
+</body>
+</html>

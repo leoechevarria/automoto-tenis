@@ -136,3 +136,19 @@
       .sort((a, b) => b.rating - a.rating);
   }
 
+
+  // Selectores en dos niveles: rama (Caballeros | Damas) y categoría (A | B | C). Cambian el hash de la página.
+  function ligaNav(el, currentKey, keys) {
+    const ramas = [...new Set(keys.map(k => CATEGORIES[k].rama))];
+    const cur = CATEGORIES[currentKey];
+    el.innerHTML = `
+      <div class="seg" role="group" aria-label="Rama">${ramas.map(r => `<button type="button" data-rama="${r}" aria-pressed="${r === cur.rama}">${r}</button>`).join('')}</div>
+      <div class="cats" role="group" aria-label="Categoría">${keys.filter(k => CATEGORIES[k].rama === cur.rama)
+        .map(k => `<button type="button" data-cat="${k}" class="${k === currentKey ? 'active' : ''}">Categoría ${CATEGORIES[k].cat}</button>`).join('')}</div>`;
+    el.querySelectorAll('[data-cat]').forEach(b => b.addEventListener('click', () => { location.hash = b.dataset.cat; }));
+    el.querySelectorAll('[data-rama]').forEach(b => b.addEventListener('click', () => {
+      const same = keys.find(k => CATEGORIES[k].rama === b.dataset.rama && CATEGORIES[k].cat === cur.cat);
+      location.hash = same || keys.find(k => CATEGORIES[k].rama === b.dataset.rama);
+    }));
+  }
+  const keyFromHash = () => { const h = location.hash.slice(1); return CATEGORIES[ALIAS[h] || h] ? (ALIAS[h] || h) : DEFAULT_CATEGORY; };

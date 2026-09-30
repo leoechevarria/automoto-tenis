@@ -190,6 +190,21 @@ dialog.nov-dlg[open]::backdrop { animation: dlg-fade 280ms var(--ease-out); }
 .dlg-in .note { margin: 0; }
 @media (max-width: 560px) { .dlg-in { padding: var(--space-lg); } dialog.nov-dlg { width: calc(100vw - 16px); max-height: 92vh; } .dlg-in { max-height: 92vh; } }
 
+/* ---- Selectores de la liga (rama y categoría) ---- */
+#nav { display: grid; gap: var(--space-md); border-bottom: 0; }
+#nav .seg { display: inline-flex; justify-self: start; border: 2px solid var(--color-ink); }
+#nav .seg button { font-family: var(--font-display); font-weight: 800; font-size: 1.3rem; text-transform: uppercase; letter-spacing: 0.02em; padding: 8px 20px; min-height: 44px; background: none; border: 0; color: var(--color-ink); cursor: pointer; transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out); }
+#nav .seg button + button { border-left: 2px solid var(--color-ink); }
+#nav .seg button[aria-pressed="true"] { background: var(--color-ink); color: var(--color-paper); }
+@media (hover: hover) { #nav .seg button[aria-pressed="false"]:hover { background: var(--color-paper-2); } }
+#nav .seg button:active { transform: scale(0.98); }
+#nav .cats { display: flex; flex-wrap: wrap; gap: 0 var(--space-lg); border-bottom: 1px solid var(--color-rule); }
+#nav .cats button { font-family: var(--font-display); font-weight: 700; font-size: 1.35rem; text-transform: uppercase; letter-spacing: 0.02em; padding: 10px 0 8px; background: none; border: 0; color: var(--color-ink-2); cursor: pointer; position: relative; }
+#nav .cats button::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 3px; background: var(--color-accent); transform: scaleX(0); transform-origin: left; transition: transform var(--dur-fast) var(--ease-out); }
+#nav .cats button.active { color: var(--color-ink); }
+#nav .cats button.active::after { transform: scaleX(1); }
+@media (hover: hover) { #nav .cats button:hover { color: var(--color-ink); } }
+
 /* ---- Desplegables dentro de la página (details) ---- */
 details.fold { border-bottom: 1px solid var(--color-rule); }
 details.fold > summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-lg); align-items: end; padding: var(--space-lg) 0 var(--space-sm); border-bottom: 3px solid var(--color-ink); }
