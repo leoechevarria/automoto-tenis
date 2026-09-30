@@ -36,8 +36,8 @@
 .hoy-card .go { color: var(--color-accent-deep); font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; }
 .hoy-clima .big { display: flex; align-items: baseline; gap: 10px; font-family: var(--font-display); font-size: 2.6rem; font-weight: 800; line-height: 1; }
 .hoy-clima .big .ico { font-size: 2rem; }
-.hoy-clima .stars { font-size: 1.1rem; letter-spacing: 2px; color: var(--color-paper-3); }
-.hoy-clima .stars .on { color: var(--color-accent-deep); }
+.hoy-clima .stars { font-size: 1.4rem; letter-spacing: 2px; color: var(--color-rule); }
+.hoy-clima .stars .on { color: var(--color-accent); }
 .hoy-ev { grid-template-columns: 64px minmax(0, 1fr); column-gap: var(--space-md); }
 .hoy-ev .k { grid-column: 1 / -1; }
 .hoy-ev .d { text-align: center; border-right: 1px solid var(--color-rule); padding-right: var(--space-sm); }
@@ -77,42 +77,49 @@
 }
 /* ---- Clima ---- */
 .clima { padding: var(--space-3xl) 0 var(--space-2xl); }
-.clima-head { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-xl); align-items: end; margin-bottom: var(--space-lg); }
+.clima-head { display: flex; justify-content: space-between; align-items: end; gap: var(--space-lg); border-bottom: 3px solid var(--color-ink); padding-bottom: var(--space-sm); }
 .clima h2 { font-size: var(--text-2xl); font-weight: 800; text-transform: uppercase; }
-.clima .sub { margin: 0; color: var(--color-ink-2); }
-.wx-bar { display: flex; justify-content: space-between; align-items: center; border-top: 3px solid var(--color-ink); padding: var(--space-sm) 0; }
-.wx-bar .arrows { display: flex; gap: var(--space-sm); }
+.clima-head .arrows { display: flex; gap: var(--space-sm); flex: none; }
 .wx-arrow { width: 44px; height: 44px; border: 1px solid var(--color-rule); background: var(--color-paper); color: var(--color-ink); font-family: var(--font-display); font-size: 1.5rem; cursor: pointer; transition: transform var(--dur-fast) var(--ease-out), opacity var(--dur-fast); }
 .wx-arrow:active { transform: scale(0.96); }
 .wx-arrow[hidden] { display: inline-block; opacity: .3; pointer-events: none; }
-.wx-track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; border-top: 1px solid var(--color-rule); border-bottom: 1px solid var(--color-rule); }
+.wx-arrow:disabled { opacity: .3; cursor: default; }
+.wx-track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 14px 8px 18px; margin: 0 -8px; }
 .wx-track::-webkit-scrollbar { display: none; }
-.wx-card { flex: 0 0 auto; width: 210px; scroll-snap-align: start; padding: var(--space-md) var(--space-md) var(--space-lg); border-right: 1px solid var(--color-rule); }
-.wx-card:first-child { padding-left: 0; }
-.wx-top { display: flex; justify-content: space-between; align-items: baseline; font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-ink-2); }
-.wx-dow { color: var(--color-ink); font-weight: 500; }
-.wx-ico { font-size: 1.6rem; margin: 10px 0 2px; }
-.wx-temp { font-family: var(--font-display); font-size: 2.4rem; font-weight: 700; line-height: 1; }
-.wx-temp small { font-size: 0.55em; color: var(--color-ink-3); font-weight: 600; }
-.wx-meta { font-size: var(--text-xs); color: var(--color-ink-2); font-variant-numeric: tabular-nums; margin-top: 4px; }
+.wx-card { flex: 0 0 calc(25% - 1px); min-width: 250px; scroll-snap-align: start; padding: var(--space-lg); background: var(--color-paper); border: 1px solid transparent; border-right-color: var(--color-rule); position: relative; transition: transform 240ms var(--ease-out), box-shadow 240ms var(--ease-out), border-color 240ms var(--ease-out); }
+.wx-card:last-child { border-right-color: transparent; }
+@media (hover: hover) and (pointer: fine) {
+  .wx-card:hover { transform: scale(1.05); z-index: 2; border-color: var(--color-ink); box-shadow: 0 18px 32px -20px oklch(20% 0.03 60 / 0.45); }
+}
+.wx-top { display: flex; justify-content: space-between; align-items: baseline; }
+.wx-dow { font-family: var(--font-display); font-size: 1.6rem; font-weight: 800; text-transform: uppercase; line-height: 1; }
+.wx-date { font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-ink-3); }
+.wx-main { display: flex; align-items: center; gap: var(--space-md); margin: var(--space-md) 0 6px; }
+.wx-ico { font-size: 3.2rem; line-height: 1; }
+.wx-temp { font-family: var(--font-display); font-size: 3rem; font-weight: 800; line-height: 1; }
+.wx-temp small { font-size: 0.5em; color: var(--color-ink-3); font-weight: 600; }
+.wx-stars { font-size: 1.7rem; letter-spacing: 3px; line-height: 1; color: var(--color-rule); }
+.wx-stars .on { color: var(--color-accent); }
+.wx-meta { font-size: var(--text-sm); color: var(--color-ink-2); font-variant-numeric: tabular-nums; margin-top: 8px; }
 .wx-bands { margin-top: var(--space-md); border-top: 1px solid var(--color-rule); }
-.wx-band { padding: 7px 0; border-bottom: 1px solid var(--color-rule); }
+.wx-band { padding: 10px 0; border-bottom: 1px solid var(--color-rule); }
 .wx-band:last-child { border-bottom: 0; }
-.b-top { display: flex; align-items: center; gap: 6px; font-size: var(--text-xs); }
-.b-ico { width: 20px; flex: none; letter-spacing: -2px; }
-.b-name { font-weight: 600; }
-.b-stars { margin-left: auto; font-size: 0.7rem; letter-spacing: 1px; color: var(--color-paper-3); }
-.b-stars .on { color: var(--color-accent-deep); }
-.b-sub { font-size: 0.75rem; color: var(--color-ink-3); font-variant-numeric: tabular-nums; margin-top: 2px; }
+.b-top { display: flex; align-items: center; gap: 8px; }
+.b-ico { width: 30px; flex: none; font-size: 1.4rem; letter-spacing: -3px; line-height: 1; }
+.b-name { font-weight: 600; font-size: var(--text-sm); }
+.b-stars { margin-left: auto; font-size: 1.05rem; letter-spacing: 1px; color: var(--color-rule); }
+.b-stars .on { color: var(--color-accent); }
+.b-sub { font-size: var(--text-xs); color: var(--color-ink-3); font-variant-numeric: tabular-nums; margin: 4px 0 0 38px; }
 .wx-loading, .wx-error { padding: var(--space-xl) 0; color: var(--color-ink-2); font-family: var(--font-mono); font-size: var(--text-xs); }
-.clima-foot { margin: var(--space-sm) 0 0; font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-ink-3); }
+@media (max-width: 1000px) { .wx-card { flex-basis: calc(33.333% - 1px); } }
+@media (max-width: 700px) { .wx-card { flex-basis: 78%; min-width: 0; } }
 </style>
 </head>
 <body>
 <!-- layout:header -->
 <header class="mast" id="mast">
   <div class="wrap mast-in">
-    <a class="mast-brand" href="index.html" aria-label="Automoto Tenis, inicio"><img src="assets/logo.png" alt=""><span>Automoto Club Deportivo<b>Subcomisión de Tenis</b></span></a>
+    <a class="mast-brand" href="index.html" aria-label="Automoto Tenis, inicio"><img src="assets/logo.png" alt=""><span>Automoto Club Deportivo<b>Tenis</b></span></a>
     <nav class="mast-nav" aria-label="Secciones">
       <div class="menu">
         <button type="button" class="menu-btn" aria-expanded="false" aria-haspopup="true">Liga <span class="chev" aria-hidden="true">▾</span></button>
@@ -197,22 +204,21 @@
     <a class="row" href="rankings.html">
       <h2>Liga <span class="go" aria-hidden="true">→</span></h2>
       <p>Posiciones de las categorías A, B y C, reglas de la liga y carga de resultados.</p>
-      <span class="meta" id="metaLiga">Categorías A · B · C</span>
+      <span class="meta" id="metaLiga"></span>
     </a>
     <a class="row" href="novedades.html">
       <h2>Novedades <span class="go" aria-hidden="true">→</span></h2>
       <p>Anuncios del club y agenda de eventos. Lo importante queda fijado arriba.</p>
-      <span class="meta" id="metaNov">Anuncios · eventos</span>
+      <span class="meta" id="metaNov"></span>
     </a>
     <a class="row" href="mercado.html">
       <h2>Mercado del usado <span class="go" aria-hidden="true">→</span></h2>
       <p>Raquetas, zapatillas y bolsos que venden socios y profes. Publicá lo tuyo o encontrá algo a buen precio.</p>
-      <span class="meta" id="metaMercado">Compra · venta</span>
+      <span class="meta" id="metaMercado"></span>
     </a>
     <a class="row" href="info.html">
       <h2>El club <span class="go" aria-hidden="true">→</span></h2>
       <p>Cuota y alias de pago, cuidado de la cancha, teléfonos y la subcomisión.</p>
-      <span class="meta">Cuota · alias · contactos</span>
     </a>
   </nav>
 
@@ -233,10 +239,6 @@
   <section class="clima" id="clima">
     <div class="clima-head">
       <h2>¿Está lindo para el tenis?</h2>
-      <p class="sub">Pronóstico de la semana con un puntaje pensado para jugar: poco viento, sin lluvia y con sol son 5 estrellas.</p>
-    </div>
-    <div class="wx-bar">
-      <p class="clima-foot" id="wxFoot" style="margin:0"></p>
       <div class="arrows">
         <button class="wx-arrow prev" id="wxPrev" type="button" aria-label="Días anteriores" hidden>‹</button>
         <button class="wx-arrow next" id="wxNext" type="button" aria-label="Más días" hidden>›</button>
@@ -249,9 +251,9 @@
 <!-- layout:footer -->
 <footer>
   <div class="wrap foot-cols">
-    <div><strong>Automoto Club Deportivo</strong><a href="subcomision.html">Subcomisión de Tenis</a><br>Tornquist, Buenos Aires</div>
-    <div class="links"><strong>Accesos</strong><a href="info.html#pagos">Cuota y alias de pago</a><a href="info.html#contacto">Teléfonos y contactos</a><a href="reglas.html">Reglas de la liga</a><a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener">Instagram @automototenis</a></div>
-    <div><strong>¿Algo anda mal en la página?</strong>Avisanos por <a href="https://ig.me/m/automototenis" target="_blank" rel="noopener">mensaje de Instagram</a>.</div>
+    <div><strong>Automoto Club Deportivo · Tenis</strong>Tornquist, Buenos Aires</div>
+    <div class="links"><a href="info.html#pagos">Cuota y alias de pago</a><a href="info.html#contacto">Teléfonos y contactos</a><a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener">Instagram</a></div>
+    <div class="links"><a href="https://ig.me/m/automototenis" target="_blank" rel="noopener">¿Algo anda mal? Avisanos</a></div>
   </div>
 </footer>
 <!-- /layout:footer -->
@@ -271,8 +273,7 @@
     el.innerHTML = `<span class="k">${tarde ? 'Mañana' : 'Hoy'} en la cancha</span>
       <div class="big"><span class="ico">${w.i}</span>${day.tmax}°<small style="font-size:.5em;color:var(--color-ink-3)">/ ${day.tmin}°</small></div>
       <div class="stars" aria-label="${day.stars} de 5 estrellas">${starsHtml(day.stars)}</div>
-      <p>${v.t}${best ? ' · mejor ' + (best.b.key === 'mañ' ? 'a la mañana' : best.b.key === 'tar' ? 'a la tarde' : 'a la noche') : ''} · 💨 ${day.wind} km/h</p>
-      <span class="go">Ver la semana ↓</span>`;
+      <p>${v.t}${best ? ' · mejor ' + (best.b.key === 'mañ' ? 'a la mañana' : best.b.key === 'tar' ? 'a la tarde' : 'a la noche') : ''} · 💨 ${day.wind} km/h</p>`;
   }
 
   /* ---- Novedades: anuncios, próximo evento y dato de la fila ---- */
@@ -327,7 +328,6 @@
   // -------------------------------------------------
 
   const wxTrack = document.getElementById('wxTrack');
-  const wxFoot = document.getElementById('wxFoot');
   const wxPrev = document.getElementById('wxPrev');
   const wxNext = document.getElementById('wxNext');
 
@@ -437,7 +437,7 @@
       + `&hourly=temperature_2m,weather_code,wind_speed_10m,precipitation_probability`
       + `&timezone=auto&forecast_days=${WX_DAYS}`;
     try {
-      const res = await fetch(url);
+      const res = await fetch(url, { signal: AbortSignal.timeout ? AbortSignal.timeout(8000) : undefined });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
       const d = data.daily, h = data.hourly;
@@ -475,14 +475,13 @@
         return `
           <div class="wx-card" style="--i:${idx}">
             <div class="wx-top"><span class="wx-dow">${label}</span><span class="wx-date">${dt.getDate()} ${MON[dt.getMonth()]}</span></div>
-            <div class="wx-ico" title="${w.t}">${w.i}</div>
-            <div class="wx-temp">${day.tmax}°<small> / ${day.tmin}°</small></div>
+            <div class="wx-main"><div class="wx-ico" title="${w.t}">${w.i}</div><div class="wx-temp">${day.tmax}°<small> / ${day.tmin}°</small></div></div>
+            <div class="wx-stars" aria-label="${day.stars} de 5 estrellas">${starsHtml(day.stars)}</div>
             <div class="wx-meta">💨 ${day.wind} km/h · 💧 ${day.precip}%</div>
             ${bandsHtml ? `<div class="wx-bands">${bandsHtml}</div>` : ''}
           </div>`;
       }).join('');
 
-      wxFoot.textContent = 'Datos de Open-Meteo';
       renderHoyClima(days);
 
       updateArrows();
@@ -495,7 +494,7 @@
 
   function scrollCards(dir) {
     const card = wxTrack.querySelector('.wx-card');
-    const step = card ? (card.offsetWidth + 13) * 3 : 480;
+    const step = card ? card.offsetWidth * (innerWidth > 700 ? 2 : 1) : 480;
     wxTrack.scrollBy({ left: dir * step, behavior: 'smooth' });
   }
   wxPrev.addEventListener('click', () => scrollCards(-1));

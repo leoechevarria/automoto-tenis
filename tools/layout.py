@@ -41,7 +41,7 @@ def header(page):
     return f'''<!-- layout:header -->
 <header class="mast" id="mast">
   <div class="wrap mast-in">
-    <a class="mast-brand" href="index.html" aria-label="Automoto Tenis, inicio"><img src="assets/logo.png" alt=""><span>Automoto Club Deportivo<b>Subcomisión de Tenis</b></span></a>
+    <a class="mast-brand" href="index.html" aria-label="Automoto Tenis, inicio"><img src="assets/logo.png" alt=""><span>Automoto Club Deportivo<b>Tenis</b></span></a>
     <nav class="mast-nav" aria-label="Secciones">
       <div class="menu">
         <button type="button" class="menu-btn"{cur("liga")} aria-expanded="false" aria-haspopup="true">Liga <span class="chev" aria-hidden="true">▾</span></button>
@@ -90,9 +90,9 @@ def header(page):
 FOOTER = '''<!-- layout:footer -->
 <footer>
   <div class="wrap foot-cols">
-    <div><strong>Automoto Club Deportivo</strong><a href="subcomision.html">Subcomisión de Tenis</a><br>Tornquist, Buenos Aires</div>
-    <div class="links"><strong>Accesos</strong><a href="info.html#pagos">Cuota y alias de pago</a><a href="info.html#contacto">Teléfonos y contactos</a><a href="reglas.html">Reglas de la liga</a><a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener">Instagram @automototenis</a></div>
-    <div><strong>¿Algo anda mal en la página?</strong>Avisanos por <a href="https://ig.me/m/automototenis" target="_blank" rel="noopener">mensaje de Instagram</a>.</div>
+    <div><strong>Automoto Club Deportivo · Tenis</strong>Tornquist, Buenos Aires</div>
+    <div class="links"><a href="info.html#pagos">Cuota y alias de pago</a><a href="info.html#contacto">Teléfonos y contactos</a><a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener">Instagram</a></div>
+    <div class="links"><a href="https://ig.me/m/automototenis" target="_blank" rel="noopener">¿Algo anda mal? Avisanos</a></div>
   </div>
 </footer>
 <!-- /layout:footer -->'''
