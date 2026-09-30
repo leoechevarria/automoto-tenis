@@ -1,10 +1,12 @@
 # Cloudflare Pages: que el navegador revalide CSS, JS y datos en cada visita
 # (si no, después de publicar un cambio se ve la versión vieja hasta 4 horas).
-/*.css
+/site.css
   Cache-Control: public, max-age=0, must-revalidate
-/*.js
+/site.js
+  Cache-Control: public, max-age=0, must-revalidate
+/liga.js
+  Cache-Control: public, max-age=0, must-revalidate
+/novedades.js
   Cache-Control: public, max-age=0, must-revalidate
 /data/*
-  Cache-Control: public, max-age=0, must-revalidate
-/*.html
   Cache-Control: public, max-age=0, must-revalidate
