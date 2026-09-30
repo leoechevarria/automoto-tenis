@@ -142,7 +142,7 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
   <dialog class="res" id="resDlg">
     <form method="dialog" id="resForm">
       <h2>Resultado de la liga</h2>
-      <label>Categoría<select id="rCat"><option value="a">Categoría A</option><option value="b">Categoría B</option><option value="c">Categoría C</option></select></label>
+      <label>Categoría<select id="rCat"></select></label>
       <div class="who">
         <label>Ganador<select id="rWin" required><option value="">Elegí…</option></select></label>
         <label>Perdedor<select id="rLose" required><option value="">Elegí…</option></select></label>
@@ -179,16 +179,26 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
   const SHEET_ID = '1rWi1oJ9PKRLErlIGEzqEZ2JakEDyuk1poDqFdj88R9w';
   const API_KEY = 'AIzaSyCZWAlXFGaAtjNYYWB3ajsjQ0W72CNJnCI';
   const REFRESH_MS = 5 * 60 * 1000; // refrescar cada 5 minutos
+  const SHEETS = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}`;
 
-  // Reglas de ascenso/descenso por categoría (ver REGLAS - LIGA 2026):
-  // - Top N asciende automático, los 2 puestos siguientes juegan promoción de ascenso.
-  // - Últimos N desciende automático, los 2 puestos anteriores juegan promoción de descenso.
+  // Tablas: rama + categoría. 'a', 'b' y 'c' siguen funcionando como links viejos.
   const CATEGORIES = {
-    a: { tab: 'Ranking_A', label: 'Categoría A', short: 'A', ascendTopN: 0, descendBottomN: 3, aboveLabel: null, belowLabel: 'Categoría B' },
-    b: { tab: 'Ranking_B', label: 'Categoría B', short: 'B', ascendTopN: 3, descendBottomN: 3, aboveLabel: 'Categoría A', belowLabel: 'Categoría C' },
-    c: { tab: 'Ranking_C', label: 'Categoría C', short: 'C', ascendTopN: 3, descendBottomN: 0, aboveLabel: 'Categoría B', belowLabel: null },
+    ca: { rama: 'Caballeros', cat: 'A', oldTab: 'Ranking_A' },
+    cb: { rama: 'Caballeros', cat: 'B', oldTab: 'Ranking_B' },
+    cc: { rama: 'Caballeros', cat: 'C', oldTab: 'Ranking_C' },
+    da: { rama: 'Damas', cat: 'A' },
+    db: { rama: 'Damas', cat: 'B' },
   };
-  const DEFAULT_CATEGORY = 'a';
+  const ALIAS = { a: 'ca', b: 'cb', c: 'cc' };
+  // Reglas de ascenso/descenso si la planilla no tiene la pestaña Categorías (REGLAS - LIGA 2026).
+  const DEFAULT_RULES = {
+    ca: { up: 0, down: 3, promoUp: 0, promoDown: 2 },
+    cb: { up: 3, down: 3, promoUp: 2, promoDown: 2 },
+    cc: { up: 3, down: 0, promoUp: 2, promoDown: 0 },
+    da: { up: 0, down: 0, promoUp: 0, promoDown: 0 },
+    db: { up: 0, down: 0, promoUp: 0, promoDown: 0 },
+  };
+  const DEFAULT_CATEGORY = 'ca';
   // ------------------------
 
   const navEl = document.getElementById('nav');
@@ -199,53 +209,95 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
   const statusText = document.getElementById('status-text');
 
   let currentCat = DEFAULT_CATEGORY;
+  let model = null;       // formato nuevo: { temporada, rows, rules }
+  let legacy = false;     // true = planilla anterior (pestañas Ranking_A/B/C)
 
   function escapeHtml(str) {
     const div = document.createElement('div');
     div.textContent = str;
     return div.innerHTML;
   }
+  const label = key => `${CATEGORIES[key].rama} · Categoría ${CATEGORIES[key].cat}`;
+  const shortLabel = key => `${CATEGORIES[key].rama} ${CATEGORIES[key].cat}`;
+  const visibleKeys = () => Object.keys(CATEGORIES).filter(k => !legacy || CATEGORIES[k].oldTab);
+  const n = v => parseInt(String(v ?? '').replace(/[^\d-]/g, ''), 10) || 0;
+
+  function rulesFor(key) {
+    const r = (model && model.rules[key]) || DEFAULT_RULES[key];
+    const same = Object.keys(CATEGORIES).filter(k => CATEGORIES[k].rama === CATEGORIES[key].rama).sort();
+    const idx = same.indexOf(key);
+    return { ...r, above: idx > 0 ? `Categoría ${CATEGORIES[same[idx - 1]].cat}` : null, below: idx < same.length - 1 ? `Categoría ${CATEGORIES[same[idx + 1]].cat}` : null };
+  }
+
+  /* ---- Datos: formato nuevo (una sola planilla por temporadas) o planilla anterior ---- */
+  async function loadModel() {
+    const ranges = ['Temporadas!A2:D', 'Inscripciones!A2:I', 'Categorías!A2:F'].map(r => 'ranges=' + encodeURIComponent(r)).join('&');
+    const res = await fetch(`${SHEETS}/values:batchGet?${ranges}&key=${API_KEY}`);
+    if (!res.ok) return null; // las pestañas no existen: planilla anterior
+    const [temps, ins, cats] = (await res.json()).valueRanges.map(v => v.values || []);
+    const activa = (temps.find(r => (r[3] || '').trim().toLowerCase() === 'activa') || temps[temps.length - 1] || [])[0];
+    const keyOf = (rama, cat) => Object.keys(CATEGORIES).find(k => CATEGORIES[k].rama === rama && CATEGORIES[k].cat === cat);
+    const rows = ins.filter(r => r[0] === activa && r[3]).map(r => ({ key: keyOf(r[1], r[2]), jugador: r[3], pj: n(r[4]), pg: n(r[5]), pp: n(r[6]), np: n(r[7]), pts: n(r[8]) })).filter(r => r.key);
+    const rules = {};
+    cats.forEach(r => { const k = keyOf(r[0], r[1]); if (k && r.slice(2).some(v => v !== '' && v != null)) rules[k] = { up: n(r[2]), down: n(r[3]), promoUp: n(r[4]), promoDown: n(r[5]) }; });
+    return { temporada: activa, rows, rules };
+  }
+
+  async function tableRows(key) {
+    if (!legacy && !model) {
+      model = await loadModel();
+      legacy = !model;
+      renderNav();
+    }
+    if (legacy) {
+      const cfg = CATEGORIES[key];
+      if (!cfg.oldTab) return [];
+      const res = await fetch(`${SHEETS}/values/${encodeURIComponent(cfg.oldTab)}?key=${API_KEY}`);
+      if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e?.error?.message || `HTTP ${res.status}`); }
+      return ((await res.json()).values || []).slice(1).filter(r => r[0] && r[0].trim()).map(r => ({ jugador: r[0], pj: n(r[1]), pg: n(r[2]), pp: n(r[3]), np: n(r[4]), pts: n(r[5]) }));
+    }
+    return model.rows.filter(r => r.key === key)
+      .sort((a, b) => b.pts - a.pts || b.pg - a.pg || a.np - b.np || a.jugador.localeCompare(b.jugador));
+  }
 
   function renderNav() {
-    navEl.innerHTML = Object.entries(CATEGORIES)
-      .map(([key, cfg]) => `<button data-cat="${key}" class="${key === currentCat ? 'active' : ''}">${cfg.label}</button>`)
+    navEl.innerHTML = visibleKeys()
+      .map(key => `<button data-cat="${key}" class="${key === currentCat ? 'active' : ''}">${shortLabel(key)}</button>`)
       .join('');
-    navEl.querySelectorAll('button').forEach(btn => {
-      btn.addEventListener('click', () => {
-        location.hash = btn.dataset.cat;
-      });
-    });
+    navEl.querySelectorAll('button').forEach(btn => btn.addEventListener('click', () => { location.hash = btn.dataset.cat; }));
   }
 
   function renderLegend(cfg, total) {
     const items = [];
-    if (cfg.ascendTopN > 0) {
-      items.push(`<div class="legend-item"><span class="legend-swatch ascend"></span> Top ${cfg.ascendTopN} — asciende a ${cfg.aboveLabel}</div>`);
-      items.push(`<div class="legend-item"><span class="legend-swatch promo"></span> ${cfg.ascendTopN + 1}° y ${cfg.ascendTopN + 2}° — juegan promoción vs. ${cfg.aboveLabel}</div>`);
+    const rango = (a, b) => a === b ? `${a}°` : `${a}° a ${b}°`;
+    if (!total) { legendEl.innerHTML = ''; return; }
+    if (cfg.up > 0 && cfg.above) {
+      items.push(`<div class="legend-item"><span class="legend-swatch ascend"></span> ${cfg.up === 1 ? 'El primero asciende' : `Top ${cfg.up} — ascienden`} a ${cfg.above}</div>`);
+      if (cfg.promoUp > 0) items.push(`<div class="legend-item"><span class="legend-swatch promo"></span> ${rango(cfg.up + 1, cfg.up + cfg.promoUp)} — promoción vs. ${cfg.above}</div>`);
     }
-    if (cfg.descendBottomN > 0 && total > 0) {
-      const bottomStart = total - cfg.descendBottomN + 1;
-      items.push(`<div class="legend-item"><span class="legend-swatch descend"></span> Últimos ${cfg.descendBottomN} — desciende a ${cfg.belowLabel}</div>`);
-      items.push(`<div class="legend-item"><span class="legend-swatch promo"></span> ${bottomStart - 2}° y ${bottomStart - 1}° — juegan promoción vs. ${cfg.belowLabel}</div>`);
+    if (cfg.down > 0 && cfg.below && total > 0) {
+      const bottomStart = total - cfg.down + 1;
+      items.push(`<div class="legend-item"><span class="legend-swatch descend"></span> ${cfg.down === 1 ? 'El último desciende' : `Últimos ${cfg.down} — descienden`} a ${cfg.below}</div>`);
+      if (cfg.promoDown > 0) items.push(`<div class="legend-item"><span class="legend-swatch promo"></span> ${rango(bottomStart - cfg.promoDown, bottomStart - 1)} — promoción vs. ${cfg.below}</div>`);
     }
     legendEl.innerHTML = items.join('');
   }
 
-  function renderTable(rows, cfg) {
-    const header = rows[0];
-    const dataRows = rows.slice(1).filter(r => r[0] && r[0].trim() !== '');
-    const categoryLabel = header && header[0] ? header[0] : 'Jugador';
-    const total = dataRows.length;
-    const bottomStart = total - cfg.descendBottomN + 1;
-
+  function renderTable(rows, key) {
+    const cfg = rulesFor(key);
+    const total = rows.length;
+    const bottomStart = total - cfg.down + 1;
     renderLegend(cfg, total);
-
+    if (!total) {
+      contentEl.innerHTML = `<div class="state">Todavía no hay jugadores inscriptos en ${escapeHtml(label(key))}.</div>`;
+      return;
+    }
     let html = `
       <table>
         <thead>
           <tr>
             <th class="num">#</th>
-            <th>${escapeHtml(categoryLabel)}</th>
+            <th>${escapeHtml(CATEGORIES[key].rama)} "${CATEGORIES[key].cat}"</th>
             <th class="num">PJ</th>
             <th class="num">PG</th>
             <th class="num">PP</th>
@@ -254,98 +306,65 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
             <th class="num">Pts</th>
           </tr>
         </thead>
-        <tbody>
-    `;
-
-    dataRows.forEach((row, i) => {
-      const [player = '', pj = '0', pg = '0', pp = '0', np = '0', pts = '0'] = row;
+        <tbody>`;
+    rows.forEach((r, i) => {
       const rank = i + 1;
-      const played = parseInt(pj, 10) || 0;
-      const won = parseInt(pg, 10) || 0;
-      const lost = parseInt(pp, 10) || 0;
-      const winRate = played > 0 ? Math.round((won / played) * 100) : 0;
-
-      const isAscend = cfg.ascendTopN > 0 && rank <= cfg.ascendTopN;
-      const isAscendPromo = cfg.ascendTopN > 0 && (rank === cfg.ascendTopN + 1 || rank === cfg.ascendTopN + 2);
-      const isDescend = cfg.descendBottomN > 0 && rank >= bottomStart;
-      const isDescendPromo = cfg.descendBottomN > 0 && (rank === bottomStart - 1 || rank === bottomStart - 2);
-
-      let rowClass = '';
-      let tag = '';
-      if (isAscend) {
-        rowClass = 'ascends';
-        tag = '<span class="tag ascend">Asciende</span>';
-      } else if (isDescend) {
-        rowClass = 'descends';
-        tag = '<span class="tag descend">Desciende</span>';
-      } else if (isAscendPromo || isDescendPromo) {
-        rowClass = 'promo';
-        tag = '<span class="tag promo">Promoción</span>';
-      }
-
+      const winRate = r.pj > 0 ? Math.round((r.pg / r.pj) * 100) : 0;
+      const isAscend = cfg.up > 0 && cfg.above && rank <= cfg.up;
+      const isAscendPromo = cfg.promoUp > 0 && cfg.above && rank > cfg.up && rank <= cfg.up + cfg.promoUp;
+      const isDescend = cfg.down > 0 && cfg.below && rank >= bottomStart;
+      const isDescendPromo = cfg.promoDown > 0 && cfg.below && rank < bottomStart && rank >= bottomStart - cfg.promoDown;
+      let rowClass = '', tag = '';
+      if (isAscend) { rowClass = 'ascends'; tag = '<span class="tag ascend">Asciende</span>'; }
+      else if (isDescend) { rowClass = 'descends'; tag = '<span class="tag descend">Desciende</span>'; }
+      else if (isAscendPromo || isDescendPromo) { rowClass = 'promo'; tag = '<span class="tag promo">Promoción</span>'; }
       html += `
         <tr class="rank-${rank} ${rowClass}">
           <td class="pos"><span class="pos-badge">${rank}</span></td>
-          <td>
-            <div class="player">${escapeHtml(player)}</div>
-            ${tag}
-          </td>
-          <td class="num">${escapeHtml(pj)}</td>
-          <td class="num">${escapeHtml(pg)}</td>
-          <td class="num">${escapeHtml(pp)}</td>
-          <td class="num">${escapeHtml(np)}</td>
+          <td><div class="player">${escapeHtml(r.jugador)}</div>${tag}</td>
+          <td class="num">${r.pj}</td>
+          <td class="num">${r.pg}</td>
+          <td class="num">${r.pp}</td>
+          <td class="num">${r.np}</td>
           <td class="num gp">
-            <div class="gp-ratio">${won}/${lost} <span class="gp-pct">${winRate}%</span></div>
+            <div class="gp-ratio">${r.pg}/${r.pp} <span class="gp-pct">${winRate}%</span></div>
             <div class="win-rate-bar"><div class="win-rate-fill" style="width:${winRate}%"></div></div>
           </td>
-          <td class="num pts">${escapeHtml(pts)}</td>
-        </tr>
-      `;
+          <td class="num pts">${r.pts}</td>
+        </tr>`;
     });
-
-    html += '</tbody></table>';
-    contentEl.innerHTML = html;
+    contentEl.innerHTML = html + '</tbody></table>';
   }
 
   function renderError(message) {
     legendEl.innerHTML = '';
-    contentEl.innerHTML = `
-      <div class="state error">
-        No se pudo cargar el ranking.<br>${escapeHtml(message)}
-      </div>
-    `;
+    contentEl.innerHTML = `<div class="state error">No se pudo cargar el ranking.<br>${escapeHtml(message)}</div>`;
     statusDot.classList.remove('live');
     statusText.textContent = 'Error de conexión';
   }
 
-  async function loadRanking() {
-    const cfg = CATEGORIES[currentCat];
+  async function loadRanking(refresh) {
+    if (refresh) model = null;
+    const key = currentCat;
     contentEl.innerHTML = `<div class="state"><div class="spinner"></div>Cargando ranking…</div>`;
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(cfg.tab)}?key=${API_KEY}`;
     try {
-      const res = await fetch(url);
-      if (!res.ok) {
-        const errBody = await res.json().catch(() => ({}));
-        throw new Error(errBody?.error?.message || `HTTP ${res.status}`);
-      }
-      const data = await res.json();
-      const rows = data.values || [];
-      if (rows.length < 2) throw new Error('La hoja no contiene datos.');
-
-      renderTable(rows, cfg);
+      const rows = await tableRows(key);
+      if (key !== currentCat) return;
+      subtitleEl.textContent = label(key) + (model?.temporada ? ` · ${model.temporada}` : '');
+      renderTable(rows, key);
       statusDot.classList.add('live');
-      const now = new Date();
-      statusText.textContent = 'Actualizado ' + now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+      statusText.textContent = 'Actualizado ' + new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
     } catch (err) {
       renderError(err.message || 'Error desconocido');
     }
   }
 
   function setCategory(key) {
+    key = ALIAS[key] || key;
     if (!CATEGORIES[key]) key = DEFAULT_CATEGORY;
     currentCat = key;
     renderNav();
-    subtitleEl.textContent = `Caballeros · ${CATEGORIES[key].label}`;
+    subtitleEl.textContent = label(key);
     loadRanking();
   }
 
@@ -354,31 +373,17 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
   });
 
   setCategory(location.hash.replace('#', '') || DEFAULT_CATEGORY);
-  setInterval(loadRanking, REFRESH_MS);
+  setInterval(() => loadRanking(true), REFRESH_MS);
 
 
   /* ---- Cargá tu resultado → WhatsApp ---- */
   const WA_NUM = '5491149404549';
   const dlg = document.getElementById('resDlg'), form = document.getElementById('resForm');
   const rCat = document.getElementById('rCat'), rWin = document.getElementById('rWin'), rLose = document.getElementById('rLose'), rPrev = document.getElementById('rPrev');
-  const players = {};
-  const origRender = renderTable;
-  function catNames(key) {
-    if (players[key]) return players[key];
-    if (key === currentCat) return [...document.querySelectorAll('#content .player')].map(p => p.textContent.trim());
-    return [];
-  }
   async function fillPlayers() {
     const key = rCat.value;
-    let names = catNames(key);
-    if (!names.length) {
-      try {
-        const cfg = CATEGORIES[key];
-        const res = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(cfg.tab)}?key=${API_KEY}`);
-        const j = await res.json(); names = (j.values || []).slice(1).map(r => r[0]).filter(Boolean);
-      } catch (e) { names = []; }
-    }
-    players[key] = names;
+    let names = [];
+    try { names = (await tableRows(key)).map(r => r.jugador).sort((a, b) => a.localeCompare(b)); } catch (e) { names = []; }
     for (const sel of [rWin, rLose]) {
       const cur = sel.value;
       sel.innerHTML = '<option value="">Elegí…</option>' + names.map(n => `<option>${escapeHtml(n)}</option>`).join('') + '<option value="__otro">Otro / no está en la lista</option>';
@@ -392,7 +397,7 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
     return sets.join(' ');
   }
   function message() {
-    const cat = CATEGORIES[rCat.value].label, d = document.getElementById('rDate').value;
+    const cat = label(rCat.value), d = document.getElementById('rDate').value;
     const fecha = d ? new Date(d + 'T12:00:00').toLocaleDateString('es-AR', { day: 'numeric', month: 'long' }) : 'hoy';
     const w = rWin.value === '__otro' ? '(otro)' : rWin.value, l = rLose.value === '__otro' ? '(otro)' : rLose.value;
     return `Hola Gonza, cargo un resultado de la liga 🎾\n${cat}\n${w || '…'} le ganó a ${l || '…'}\n${score() || '…'}\nJugado ${fecha}.`;
@@ -403,6 +408,7 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
   if (location.hash === '#cargar') setTimeout(() => document.getElementById('openRes').click(), 600);
   addEventListener('hashchange', () => { if (location.hash === '#cargar') document.getElementById('openRes').click(); });
   document.getElementById('openRes').addEventListener('click', () => {
+    rCat.innerHTML = visibleKeys().map(k => `<option value="${k}">${label(k)}</option>`).join('');
     rCat.value = currentCat;
     const t = new Date(); document.getElementById('rDate').value = `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}-${String(t.getDate()).padStart(2, '0')}`;
     [['s1a', 6], ['s1b', 4], ['s2a', 6], ['s2b', 4], ['s3a', ''], ['s3b', '']].forEach(([id, v]) => { document.getElementById(id).value = v; });
