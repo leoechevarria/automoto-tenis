@@ -85,6 +85,13 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
 .fx-match .sc.pend { color: var(--color-ink-3); }
 .fx-match.mine .p { text-decoration: underline; text-decoration-color: var(--color-accent); text-underline-offset: 4px; }
 @media (max-width: 640px) { .fx-round { grid-template-columns: minmax(0, 1fr); gap: var(--space-sm); } .fx-match { grid-template-columns: minmax(0, 1fr); gap: 2px; } .fx-match .sc { text-align: left; } }
+.res .impact { display: grid; gap: 6px; }
+.res .impact .row-i { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; align-items: baseline; padding: 8px 0; border-bottom: 1px solid var(--color-rule); }
+.res .impact .nm { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; text-transform: uppercase; }
+.res .impact .ch { font-family: var(--font-mono); font-size: var(--text-xs); text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.res .impact .up { color: var(--color-accent-deep); font-weight: 500; }
+.res .impact .dn { color: var(--color-ink-3); }
+.res .impact .k { font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-ink-3); }
 </style>
 </head>
 <body>
@@ -180,6 +187,7 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
         <div class="set"><input id="s3a" type="number" min="0" max="10" inputmode="numeric" placeholder="3er set"><span>–</span><input id="s3b" type="number" min="0" max="10" inputmode="numeric" placeholder="opcional"></div>
       </div>
       <label>Fecha<input id="rDate" type="date"></label>
+      <div class="impact" id="rImpact" hidden></div>
       <div class="preview" id="rPrev">Elegí los jugadores y cargá los sets.</div>
       <div class="acts">
         <button class="btn" type="button" id="resCancel">Cancelar</button>
@@ -265,16 +273,23 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
 
   /* ---- Datos: formato nuevo (una sola planilla por temporadas) o planilla anterior ---- */
   async function loadModel() {
-    const ranges = ['Temporadas!A2:D', 'Inscripciones!A2:I', 'Categorías!A2:F', 'Partidos!A2:N', 'Jugadores!A2:C'].map(r => 'ranges=' + encodeURIComponent(r)).join('&');
+    const ranges = ['Temporadas!A2:G', 'Inscripciones!A2:M', 'Categorías!A2:F', 'Partidos!A2:P', 'Jugadores!A2:C'].map(r => 'ranges=' + encodeURIComponent(r)).join('&');
     const res = await fetch(`${SHEETS}/values:batchGet?${ranges}&key=${API_KEY}`);
     if (!res.ok) return null; // las pestañas no existen: planilla anterior
     const [temps, ins, cats, partidos, jugadores] = (await res.json()).valueRanges.map(v => v.values || []);
-    const activa = (temps.find(r => (r[3] || '').trim().toLowerCase() === 'activa') || temps[temps.length - 1] || [])[0];
+    // Temporada a mostrar: la Activa; si no hay, la última Cerrada con inscriptos.
+    const estado = r => (r[3] || '').trim().toLowerCase();
+    const conInscriptos = t => ins.some(r => r[0] === t);
+    const filaActiva = temps.find(r => estado(r) === 'activa')
+      || [...temps].reverse().find(r => estado(r) === 'cerrada' && conInscriptos(r[0]))
+      || temps[temps.length - 1] || [];
+    const activa = filaActiva[0];
+    const pts = { g: n(filaActiva[4]) || 100, p: n(filaActiva[5]) || 40, np: filaActiva[6] !== undefined && filaActiva[6] !== '' ? n(filaActiva[6]) : -20 };
     const keyOf = (rama, cat) => Object.keys(CATEGORIES).find(k => CATEGORIES[k].rama === rama && CATEGORIES[k].cat === cat);
-    const rows = ins.filter(r => r[0] === activa && r[3]).map(r => ({ key: keyOf(r[1], r[2]), jugador: r[3], pj: n(r[4]), pg: n(r[5]), pp: n(r[6]), np: n(r[7]), pts: n(r[8]) })).filter(r => r.key);
+    const rows = ins.filter(r => r[0] === activa && r[3]).map(r => ({ key: keyOf(r[1], r[2]), jugador: r[3], pj: n(r[4]), pg: n(r[5]), pp: n(r[6]), np: n(r[7]), pts: n(r[8]), puesto: n(r[12]) || null })).filter(r => r.key);
     const rules = {};
     cats.forEach(r => { const k = keyOf(r[0], r[1]); if (k && r.slice(2).some(v => v !== '' && v != null)) rules[k] = { up: n(r[2]), down: n(r[3]), promoUp: n(r[4]), promoDown: n(r[5]) }; });
-    return { temporada: activa, rows, rules, partidos, jugadores, ins };
+    return { temporada: activa, enJuego: estado(filaActiva) === 'activa', pts, rows, rules, partidos, jugadores, ins };
   }
 
   async function tableRows(key) {
@@ -290,9 +305,17 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
       if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e?.error?.message || `HTTP ${res.status}`); }
       return ((await res.json()).values || []).slice(1).filter(r => r[0] && r[0].trim()).map(r => ({ jugador: r[0], pj: n(r[1]), pg: n(r[2]), pp: n(r[3]), np: n(r[4]), pts: n(r[5]) }));
     }
-    return model.rows.filter(r => r.key === key)
-      .sort((a, b) => b.pts - a.pts || b.pg - a.pg || a.np - b.np || a.jugador.localeCompare(b.jugador));
+    return sortRows(model.rows.filter(r => r.key === key));
   }
+
+  // Orden: el puesto final oficial si la temporada lo tiene; si no, puntos, ganados, menos no presentados.
+  function sortRows(list) {
+    const conPuesto = list.length && list.every(r => r.puesto);
+    return list.slice().sort((a, b) => conPuesto ? a.puesto - b.puesto
+      : b.pts - a.pts || b.pg - a.pg || a.np - b.np || a.jugador.localeCompare(b.jugador));
+  }
+  // Ganador de una fila de Partidos: columna P (calculada); compatible con Ganó = nombre.
+  const ganadorDe = r => r[15] || (/^jugador [12]$/i.test(r[11] || '') ? (r[11].endsWith('1') ? r[8] : r[9]) : r[11]) || '';
 
   function renderNav() {
     const btn = (key, text, extra = '') => `<button data-cat="${key}" class="${key === currentCat ? 'active' : ''}${extra}">${text}</button>`;
@@ -426,16 +449,16 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
     return { mu: p.mu + phi * phi * sum, phi, sigma };
   }
 
-  function computeRating(rama) {
+  function computeRating(rama, extra = []) {
     const m = model;
     // categoría de cada jugador: la última inscripción, o la categoría actual en Jugadores
     const catOf = new Map();
     (m.jugadores || []).forEach(r => { if (r[0]) catOf.set(r[0], r[2]); });
     (m.ins || []).forEach(r => { if (r[3] && r[1] === rama) catOf.set(r[3], r[2]); });
     const matches = (m.partidos || []).map(r => ({
-      rama: r[1], cat: r[2], a: r[8], b: r[9], ganador: r[11], wo: (r[12] || '').toLowerCase().startsWith('s'), anulado: (r[13] || '').toLowerCase().startsWith('s'),
+      rama: r[1], cat: r[2], a: r[8], b: r[9], ganador: ganadorDe(r), wo: (r[12] || '').toLowerCase().startsWith('s'), anulado: (r[13] || '').toLowerCase().startsWith('s'),
       fecha: parseFecha(r[7]) || parseFecha(r[6]) || parseFecha(r[5]),
-    })).filter(x => x.rama === rama && x.a && x.b && x.ganador && !x.wo && !x.anulado && x.fecha && (x.ganador === x.a || x.ganador === x.b))
+    })).concat(extra).filter(x => x.rama === rama && x.a && x.b && x.ganador && !x.wo && !x.anulado && x.fecha && (x.ganador === x.a || x.ganador === x.b))
       .sort((x, y) => x.fecha - y.fecha);
     const P = new Map();
     const get = (name, cat) => {
@@ -521,7 +544,7 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
       return `<div class="fx-round${now ? ' now' : ''}" ${now ? 'id="fx-now"' : ''}>
         <div class="r">Ronda ${escapeHtml(ronda)}<small>${fmt(d1)}${d2 ? ' al ' + fmt(d2) : ''}</small>${now ? '<span class="live">En juego</span>' : ''}</div>
         <div>${shown.map(r => {
-          const [a, b, sets, gan] = [r[8], r[9], r[10], r[11]];
+          const [a, b, sets, gan] = [r[8], r[9], r[10], ganadorDe(r)];
           const wo = (r[12] || '').toLowerCase().startsWith('s');
           const cls = n => gan ? (n === gan ? 'w' : 'l') : '';
           let sc;
@@ -578,7 +601,40 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
     const w = rWin.value === '__otro' ? '(otro)' : rWin.value, l = rLose.value === '__otro' ? '(otro)' : rLose.value;
     return `Hola Gonza, cargo un resultado de la liga 🎾\n${cat}\n${w || '…'} le ganó a ${l || '…'}\n${score() || '…'}\nJugado ${fecha}.`;
   }
-  function preview() { rPrev.textContent = message(); }
+  /* ---- Vista previa: cómo cambian el rating y el puesto con este resultado ---- */
+  const rImpact = document.getElementById('rImpact');
+  function impact() {
+    const key = rCat.value, w = rWin.value, l = rLose.value;
+    if (legacy || !model || !CATEGORIES[key] || !w || !l || w === l || w === '__otro' || l === '__otro') { rImpact.hidden = true; return; }
+    const { rama, cat } = CATEGORIES[key];
+    const d = document.getElementById('rDate').value;
+    const fecha = d ? new Date(d + 'T12:00:00') : new Date();
+    const before = computeRating(rama);
+    const after = computeRating(rama, [{ rama, cat, a: w, b: l, ganador: w, wo: false, anulado: false, fecha }]);
+    const rat = (list, name) => { const i = list.findIndex(p => p.name === name); return i < 0 ? null : { r: list[i].rating, pos: i + 1 }; };
+    const seed = G2.seed[cat] || 1500;
+    // tabla de la liga: solo si la temporada está en juego y los dos están inscriptos
+    let tabla = null;
+    if (model.enJuego) {
+      const cur = sortRows(model.rows.filter(r => r.key === key));
+      if (cur.some(r => r.jugador === w) && cur.some(r => r.jugador === l)) {
+        const next = sortRows(cur.map(r => r.jugador === w ? { ...r, pj: r.pj + 1, pg: r.pg + 1, pts: r.pts + model.pts.g }
+          : r.jugador === l ? { ...r, pj: r.pj + 1, pp: r.pp + 1, pts: r.pts + model.pts.p } : r));
+        tabla = name => [cur.findIndex(r => r.jugador === name) + 1, next.findIndex(r => r.jugador === name) + 1];
+      }
+    }
+    const line = (name, won) => {
+      const a = rat(before, name), b = rat(after, name);
+      const r0 = a ? a.r : seed, r1 = b ? b.r : seed, dr = r1 - r0;
+      const t = tabla ? tabla(name) : null;
+      const pos = t ? ` · tabla ${t[0]}° → ${t[1]}°` : '';
+      return `<div class="row-i"><span class="nm">${escapeHtml(name)} <span class="k">${won ? 'gana' : 'pierde'}</span></span>
+        <span class="ch ${dr >= 0 ? 'up' : 'dn'}">rating ${r0} → ${r1} (${dr >= 0 ? '+' : '−'}${Math.abs(dr)})${pos}</span></div>`;
+    };
+    rImpact.innerHTML = line(w, true) + line(l, false);
+    rImpact.hidden = false;
+  }
+  function preview() { rPrev.textContent = message(); impact(); }
   form.addEventListener('input', preview);
   rCat.addEventListener('change', fillPlayers);
   if (location.hash === '#cargar') setTimeout(() => document.getElementById('openRes').click(), 600);
