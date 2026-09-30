@@ -75,12 +75,12 @@
      - Cuentan solo partidos oficiales: liga, promociones, copas y master. No cuentan
        walkovers, anulados ni pendientes.
      - E = 1 / (1 + 10^((R2 − R1) / 400)); R' = R + K · (S − E).
-     - K = 64 en los primeros 5 partidos de cada jugador; K = 32 desde el 6.º.
+     - K = 32 para todos los partidos.
      ========================================================== */
   const OFICIALES = ['Liga', 'Promoción', 'Copa', 'Master'];
   const ELO = {
     base: { Caballeros: { A: 1350, B: 1200, C: 1050 }, Damas: { A: 1275, B: 1125 } },
-    k: 32, kNuevo: 64, partidosNuevo: 5, provisorio: 5,
+    k: 32,
   };
   const eloBase = (rama, cat) => (ELO.base[rama] || {})[cat] || 1200;
   // Lunes de esta semana a las 0 h: la foto contra la que se miden los cambios (como el ranking ATP).
@@ -132,7 +132,7 @@
       const A = get(x.a), B = get(x.b);
       const eA = 1 / (1 + Math.pow(10, (B.rating - A.rating) / 400)), eB = 1 - eA;
       const sA = x.ganador === x.a ? 1 : 0, sB = 1 - sA;
-      const kA = A.n < ELO.partidosNuevo ? ELO.kNuevo : ELO.k, kB = B.n < ELO.partidosNuevo ? ELO.kNuevo : ELO.k;
+      const kA = ELO.k, kB = ELO.k;
       A.rating += kA * (sA - eA); B.rating += kB * (sB - eB);
       A.n++; B.n++; A.w += sA; B.w += sB;
       A.hist.push({ fecha: x.fecha, rival: B.name, gano: !!sA }); B.hist.push({ fecha: x.fecha, rival: A.name, gano: !!sB });

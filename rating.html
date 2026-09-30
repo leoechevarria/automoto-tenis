@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=202609301433">
+<link rel="stylesheet" href="site.css?v=202609301434">
 <style>
 .page-head .meta .dot { transition: background-color 300ms var(--ease-out); }
 .rank-wrap { padding: var(--space-lg) 0 var(--space-3xl); }
@@ -155,7 +155,7 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
     <details class="how">
       <summary>Cómo se calcula</summary>
       <p>Es un rating Elo, uno para caballeros y otro para damas, con todas las categorías juntas. Cuentan solo los partidos oficiales: liga, promociones y copas. Los walkovers no cuentan.</p>
-      <p>Ganarle a alguien con más rating suma más; perder con alguien con menos rating resta más. En los primeros 5 partidos de cada jugador el rating se mueve el doble, para ubicarlo rápido.</p>
+      <p>Ganarle a alguien con más rating suma más; perder con alguien con menos rating resta más. Cada partido mueve como máximo 32 puntos.</p>
       <p>Quien juega por primera vez arranca según su categoría: caballeros A 1350, B 1200, C 1050; damas A 1275, B 1125. Quien sube o baja de categoría conserva su rating.</p>
       <p>Quien todavía no jugó figura con el rating inicial de su categoría. Si dos jugadores tienen el mismo rating, comparten el puesto.</p>
       <p>Los cambios en verde y rojo son desde el lunes a las 0 h, como en el ranking ATP: al lado del rating, los puntos ganados o perdidos en la semana; al lado del puesto, los lugares que subió o bajó. Si en la semana subiste y después bajaste, no se muestra nada.</p>
@@ -170,7 +170,7 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="liga.js?v=202609301433"></script>
+<script src="liga.js?v=202609301434"></script>
 <script>
   const navEl = document.getElementById('nav'), subtitleEl = document.getElementById('subtitle');
   const legendEl = document.getElementById('legend'), contentEl = document.getElementById('content');
@@ -199,12 +199,12 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
     const foto = new Map(computeRating(rama, [], true, lunes).map(p => [p.name, p]));
     list.forEach(p => { const f = foto.get(p.name); p.dRating = f ? p.rating - f.rating : 0; p.dPos = f ? f.pos - p.pos : 0; });
     const hayCambios = list.some(p => p.dRating || p.dPos);
-    legendEl.innerHTML = (hayCambios ? `<div class="legend-item">Cambios desde el lunes ${lunes.getDate()}/${lunes.getMonth() + 1}</div>` : '') + (list.some(p => p.n) ? `<div class="legend-item"><span class="legend-swatch promo"></span> Provisorio: menos de ${ELO.provisorio} partidos</div>` : '');
+    legendEl.innerHTML = (hayCambios ? `<div class="legend-item">Cambios desde el lunes ${lunes.getDate()}/${lunes.getMonth() + 1}</div>` : '') + '';
     contentEl.innerHTML = !list.length ? `<div class="state">Todavía no hay jugadores de ${rama.toLowerCase()}.</div>`
       : `<table><thead><tr><th class="num">#</th><th>Jugador</th><th class="num">Cat.</th><th class="num">PJ</th><th class="num">G/P</th><th class="num">Rating</th></tr></thead><tbody>${list.map((p, i) => `
-        <tr class="${p.n && p.n < ELO.provisorio ? 'promo' : ''}">
+        <tr>
           <td class="pos"><span class="pos-badge">${p.pos}</span>${p.dPos ? `<span class="mv ${p.dPos > 0 ? 'up' : 'dn'}">${p.dPos > 0 ? '▲' : '▼'}${Math.abs(p.dPos)}</span>` : ''}</td>
-          <td><div class="player">${escapeHtml(p.name)}</div>${(() => { const s = p.hist.filter(h => h.fecha >= lunes); return s.length ? `<div class="vs-sem">(${s.map(h => (h.gano ? 'venció a ' : 'perdió con ') + escapeHtml(h.rival)).join(' · ')})</div>` : ''; })()}${p.n && p.n < ELO.provisorio ? '<span class="tag promo">Provisorio</span>' : ''}</td>
+          <td><div class="player">${escapeHtml(p.name)}</div>${(() => { const s = p.hist.filter(h => h.fecha >= lunes); return s.length ? `<div class="vs-sem">(${s.map(h => (h.gano ? 'venció a ' : 'perdió con ') + escapeHtml(h.rival)).join(' · ')})</div>` : ''; })()}</td>
           <td class="num">${escapeHtml(p.cat || '')}</td>
           <td class="num">${p.n}</td>
           <td class="num gp"><div class="gp-ratio">${p.n ? p.w + '/' + (p.n - p.w) : '—'}</div></td>
@@ -217,6 +217,6 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
   load();
   setInterval(() => load(true), REFRESH_MS);
 </script>
-<script src="site.js?v=202609301433"></script>
+<script src="site.js?v=202609301434"></script>
 </body>
 </html>
