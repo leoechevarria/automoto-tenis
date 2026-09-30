@@ -106,7 +106,7 @@
     const get = name => {
       if (!P.has(name)) {
         const base = eloBase(rama, primeraCat.get(name) || catActual.get(name));
-        P.set(name, { name, cat: catActual.get(name) || primeraCat.get(name), rating: base, inicial: base, n: 0, w: 0 });
+        P.set(name, { name, cat: catActual.get(name) || primeraCat.get(name), rating: base, inicial: base, n: 0, w: 0, hist: [] });
       }
       return P.get(name);
     };
@@ -132,6 +132,7 @@
       const kA = A.n < ELO.partidosNuevo ? ELO.kNuevo : ELO.k, kB = B.n < ELO.partidosNuevo ? ELO.kNuevo : ELO.k;
       A.rating += kA * (sA - eA); B.rating += kB * (sB - eB);
       A.n++; B.n++; A.w += sA; B.w += sB;
+      A.hist.push({ fecha: x.fecha, rival: B.name, gano: !!sA }); B.hist.push({ fecha: x.fecha, rival: A.name, gano: !!sB });
     }
     const ahora = puestos();
     const list = [...P.values()].map(p => ({ ...p, rating: Math.round(p.rating), pos: ahora.get(p.name) }))
