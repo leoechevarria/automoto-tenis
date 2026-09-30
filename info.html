@@ -40,6 +40,10 @@
 .contact-actions { display: flex; gap: var(--space-sm); }
 main { padding-bottom: var(--space-3xl); }
 @media (max-width: 720px) { .sec-head, .care-grid, .contact-grid { grid-template-columns: minmax(0, 1fr); } .contact-card { grid-template-columns: minmax(0, 1fr); } }
+.map-wrap { aspect-ratio: 16 / 9; border: 1px solid var(--color-rule); background: var(--color-paper-2); }
+.map-wrap iframe { width: 100%; height: 100%; border: 0; display: block; }
+.map-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-md); padding: var(--space-md) 0 var(--space-lg); color: var(--color-ink-2); font-size: var(--text-sm); }
+@media (max-width: 560px) { .map-wrap { aspect-ratio: 4 / 3; } .map-foot .btn { width: 100%; } }
 </style>
 </head>
 <body>
@@ -64,6 +68,7 @@ main { padding-bottom: var(--space-3xl); }
           <a href="info.html#pagos">Cuota y alias de pago</a>
           <a href="info.html#cancha">Cuidado de la cancha</a>
           <a href="info.html#contacto">Teléfonos y contactos</a>
+          <a href="info.html#ubicacion">Cómo llegar</a>
           <a href="subcomision.html">Subcomisión de Tenis</a>
         </div>
       </div>
@@ -98,6 +103,7 @@ main { padding-bottom: var(--space-3xl); }
       <a href="info.html#pagos">Cuota y alias de pago</a>
       <a href="info.html#cancha">Cuidado de la cancha</a>
       <a href="info.html#contacto">Teléfonos y contactos</a>
+      <a href="info.html#ubicacion">Cómo llegar</a>
       <a href="subcomision.html">Subcomisión de Tenis</a>
   </div>
   <div class="social">
@@ -224,13 +230,19 @@ main { padding-bottom: var(--space-3xl); }
       </div>
           </div></div>
     </details>
+
+    <details class="fold sec reveal" id="ubicacion" style="--i:4">
+      <summary><div><h2>Cómo llegar</h2></div><span class="chev">▾</span></summary>
+      <div class="fold-body"><div>
+        <div class="map-wrap"><iframe title="Mapa de las canchas" src="https://www.google.com/maps?q=-38.102744,-62.216855&z=17&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
+        <div class="map-foot"><span>Canchas de tenis del Automoto Club Deportivo · Tornquist</span><a class="btn fill" href="https://maps.app.goo.gl/wUV2pwQLxERQxQDT8" target="_blank" rel="noopener">Abrir en Google Maps ↗</a></div>
+      </div></div>
+    </details>
 </main>
 <!-- layout:footer -->
 <footer>
   <div class="wrap foot-cols">
-    <div><strong>Automoto Club Deportivo · Tenis</strong>Tornquist, Buenos Aires</div>
-    <div class="links"><a href="info.html#pagos">Cuota y alias de pago</a><a href="info.html#contacto">Teléfonos y contactos</a><a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener">Instagram</a></div>
-    <div class="links"><a href="https://ig.me/m/automototenis" target="_blank" rel="noopener">¿Algo anda mal? Avisanos</a></div>
+    <div><strong>Automoto Club Deportivo · Tenis</strong><a href="https://maps.app.goo.gl/wUV2pwQLxERQxQDT8" target="_blank" rel="noopener">Tornquist, Provincia de Buenos Aires</a></div>
   </div>
 </footer>
 <!-- /layout:footer -->

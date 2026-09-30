@@ -130,7 +130,7 @@ html.drawer-open, html.drawer-open body { overflow: hidden; }
 
 /* ---- Footer ---- */
 footer { border-top: 3px solid var(--color-ink); padding: var(--space-xl) 0 var(--space-2xl); font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-ink-2); }
-footer .foot-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-lg); }
+footer .foot-cols { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-lg); }
 footer strong { display: block; color: var(--color-ink); font-weight: 500; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
 footer a { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--color-rule); }
 footer .links a { display: block; padding: 3px 0; }

@@ -137,6 +137,7 @@
           <a href="info.html#pagos">Cuota y alias de pago</a>
           <a href="info.html#cancha">Cuidado de la cancha</a>
           <a href="info.html#contacto">Teléfonos y contactos</a>
+          <a href="info.html#ubicacion">Cómo llegar</a>
           <a href="subcomision.html">Subcomisión de Tenis</a>
         </div>
       </div>
@@ -171,6 +172,7 @@
       <a href="info.html#pagos">Cuota y alias de pago</a>
       <a href="info.html#cancha">Cuidado de la cancha</a>
       <a href="info.html#contacto">Teléfonos y contactos</a>
+      <a href="info.html#ubicacion">Cómo llegar</a>
       <a href="subcomision.html">Subcomisión de Tenis</a>
   </div>
   <div class="social">
@@ -203,8 +205,7 @@
   <nav class="index" aria-label="Secciones">
     <a class="row" href="rankings.html">
       <h2>Liga <span class="go" aria-hidden="true">→</span></h2>
-      <p>Posiciones de las categorías A, B y C, reglas de la liga y carga de resultados.</p>
-      <span class="meta" id="metaLiga"></span>
+      <p>Posiciones de caballeros y damas, reglas de la liga y carga de resultados.</p>
     </a>
     <a class="row" href="novedades.html">
       <h2>Novedades <span class="go" aria-hidden="true">→</span></h2>
@@ -251,9 +252,7 @@
 <!-- layout:footer -->
 <footer>
   <div class="wrap foot-cols">
-    <div><strong>Automoto Club Deportivo · Tenis</strong>Tornquist, Buenos Aires</div>
-    <div class="links"><a href="info.html#pagos">Cuota y alias de pago</a><a href="info.html#contacto">Teléfonos y contactos</a><a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener">Instagram</a></div>
-    <div class="links"><a href="https://ig.me/m/automototenis" target="_blank" rel="noopener">¿Algo anda mal? Avisanos</a></div>
+    <div><strong>Automoto Club Deportivo · Tenis</strong><a href="https://maps.app.goo.gl/wUV2pwQLxERQxQDT8" target="_blank" rel="noopener">Tornquist, Provincia de Buenos Aires</a></div>
   </div>
 </footer>
 <!-- /layout:footer -->
@@ -307,23 +306,14 @@
     if (n) document.getElementById('metaMercado').innerHTML = `<b>${n} publicaciones</b>`;
   }).catch(() => {});
 
-  /* ---- Liga: punteros de cada categoría ---- */
-  const SHEET_ID = '1rWi1oJ9PKRLErlIGEzqEZ2JakEDyuk1poDqFdj88R9w';
-  const API_KEY = 'AIzaSyCZWAlXFGaAtjNYYWB3ajsjQ0W72CNJnCI';
-  Promise.all(['A', 'B', 'C'].map(c => fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/Ranking_${c}!A2:A2?key=${API_KEY}`)
-    .then(r => r.json()).then(j => [c, j.values?.[0]?.[0]]).catch(() => [c, null])))
-    .then(rows => {
-      const ok = rows.filter(r => r[1]);
-      if (ok.length) document.getElementById('metaLiga').innerHTML = 'Punteros<br>' + ok.map(([c, n]) => `${c} · <b>${n}</b>`).join('<br>');
-    });
 
   /* CLIMA — pronóstico + puntaje de estrellas (Open-Meteo)
      ========================================================== */
 
   // ---- Configuración: coordenadas de la cancha ----
   // Tornquist, Buenos Aires (8160)
-  const CLUB_LAT = -38.1006;
-  const CLUB_LON = -62.2214;
+  const CLUB_LAT = -38.102744;
+  const CLUB_LON = -62.216855;
   const WX_DAYS = 7; // una semana: más allá el pronóstico no es confiable
   const WX_SOURCE = `https://open-meteo.com/en/docs?latitude=${CLUB_LAT}&longitude=${CLUB_LON}`;
   // -------------------------------------------------
