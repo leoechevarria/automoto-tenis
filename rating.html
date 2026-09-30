@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=202609301244">
+<link rel="stylesheet" href="site.css?v=202609301403">
 <style>
 .page-head .meta .dot { transition: background-color 300ms var(--ease-out); }
 .rank-wrap { padding: var(--space-lg) 0 var(--space-3xl); }
@@ -153,7 +153,10 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
     <div id="content"><div class="state"><div class="spinner"></div>Calculando el rating…</div></div>
     <details class="how">
       <summary>Cómo se calcula</summary>
-      <p>Es un rating Glicko-2, como el de ajedrez pero con un margen de incertidumbre. Cuenta solo los partidos oficiales: liga, promociones y copas. Los walkovers no cuentan. Ganarle a alguien con más rating suma más. El rating inicial depende de la categoría: A 1700, B 1500, C 1300. El número chico es el margen: baja cuanto más jugás.</p>
+      <p>Es un rating Elo, uno para caballeros y otro para damas, con todas las categorías juntas. Cuentan solo los partidos oficiales: liga, promociones y copas. Los walkovers no cuentan.</p>
+      <p>Ganarle a alguien con más rating suma más; perder con alguien con menos rating resta más. En los primeros 5 partidos de cada jugador el rating se mueve el doble, para ubicarlo rápido.</p>
+      <p>Quien juega por primera vez arranca según su categoría: caballeros A 1350, B 1200, C 1050; damas A 1275, B 1125. Quien sube o baja de categoría conserva su rating.</p>
+      <p>Si filtrás por categoría, el número de la izquierda sigue siendo el puesto en toda la rama.</p>
     </details>
   </div>
 </main>
@@ -165,17 +168,27 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="liga.js?v=202609301244"></script>
+<script src="liga.js?v=202609301403"></script>
 <script>
   const navEl = document.getElementById('nav'), subtitleEl = document.getElementById('subtitle');
   const legendEl = document.getElementById('legend'), contentEl = document.getElementById('content');
   const statusDot = document.getElementById('status-dot'), statusText = document.getElementById('status-text');
   const RAMAS = ['Caballeros', 'Damas'];
-  let model = null, rama = RAMAS.find(r => r.toLowerCase() === location.hash.slice(1)) || 'Caballeros';
+  let model = null, rama = 'Caballeros', filtro = 'Todas';
+  function fromHash() {
+    const [h, c] = location.hash.slice(1).split('-');
+    rama = RAMAS.find(r => r.toLowerCase() === h) || 'Caballeros';
+    const cats = Object.keys(ELO.base[rama]);
+    filtro = cats.includes((c || '').toUpperCase()) ? c.toUpperCase() : 'Todas';
+  }
+  fromHash();
 
   function renderNav() {
-    navEl.innerHTML = `<div class="seg" role="group" aria-label="Rama">${RAMAS.map(r => `<button type="button" data-rama="${r}" aria-pressed="${r === rama}">${r}</button>`).join('')}</div>`;
+    const cats = ['Todas', ...Object.keys(ELO.base[rama])];
+    navEl.innerHTML = `<div class="seg" role="group" aria-label="Rama">${RAMAS.map(r => `<button type="button" data-rama="${r}" aria-pressed="${r === rama}">${r}</button>`).join('')}</div>
+      <div class="cats" role="group" aria-label="Categoría">${cats.map(c => `<button type="button" data-cat="${c}" class="${c === filtro ? 'active' : ''}">${c === 'Todas' ? 'Todas' : 'Categoría ' + c}</button>`).join('')}</div>`;
     navEl.querySelectorAll('[data-rama]').forEach(b => b.addEventListener('click', () => { location.hash = b.dataset.rama.toLowerCase(); }));
+    navEl.querySelectorAll('[data-cat]').forEach(b => b.addEventListener('click', () => { location.hash = rama.toLowerCase() + (b.dataset.cat === 'Todas' ? '' : '-' + b.dataset.cat.toLowerCase()); }));
   }
 
   async function load(refresh) {
@@ -185,26 +198,27 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
       if (!model) { contentEl.innerHTML = '<div class="state error">No se pudo cargar la planilla.</div>'; statusText.textContent = 'Error de conexión'; return; }
     }
     renderNav();
-    subtitleEl.textContent = rama;
-    const list = computeRating(rama);
-    legendEl.innerHTML = list.length ? '<div class="legend-item"><span class="legend-swatch promo"></span> Provisorio: menos de 5 partidos</div>' : '';
-    contentEl.innerHTML = !list.length ? `<div class="state">Todavía no hay partidos jugados de ${rama.toLowerCase()}.</div>`
+    subtitleEl.textContent = rama + (filtro === 'Todas' ? '' : ` · Categoría ${filtro}`);
+    const todos = computeRating(rama);
+    const list = filtro === 'Todas' ? todos : todos.filter(p => p.cat === filtro);
+    legendEl.innerHTML = list.length ? `<div class="legend-item"><span class="legend-swatch promo"></span> Provisorio: menos de ${ELO.provisorio} partidos</div>` : '';
+    contentEl.innerHTML = !list.length ? `<div class="state">Todavía no hay partidos jugados${filtro === 'Todas' ? ' de ' + rama.toLowerCase() : ' en ' + rama.toLowerCase() + ' · Categoría ' + filtro}.</div>`
       : `<table><thead><tr><th class="num">#</th><th>Jugador</th><th class="num">Cat.</th><th class="num">PJ</th><th class="num">G/P</th><th class="num">Rating</th></tr></thead><tbody>${list.map((p, i) => `
-        <tr class="${p.n < 5 ? 'promo' : ''}">
-          <td class="pos"><span class="pos-badge">${i + 1}</span></td>
-          <td><div class="player">${escapeHtml(p.name)}</div>${p.n < 5 ? '<span class="tag promo">Provisorio</span>' : ''}</td>
+        <tr class="${p.n < ELO.provisorio ? 'promo' : ''}">
+          <td class="pos"><span class="pos-badge">${(filtro === 'Todas' ? i : todos.indexOf(p)) + 1}</span></td>
+          <td><div class="player">${escapeHtml(p.name)}</div>${p.n < ELO.provisorio ? '<span class="tag promo">Provisorio</span>' : ''}</td>
           <td class="num">${escapeHtml(p.cat || '')}</td>
           <td class="num">${p.n}</td>
           <td class="num gp"><div class="gp-ratio">${p.w}/${p.n - p.w}</div></td>
-          <td class="num pts">${p.rating}<span class="rd"> ±${p.rd}</span></td>
+          <td class="num pts">${p.rating}</td>
         </tr>`).join('')}</tbody></table>`;
     statusDot.classList.add('live');
     statusText.textContent = 'Actualizado ' + new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
   }
-  addEventListener('hashchange', () => { rama = RAMAS.find(r => r.toLowerCase() === location.hash.slice(1)) || 'Caballeros'; load(); });
+  addEventListener('hashchange', () => { fromHash(); load(); });
   load();
   setInterval(() => load(true), REFRESH_MS);
 </script>
-<script src="site.js?v=202609301244"></script>
+<script src="site.js?v=202609301403"></script>
 </body>
 </html>
