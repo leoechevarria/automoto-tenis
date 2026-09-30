@@ -51,6 +51,7 @@
     const rows = ins.filter(r => r[0] === activa && r[3]).map(r => ({ key: keyOf(r[1], r[2]), jugador: r[3], pj: n(r[4]), pg: n(r[5]), pp: n(r[6]), np: n(r[7]), pts: n(r[8]), puesto: n(r[12]) || null })).filter(r => r.key);
     const rules = {};
     cats.forEach(r => { const k = keyOf(r[0], r[1]); if (k && r.slice(2).some(v => v !== '' && v != null)) rules[k] = { up: n(r[2]), down: n(r[3]), promoUp: n(r[4]), promoDown: n(r[5]) }; });
+    if (DEMO) partidos.push(...partidosDemo(jugadores, activa));
     return { temporada: activa, enJuego: estado(filaActiva) === 'activa', pts, rows, rules, partidos, jugadores, ins };
   }
 
@@ -154,3 +155,57 @@
     }));
   }
   const keyFromHash = () => { const h = location.hash.slice(1); return CATEGORIES[ALIAS[h] || h] ? (ALIAS[h] || h) : DEFAULT_CATEGORY; };
+
+  /* ==========================================================
+     MODO DEMO: ?demo en la dirección (?demo=2, ?demo=3… cambian el sorteo).
+     Suma partidos inventados a los reales, solo en este navegador. La planilla no se toca.
+     Cada jugador tiene una fuerza oculta según su categoría; el más fuerte gana más seguido.
+     ========================================================== */
+  const DEMO = new URLSearchParams(location.search).has('demo');
+  function partidosDemo(jugadores, temporada) {
+    let seed = parseInt(new URLSearchParams(location.search).get('demo'), 10) || 1;
+    const rnd = () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+    const fmt = d => `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
+    const fuerza = new Map();
+    const set = win => { const l = Math.floor(rnd() * 5); return win ? `6-${l}` : `${l}-6`; };
+    const out = [];
+    const lunes = lunesDeEstaSemana();
+    const partido = (fecha, rama, cat, tipo, a, b, ronda = '', desde = null, hasta = null) => {
+      const pa = 1 / (1 + Math.pow(10, (fuerza.get(b) - fuerza.get(a)) / 400));
+      const ganaA = rnd() < pa;
+      const tres = rnd() < 0.25;
+      const sets = tres ? [set(ganaA), set(!ganaA), `10-${Math.floor(rnd() * 9)}`.replace(/^10-(\d)$/, ganaA ? '10-$1' : '$1-10')] : [set(ganaA), set(ganaA)];
+      out.push([temporada, rama, cat, tipo, ronda, desde ? fmt(desde) : '', hasta ? fmt(hasta) : '', fmt(fecha), a, b, sets.join(','), ganaA ? 'Jugador 1' : 'Jugador 2', 'No', '', 'DEMO', ganaA ? a : b]);
+    };
+    for (const rama of ['Caballeros', 'Damas']) {
+      const porCat = {};
+      jugadores.filter(r => r[0] && r[1] === rama && r[2]).forEach(r => {
+        (porCat[r[2]] = porCat[r[2]] || []).push(r[0]);
+        fuerza.set(r[0], eloBase(rama, r[2]) + (rnd() - 0.5) * 220);
+      });
+      // 6 semanas de liga: cada semana, parejas al azar dentro de cada categoría; la última es esta semana
+      for (let w = 5; w >= 0; w--) {
+        for (const [cat, js] of Object.entries(porCat)) {
+          const pool = js.slice().sort(() => rnd() - 0.5);
+          for (let i = 0; i + 1 < pool.length; i += 2) {
+            const d = new Date(lunes); d.setDate(d.getDate() - 7 * w + Math.floor(rnd() * (w ? 7 : Math.max(1, (new Date().getDay() + 6) % 7 + 1))));
+            if (d > new Date()) d.setTime(Date.now());
+            const ini = new Date(lunes); ini.setDate(ini.getDate() - 7 * w); const fin = new Date(ini); fin.setDate(fin.getDate() + 6);
+            partido(d, rama, cat, 'Liga', pool[i], pool[i + 1], String(6 - w), ini, fin);
+          }
+        }
+      }
+      // promociones hace tres semanas: los mejores de abajo contra los peores de arriba
+      const cats = Object.keys(porCat).sort();
+      for (let c = 0; c + 1 < cats.length; c++) {
+        const arriba = porCat[cats[c]].slice().sort((x, y) => fuerza.get(x) - fuerza.get(y)).slice(0, 2);
+        const abajo = porCat[cats[c + 1]].slice().sort((x, y) => fuerza.get(y) - fuerza.get(x)).slice(0, 2);
+        arriba.forEach((a, i) => { const d = new Date(lunes); d.setDate(d.getDate() - 20 + i); if (abajo[i]) partido(d, rama, cats[c], 'Promoción', a, abajo[i]); });
+      }
+    }
+    return out;
+  }
+  if (DEMO) addEventListener('DOMContentLoaded', () => {
+    const url = new URL(location.href); url.searchParams.delete('demo');
+    document.body.insertAdjacentHTML('afterbegin', `<div class="demo-bar">Modo demo: partidos inventados, solo en este navegador. <a href="${url.pathname}${url.search}${url.hash}">Salir</a></div>`);
+  });

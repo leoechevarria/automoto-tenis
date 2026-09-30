@@ -191,6 +191,9 @@ dialog.nov-dlg[open]::backdrop { animation: dlg-fade 280ms var(--ease-out); }
 .dlg-in .note { margin: 0; }
 @media (max-width: 560px) { .dlg-in { padding: var(--space-lg); } dialog.nov-dlg { width: calc(100vw - 16px); max-height: 92vh; } .dlg-in { max-height: 92vh; } }
 
+.demo-bar { position: sticky; top: 0; z-index: 50; background: oklch(80% 0.12 85); color: var(--color-ink); text-align: center; font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.05em; padding: 8px var(--space-md); }
+.demo-bar a { text-decoration: underline; margin-left: 8px; }
+
 /* ---- Selectores de la liga (rama y categoría) ---- */
 #nav { display: grid; gap: var(--space-md); border-bottom: 0; }
 #nav .seg { display: inline-flex; justify-self: start; border: 2px solid var(--color-ink); }
