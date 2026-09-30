@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=202609301434">
+<link rel="stylesheet" href="site.css?v=202609301442">
 <style>
 .page-head .meta .dot { transition: background-color 300ms var(--ease-out); }
 .rank-wrap { padding: var(--space-lg) 0 var(--space-3xl); }
@@ -70,6 +70,12 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
 .res .impact .dn { color: var(--color-ink-3); }
 .res .impact .k { font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-ink-3); }
 .rating-page .pos-badge { font-size: 1.05rem; color: var(--color-ink-2); }
+@media (max-width: 640px) {
+  .rating-page th, .rating-page td { display: table-cell !important; }
+  .rating-page th:nth-child(4), .rating-page td:nth-child(4), .rating-page th:nth-child(5), .rating-page td:nth-child(5) { display: none !important; }
+  .rating-page td.pts { white-space: nowrap; }
+  .rating-page .dl { display: block; margin: 0 0 2px; }
+}
 </style>
 </head>
 <body>
@@ -170,7 +176,7 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="liga.js?v=202609301434"></script>
+<script src="liga.js?v=202609301442"></script>
 <script>
   const navEl = document.getElementById('nav'), subtitleEl = document.getElementById('subtitle');
   const legendEl = document.getElementById('legend'), contentEl = document.getElementById('content');
@@ -217,6 +223,6 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
   load();
   setInterval(() => load(true), REFRESH_MS);
 </script>
-<script src="site.js?v=202609301434"></script>
+<script src="site.js?v=202609301442"></script>
 </body>
 </html>
