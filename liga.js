@@ -79,10 +79,13 @@
     k: 32, kNuevo: 64, partidosNuevo: 5, provisorio: 5,
   };
   const eloBase = (rama, cat) => (ELO.base[rama] || {})[cat] || 1200;
+  // Lunes de esta semana a las 0 h: la foto contra la que se miden los cambios (como el ranking ATP).
+  const lunesDeEstaSemana = (d = new Date()) => { const x = new Date(d); x.setHours(0, 0, 0, 0); x.setDate(x.getDate() - ((x.getDay() + 6) % 7)); return x; };
   const parseFecha = s => { const m = String(s || '').match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/); return m ? new Date(+m[3], +m[2] - 1, +m[1]) : null; };
 
   // todos = true: incluye a los jugadores activos sin partidos, con el rating inicial de su categoría.
-  function computeRating(rama, extra = [], todos = false) {
+  // hasta: si se pasa una fecha, calcula el ranking como estaba en ese momento (solo partidos anteriores).
+  function computeRating(rama, extra = [], todos = false, hasta = null) {
     const m = model;
     // categoría actual (para mostrar): la de Jugadores; si no está ahí, la última inscripción
     const catActual = new Map();
@@ -93,7 +96,7 @@
       wo: (r[12] || '').toLowerCase().startsWith('s'), anulado: (r[13] || '').toLowerCase().startsWith('s'),
       fecha: parseFecha(r[7]) || parseFecha(r[6]) || parseFecha(r[5]),
     })).filter(x => OFICIALES.includes(x.tipo)).concat(extra.map(x => ({ orden: 1e9, ...x })))
-      .filter(x => x.rama === rama && x.a && x.b && x.ganador && !x.wo && !x.anulado && x.fecha && (x.ganador === x.a || x.ganador === x.b))
+      .filter(x => x.rama === rama && x.a && x.b && x.ganador && !x.wo && !x.anulado && x.fecha && (x.ganador === x.a || x.ganador === x.b) && (!hasta || x.fecha < hasta))
       .sort((x, y) => x.fecha - y.fecha || x.orden - y.orden);
     // Rating inicial: categoría del primer partido registrado; si todavía no jugó, su categoría actual.
     const primeraCat = new Map();
@@ -102,7 +105,7 @@
     const get = name => {
       if (!P.has(name)) {
         const base = eloBase(rama, primeraCat.get(name) || catActual.get(name));
-        P.set(name, { name, cat: catActual.get(name) || primeraCat.get(name), rating: base, inicial: base, n: 0, w: 0, delta: 0, posAntes: null });
+        P.set(name, { name, cat: catActual.get(name) || primeraCat.get(name), rating: base, inicial: base, n: 0, w: 0 });
       }
       return P.get(name);
     };
@@ -123,14 +126,10 @@
     };
     for (const x of matches) {
       const A = get(x.a), B = get(x.b);
-      const antes = puestos();
       const eA = 1 / (1 + Math.pow(10, (B.rating - A.rating) / 400)), eB = 1 - eA;
       const sA = x.ganador === x.a ? 1 : 0, sB = 1 - sA;
       const kA = A.n < ELO.partidosNuevo ? ELO.kNuevo : ELO.k, kB = B.n < ELO.partidosNuevo ? ELO.kNuevo : ELO.k;
-      const ra = Math.round(A.rating), rb = Math.round(B.rating);
       A.rating += kA * (sA - eA); B.rating += kB * (sB - eB);
-      A.delta = Math.round(A.rating) - ra; B.delta = Math.round(B.rating) - rb;   // cambio en su último partido
-      A.posAntes = antes.get(A.name); B.posAntes = antes.get(B.name);            // puesto antes de su último partido
       A.n++; B.n++; A.w += sA; B.w += sB;
     }
     const ahora = puestos();
