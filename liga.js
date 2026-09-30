@@ -1,5 +1,5 @@
 /* Automoto Tenis · datos de la liga compartidos: planilla, tablas y rating Glicko-2.
-   Lo usan rankings.html y rating.html. */
+   Lo usan tabla.html y rating.html. */
   // ---- Configuración ----
   const SHEET_ID = '1rWi1oJ9PKRLErlIGEzqEZ2JakEDyuk1poDqFdj88R9w';
   const API_KEY = 'AIzaSyCZWAlXFGaAtjNYYWB3ajsjQ0W72CNJnCI';

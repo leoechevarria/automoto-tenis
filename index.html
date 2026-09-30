@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=202609301431">
+<link rel="stylesheet" href="site.css?v=202609301433">
 <style>
 /* ---- Apertura con la foto de la cancha ---- */
 .open { position: relative; min-height: clamp(380px, 58vh, 640px); display: grid; align-items: end; isolation: isolate; color: var(--color-on-photo); }
@@ -124,9 +124,9 @@
       <div class="menu">
         <button type="button" class="menu-btn" aria-expanded="false" aria-haspopup="true">Liga <span class="chev" aria-hidden="true">▾</span></button>
         <div class="menu-list">
-          <a href="rankings.html">Tabla</a>
+          <a href="tabla.html">Tabla</a>
           <a href="fixture.html">Fixture</a>
-          <a href="rankings.html#cargar">Cargá tu resultado</a>
+          <a href="tabla.html#cargar">Cargá tu resultado</a>
           <a href="reglas.html">Reglas de la liga</a>
           <a href="rating.html">Rating (ELO)</a>
         </div>
@@ -165,9 +165,9 @@
   </div>
   <div class="drawer-group">
     <span class="k">Liga</span>
-      <a href="rankings.html">Tabla</a>
+      <a href="tabla.html">Tabla</a>
       <a href="fixture.html">Fixture</a>
-      <a href="rankings.html#cargar">Cargá tu resultado</a>
+      <a href="tabla.html#cargar">Cargá tu resultado</a>
       <a href="reglas.html">Reglas de la liga</a>
       <a href="rating.html">Rating (ELO)</a>
   </div>
@@ -201,13 +201,13 @@
       <a class="hoy-card hoy-ev" href="novedades.html#eventos" id="hoyEvento"><span class="k">Próximo evento</span><p>Cargando…</p></a>
       <div class="hoy-actions">
         <a class="btn fill" href="https://darturnos.com/AutomotoTenis/" target="_blank" rel="noopener">Reservar turno ↗</a>
-        <a class="btn" href="rankings.html#cargar">Cargá tu resultado</a>
+        <a class="btn" href="tabla.html#cargar">Cargá tu resultado</a>
       </div>
     </div>
   </section>
 
   <nav class="index" aria-label="Secciones">
-    <a class="row" href="rankings.html">
+    <a class="row" href="tabla.html">
       <h2>Liga <span class="go" aria-hidden="true">→</span></h2>
       <p>Posiciones de caballeros y damas, reglas de la liga y carga de resultados.</p>
     </a>
@@ -260,7 +260,7 @@
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="novedades.js?v=202609301431"></script>
+<script src="novedades.js?v=202609301433"></script>
 <script>
   /* ---- Hoy: clima (lo llama el script del clima cuando termina) ---- */
   function renderHoyClima(days) {
@@ -500,6 +500,6 @@
   loadWeather();
 
 </script>
-<script src="site.js?v=202609301431"></script>
+<script src="site.js?v=202609301433"></script>
 </body>
 </html>
