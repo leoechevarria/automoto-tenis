@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Aplica el header, el menú lateral y el footer compartidos a todas las páginas.
 
-Uso:  python3 tools/layout.py
+Uso:  python3 tools/layout.py   (correrlo antes de cada commit que toque CSS o JS)
 Edite los bloques de abajo y vuelva a correr el script. Cada página queda
 marcada con <!-- layout:header --> y <!-- layout:footer --> para las próximas veces.
 """
@@ -117,7 +117,22 @@ def apply(page):
     print("ok", page)
 
 
+def bump_asset_versions():
+    """Pone ?v=<fecha y hora> en los links a site.css, site.js, liga.js y novedades.js.
+    Cloudflare hace que el navegador guarde CSS y JS 4 horas: con una versión nueva en el link,
+    cada publicación se ve al instante."""
+    import time
+    v = time.strftime("%Y%m%d%H%M")
+    for p in ROOT.glob("*.html"):
+        s = p.read_text()
+        s2 = re.sub(r'(href|src)="(site\.css|site\.js|liga\.js|novedades\.js)(\?v=\d+)?"', rf'\1="\2?v={v}"', s)
+        if s2 != s:
+            p.write_text(s2)
+    print("versión de CSS/JS:", v)
+
+
 if __name__ == "__main__":
+    bump_asset_versions()
     for page in PAGES:
         if (ROOT / page).exists():
             apply(page)
