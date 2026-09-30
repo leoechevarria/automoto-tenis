@@ -95,28 +95,47 @@
     })).filter(x => OFICIALES.includes(x.tipo)).concat(extra.map(x => ({ orden: 1e9, ...x })))
       .filter(x => x.rama === rama && x.a && x.b && x.ganador && !x.wo && !x.anulado && x.fecha && (x.ganador === x.a || x.ganador === x.b))
       .sort((x, y) => x.fecha - y.fecha || x.orden - y.orden);
+    // Rating inicial: categoría del primer partido registrado; si todavía no jugó, su categoría actual.
+    const primeraCat = new Map();
+    for (const x of matches) { if (!primeraCat.has(x.a)) primeraCat.set(x.a, x.cat); if (!primeraCat.has(x.b)) primeraCat.set(x.b, x.cat); }
     const P = new Map();
-    const get = (name, cat) => {
-      if (!P.has(name)) P.set(name, { name, cat: catActual.get(name) || cat, rating: eloBase(rama, cat), inicial: eloBase(rama, cat), n: 0, w: 0 });
+    const get = name => {
+      if (!P.has(name)) {
+        const base = eloBase(rama, primeraCat.get(name) || catActual.get(name));
+        P.set(name, { name, cat: catActual.get(name) || primeraCat.get(name), rating: base, inicial: base, n: 0, w: 0, delta: 0, posAntes: null });
+      }
       return P.get(name);
     };
-    for (const x of matches) {
-      const A = get(x.a, x.cat), B = get(x.b, x.cat);
-      const eA = 1 / (1 + Math.pow(10, (B.rating - A.rating) / 400)), eB = 1 - eA;
-      const sA = x.ganador === x.a ? 1 : 0, sB = 1 - sA;
-      const kA = A.n < ELO.partidosNuevo ? ELO.kNuevo : ELO.k, kB = B.n < ELO.partidosNuevo ? ELO.kNuevo : ELO.k;
-      A.rating += kA * (sA - eA); B.rating += kB * (sB - eB);
-      A.n++; B.n++; A.w += sA; B.w += sB;
-    }
     if (todos) {
       const activos = new Set((m.jugadores || []).filter(r => r[0] && r[1] === rama && !/^no$/i.test((r[3] || '').trim())).map(r => r[0]));
       (m.ins || []).forEach(r => { if (r[3] && r[1] === rama && r[0] === m.temporada) activos.add(r[3]); });
-      for (const name of activos) if (!P.has(name) && catActual.get(name)) get(name, catActual.get(name));
+      for (const name of activos) if (catActual.get(name) || primeraCat.get(name)) get(name);
     }
+    matches.forEach(x => { get(x.a); get(x.b); });
     const orden = { A: 0, B: 1, C: 2 };
-    const list = [...P.values()].map(p => ({ ...p, rating: Math.round(p.rating) }))
-      .sort((a, b) => b.rating - a.rating || (orden[a.cat] ?? 9) - (orden[b.cat] ?? 9) || a.name.localeCompare(b.name));
-    list.forEach((p, i) => { p.pos = i && list[i - 1].rating === p.rating ? list[i - 1].pos : i + 1; }); // empates: mismo puesto
+    // Puestos con empates: mismo rating (redondeado), mismo puesto.
+    const puestos = () => {
+      const l = [...P.values()].map(p => ({ name: p.name, cat: p.cat, r: Math.round(p.rating) }))
+        .sort((a, b) => b.r - a.r || (orden[a.cat] ?? 9) - (orden[b.cat] ?? 9) || a.name.localeCompare(b.name));
+      const pos = new Map();
+      l.forEach((p, i) => pos.set(p.name, i && l[i - 1].r === p.r ? pos.get(l[i - 1].name) : i + 1));
+      return pos;
+    };
+    for (const x of matches) {
+      const A = get(x.a), B = get(x.b);
+      const antes = puestos();
+      const eA = 1 / (1 + Math.pow(10, (B.rating - A.rating) / 400)), eB = 1 - eA;
+      const sA = x.ganador === x.a ? 1 : 0, sB = 1 - sA;
+      const kA = A.n < ELO.partidosNuevo ? ELO.kNuevo : ELO.k, kB = B.n < ELO.partidosNuevo ? ELO.kNuevo : ELO.k;
+      const ra = Math.round(A.rating), rb = Math.round(B.rating);
+      A.rating += kA * (sA - eA); B.rating += kB * (sB - eB);
+      A.delta = Math.round(A.rating) - ra; B.delta = Math.round(B.rating) - rb;   // cambio en su último partido
+      A.posAntes = antes.get(A.name); B.posAntes = antes.get(B.name);            // puesto antes de su último partido
+      A.n++; B.n++; A.w += sA; B.w += sB;
+    }
+    const ahora = puestos();
+    const list = [...P.values()].map(p => ({ ...p, rating: Math.round(p.rating), pos: ahora.get(p.name) }))
+      .sort((a, b) => a.pos - b.pos || (orden[a.cat] ?? 9) - (orden[b.cat] ?? 9) || a.name.localeCompare(b.name));
     return list;
   }
 

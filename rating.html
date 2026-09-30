@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=202609301413">
+<link rel="stylesheet" href="site.css?v=202609301418">
 <style>
 .page-head .meta .dot { transition: background-color 300ms var(--ease-out); }
 .rank-wrap { padding: var(--space-lg) 0 var(--space-3xl); }
@@ -69,6 +69,13 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
 .res .impact .up { color: var(--color-accent-deep); font-weight: 500; }
 .res .impact .dn { color: var(--color-ink-3); }
 .res .impact .k { font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-ink-3); }
+.rating-page { --up: oklch(50% 0.13 150); --dn: oklch(52% 0.17 28); }
+.rating-page td.pos { width: 64px; white-space: nowrap; }
+.rating-page .pos-badge { font-size: 1.05rem; color: var(--color-ink-2); }
+.rating-page .mv { display: inline-block; margin-left: 6px; font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; vertical-align: 2px; }
+.rating-page .dl { display: inline-block; margin-right: 10px; font-family: var(--font-mono); font-size: 0.78rem; font-weight: 500; vertical-align: 3px; }
+.rating-page .up { color: var(--up); }
+.rating-page .dn { color: var(--dn); }
 </style>
 </head>
 <body>
@@ -147,7 +154,7 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
     <div><h1>Rating</h1><p class="sub" id="subtitle">Caballeros</p></div>
     <p class="meta"><span class="dot" id="status-dot"></span><span id="status-text">Actualizando…</span></p>
   </div>
-  <div class="rank-wrap reveal" style="--i:1">
+  <div class="rank-wrap reveal rating-page" style="--i:1">
     <nav id="nav" aria-label="Rama"></nav>
     <div class="legend" id="legend"></div>
     <div id="content"><div class="state"><div class="spinner"></div>Calculando el rating…</div></div>
@@ -157,6 +164,7 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
       <p>Ganarle a alguien con más rating suma más; perder con alguien con menos rating resta más. En los primeros 5 partidos de cada jugador el rating se mueve el doble, para ubicarlo rápido.</p>
       <p>Quien juega por primera vez arranca según su categoría: caballeros A 1350, B 1200, C 1050; damas A 1275, B 1125. Quien sube o baja de categoría conserva su rating.</p>
       <p>Quien todavía no jugó figura con el rating inicial de su categoría. Si dos jugadores tienen el mismo rating, comparten el puesto.</p>
+      <p>Al lado del rating, lo que ganó o perdió cada jugador en su último partido. Al lado del puesto, cuántos lugares subió o bajó con ese partido.</p>
     </details>
   </div>
 </main>
@@ -168,7 +176,7 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="liga.js?v=202609301413"></script>
+<script src="liga.js?v=202609301418"></script>
 <script>
   const navEl = document.getElementById('nav'), subtitleEl = document.getElementById('subtitle');
   const legendEl = document.getElementById('legend'), contentEl = document.getElementById('content');
@@ -196,12 +204,12 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
     contentEl.innerHTML = !list.length ? `<div class="state">Todavía no hay jugadores de ${rama.toLowerCase()}.</div>`
       : `<table><thead><tr><th class="num">#</th><th>Jugador</th><th class="num">Cat.</th><th class="num">PJ</th><th class="num">G/P</th><th class="num">Rating</th></tr></thead><tbody>${list.map((p, i) => `
         <tr class="${p.n && p.n < ELO.provisorio ? 'promo' : ''}">
-          <td class="pos"><span class="pos-badge">${i && list[i - 1].pos === p.pos ? '' : p.pos}</span></td>
+          <td class="pos"><span class="pos-badge">${p.pos}</span>${p.posAntes && p.posAntes !== p.pos ? `<span class="mv ${p.posAntes > p.pos ? 'up' : 'dn'}">${p.posAntes > p.pos ? '▲' : '▼'}${Math.abs(p.posAntes - p.pos)}</span>` : ''}</td>
           <td><div class="player">${escapeHtml(p.name)}</div>${p.n && p.n < ELO.provisorio ? '<span class="tag promo">Provisorio</span>' : ''}</td>
           <td class="num">${escapeHtml(p.cat || '')}</td>
           <td class="num">${p.n}</td>
           <td class="num gp"><div class="gp-ratio">${p.n ? p.w + '/' + (p.n - p.w) : '—'}</div></td>
-          <td class="num pts">${p.rating}</td>
+          <td class="num pts">${p.delta ? `<span class="dl ${p.delta > 0 ? 'up' : 'dn'}">${p.delta > 0 ? '+' : '−'}${Math.abs(p.delta)}</span>` : ''}${p.rating}</td>
         </tr>`).join('')}</tbody></table>`;
     statusDot.classList.add('live');
     statusText.textContent = 'Actualizado ' + new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
@@ -210,6 +218,6 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
   load();
   setInterval(() => load(true), REFRESH_MS);
 </script>
-<script src="site.js?v=202609301413"></script>
+<script src="site.js?v=202609301418"></script>
 </body>
 </html>
