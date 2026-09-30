@@ -51,6 +51,7 @@
 }
 :root[data-slam="uso"] .row .meta b, :root[data-slam="uso"] .mast-nav [aria-current] { color: var(--color-accent-deep); }
 *, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html, body { overflow-x: clip; }
 html { scroll-padding-top: 100px; }
 @media (max-width: 560px) { html { scroll-padding-top: 84px; } }
