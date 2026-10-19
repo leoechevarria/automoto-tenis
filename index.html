@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=202610182244">
+<link rel="stylesheet" href="site.css?v=202610182254">
 <style>
 /* ---- Apertura con la foto de la cancha ---- */
 .open { position: relative; min-height: clamp(380px, 58vh, 640px); display: grid; align-items: end; isolation: isolate; color: var(--color-on-photo); }
@@ -56,6 +56,12 @@
 .row .meta { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-ink-3); text-transform: uppercase; letter-spacing: 0.05em; justify-self: end; text-align: right; }
 .row .meta b { color: var(--color-accent-deep); font-weight: 500; }
 @media (hover: hover) { .row:hover { background: var(--color-paper-2); box-shadow: 0 0 0 var(--space-md) var(--color-paper-2); } .row:hover h2 .go { transform: translateX(6px); } }
+.row-liga h2 a { display: inline-flex; align-items: baseline; gap: 12px; color: inherit; text-decoration: none; }
+@media (hover: hover) { .row-liga:hover h2 .go { transform: none; } .row-liga h2 a:hover .go { transform: translateX(6px); } }
+.quick { display: flex; flex-wrap: wrap; gap: var(--space-sm); grid-column: span 2; }
+.quick a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--space-md); border: 1px solid var(--color-ink); font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; text-transform: uppercase; color: var(--color-ink); text-decoration: none; background: var(--color-paper); transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out); }
+@media (hover: hover) { .quick a:hover { background: var(--color-ink); color: var(--color-paper); } }
+.quick a:active { background: var(--color-ink); color: var(--color-paper); }
 .row:active { background: var(--color-paper-3); box-shadow: 0 0 0 var(--space-md) var(--color-paper-3); }
 
 /* ---- Novedades en la home ---- */
@@ -73,6 +79,8 @@
   .hoy-actions { grid-template-columns: minmax(0, 1fr); padding-top: var(--space-md); }
   .row { grid-template-columns: minmax(0, 1fr); gap: var(--space-xs); }
   .row .meta { justify-self: start; text-align: left; margin-top: 6px; }
+  .quick { grid-column: auto; margin-top: var(--space-xs); }
+  .quick a { flex: 1 1 calc(50% - var(--space-sm)); justify-content: center; }
   .clima-head { grid-template-columns: minmax(0, 1fr); }
 }
 /* ---- Clima ---- */
@@ -207,10 +215,15 @@
   </section>
 
   <nav class="index" aria-label="Secciones">
-    <a class="row" href="tabla.html">
-      <h2>Liga <span class="go" aria-hidden="true">→</span></h2>
-      <p>Posiciones de caballeros y damas, reglas de la liga y carga de resultados.</p>
-    </a>
+    <div class="row row-liga">
+      <h2><a href="tabla.html">Liga <span class="go" aria-hidden="true">→</span></a></h2>
+      <nav class="quick" aria-label="Liga">
+        <a href="tabla.html">Tabla</a>
+        <a href="fixture.html">Fixture</a>
+        <a href="reglas.html">Reglas</a>
+        <a href="rating.html">Rating (ELO)</a>
+      </nav>
+    </div>
     <a class="row" href="novedades.html">
       <h2>Novedades <span class="go" aria-hidden="true">→</span></h2>
       <p>Anuncios del club y agenda de eventos. Lo importante queda fijado arriba.</p>
@@ -260,7 +273,7 @@
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="novedades.js?v=202610182244"></script>
+<script src="novedades.js?v=202610182254"></script>
 <script>
   /* ---- Hoy: clima (lo llama el script del clima cuando termina) ---- */
   function renderHoyClima(days) {
@@ -500,6 +513,6 @@
   loadWeather();
 
 </script>
-<script src="site.js?v=202610182244"></script>
+<script src="site.js?v=202610182254"></script>
 </body>
 </html>
