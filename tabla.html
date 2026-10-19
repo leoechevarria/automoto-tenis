@@ -12,16 +12,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=202610191128">
+<link rel="stylesheet" href="site.css?v=202610191129">
 <style>
 .rank-wrap { padding: var(--space-lg) 0 var(--space-3xl); }
 .vista:empty { display: none; }
 .vista { padding: var(--space-md) 0 0; }
-.vista .seg { display: inline-flex; border: 1px solid var(--color-ink); }
-.vista .seg button { font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; text-transform: uppercase; padding: 6px 14px; min-height: 40px; background: none; border: 0; color: var(--color-ink); cursor: pointer; }
-.vista .seg button + button { border-left: 1px solid var(--color-ink); }
-.vista .seg button[aria-pressed="true"] { background: var(--color-ink); color: var(--color-paper); }
-@media (hover: hover) { .vista .seg button[aria-pressed="false"]:hover { background: var(--color-paper-2); } }
+.vista .seg { display: inline-flex; gap: var(--space-md); }
+.vista .seg button { font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.05em; padding: 6px 0; min-height: 32px; background: none; border: 0; border-bottom: 2px solid transparent; color: var(--color-ink-3); cursor: pointer; }
+.vista .seg button[aria-pressed="true"] { color: var(--color-ink); border-bottom-color: var(--color-ink); }
+@media (hover: hover) { .vista .seg button[aria-pressed="false"]:hover { color: var(--color-ink-2); } }
 h2.zona { font-size: var(--text-2xl); font-weight: 800; text-transform: uppercase; margin: var(--space-xl) 0 var(--space-sm); }
 h2.zona:first-child { margin-top: var(--space-sm); }
 .legend { display: flex; flex-wrap: wrap; gap: 6px var(--space-lg); padding: var(--space-md) 0; font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-ink-2); text-transform: uppercase; letter-spacing: 0.04em; }
@@ -169,7 +168,7 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="liga.js?v=202610191128"></script>
+<script src="liga.js?v=202610191129"></script>
 <script>
   const navEl = document.getElementById('nav');
   const subtitleEl = document.getElementById('subtitle');
@@ -447,6 +446,6 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
     dlg.close();
   });
 </script>
-<script src="site.js?v=202610191128"></script>
+<script src="site.js?v=202610191129"></script>
 </body>
 </html>
