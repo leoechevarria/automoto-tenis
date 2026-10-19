@@ -262,6 +262,7 @@ details.fold > .fold-body > div > :first-child { margin-top: var(--space-lg); }
 /* ---- Controles ---- */
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 var(--space-md); border: 1px solid var(--color-ink); background: transparent; color: var(--color-ink); font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; cursor: pointer; transition: transform var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out); }
 .btn:active { transform: scale(0.97); }
+.btn .wa-ic { width: 1.15em; height: 1.15em; flex: none; margin-top: -2px; }
 .btn.fill { background: var(--color-ink); color: var(--color-paper); }
 @media (hover: hover) { .btn:hover { background: var(--color-ink); color: var(--color-paper); } .btn.fill:hover { background: var(--color-accent-deep); border-color: var(--color-accent-deep); } }
 .tabs { display: flex; flex-wrap: wrap; gap: 0 var(--space-lg); border-bottom: 1px solid var(--color-rule); }

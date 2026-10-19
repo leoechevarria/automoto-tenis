@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=20261019165430">
+<link rel="stylesheet" href="site.css?v=20261019170511">
 <style>
 main { padding-bottom: var(--space-3xl); }
 .sec { padding: var(--space-md) 0 0; }
@@ -22,6 +22,7 @@ main { padding-bottom: var(--space-3xl); }
 .why p { margin: 0; color: var(--color-ink-2); max-width: 60ch; }
 .dato { margin: var(--space-lg) 0 0; padding: var(--space-md) var(--space-lg); border-left: 4px solid var(--color-accent); background: var(--color-paper-2); max-width: 70ch; }
 .dato b { color: var(--color-ink); }
+.sub-h { font-size: 1.6rem; font-weight: 800; text-transform: uppercase; margin: var(--space-xl) 0 var(--space-md); }
 .modos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-lg); }
 .modo { padding: var(--space-lg); border: 1px solid var(--color-rule); background: var(--color-paper); }
 .modo .k { font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-accent-deep); }
@@ -90,26 +91,21 @@ main { padding-bottom: var(--space-3xl); }
         <div><h3>Siempre con alguien</h3><p>Nunca se juega solo: se arman partidos, amistades y un grupo dentro y fuera de la cancha.</p></div>
         <div><h3>Para toda la vida</h3><p>Se puede empezar a cualquier edad y se sigue jugando muchos años, adaptando el ritmo.</p></div>
       </div>
-      <p class="dato">Un estudio de Copenhague que siguió a más de 8.000 personas durante 25 años asoció el tenis con <b>casi 10 años más de expectativa de vida</b>, más que cualquier otro deporte del estudio. Buena parte del efecto se atribuye a que es un deporte social.</p>
-    </div></div>
-  </details>
-
-  <details class="fold sec reveal" id="modos" open style="--i:2">
-    <summary><div><h2>Singles o dobles</h2></div><span class="chev">▾</span></summary>
-    <div class="fold-body"><div>
+      <h3 class="sub-h">Singles o dobles, como prefieras</h3>
       <div class="modos">
         <div class="modo"><span class="k">Uno contra uno</span><h3>Singles</h3><p>Cubrís toda la cancha: es más físico y te hace correr cada pelota.</p></div>
         <div class="modo"><span class="k">Dos contra dos</span><h3>Dobles</h3><p>Se juega en pareja: es más táctico, se corre menos y es ideal para empezar o para sumar amigos.</p></div>
       </div>
+      <p class="dato">Un estudio de Copenhague que siguió a más de 8.000 personas durante 25 años asoció el tenis con <b>casi 10 años más de expectativa de vida</b>, más que cualquier otro deporte del estudio. Buena parte del efecto se atribuye a que es un deporte social.</p>
     </div></div>
   </details>
 
-  <details class="fold sec reveal" id="empezar" open style="--i:3">
+  <details class="fold sec reveal" id="empezar" open style="--i:2">
     <summary><div><h2>Empezá a jugar</h2></div><span class="chev">▾</span></summary>
     <div class="fold-body"><div>
       <div class="paso">
         <div><h3>Clases</h3><p>Si querés empezar a tomar clases, escribile a Sebastián Mazzulli, director de la escuela de tenis. Te ayuda a encontrar un profesor y horarios que te queden bien.</p></div>
-        <div class="acts"><a class="btn fill" href="https://wa.me/5492914461829?text=Hola%20Sebas!%20Me%20interesa%20empezar%20a%20tomar%20clases%20de%20tenis." target="_blank" rel="noopener">Escribile a Sebas ↗</a></div>
+        <div class="acts"><a class="btn fill" href="https://wa.me/5492914461829?text=Hola%20Sebas!%20Me%20interesa%20empezar%20a%20tomar%20clases%20de%20tenis." target="_blank" rel="noopener"><svg class="wa-ic" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.23 8.23 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.83 2.42a8.18 8.18 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.13-.15.17-.25.25-.42.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.11-.22-.17-.47-.29Z"/></svg>Escribile a Sebas ↗</a></div>
       </div>
       <div class="paso">
         <div><h3>Reservá cancha</h3><p>Los turnos se reservan online. Si tenés la membresía de tenis, el turno no tiene costo adicional. Si no la tenés, se paga un adicional por turno. <a class="link" href="info.html#pagos">Ver cuota y membresía</a> · <a class="link" href="info.html#canchas">Nuestras canchas</a></p></div>
@@ -126,6 +122,6 @@ main { padding-bottom: var(--space-3xl); }
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="site.js?v=20261019165430"></script>
+<script src="site.js?v=20261019170511"></script>
 </body>
 </html>
