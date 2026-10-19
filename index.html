@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=202610182316">
+<link rel="stylesheet" href="site.css?v=202610182318">
 <style>
 /* ---- Apertura con la foto de la cancha ---- */
 .open { position: relative; min-height: clamp(380px, 58vh, 640px); display: grid; align-items: end; isolation: isolate; color: var(--color-on-photo); }
@@ -53,7 +53,7 @@
 .row h2 { font-size: var(--text-2xl); font-weight: 700; text-transform: uppercase; display: flex; align-items: baseline; gap: 12px; }
 .row h2 .go { font-size: 0.6em; color: var(--color-accent); transition: transform var(--dur-fast) var(--ease-out); }
 .row p { margin: 0; color: var(--color-ink-2); max-width: 44ch; }
-.row .meta { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-ink-3); text-transform: uppercase; letter-spacing: 0.05em; justify-self: end; text-align: right; }
+.row .meta { grid-column: -2; font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-ink-3); text-transform: uppercase; letter-spacing: 0.05em; justify-self: end; text-align: right; }
 .row .meta b { color: var(--color-accent-deep); font-weight: 500; }
 @media (hover: hover) { .row:hover { background: var(--color-paper-2); box-shadow: 0 0 0 var(--space-md) var(--color-paper-2); } .row:hover h2 .go { transform: translateX(6px); } }
 .row-liga h2 a { display: inline-flex; align-items: baseline; gap: 12px; color: inherit; text-decoration: none; }
@@ -78,7 +78,7 @@
   .hoy-card, .hoy-card + .hoy-card { padding: var(--space-md) 0; border-right: 0; border-bottom: 1px solid var(--color-rule); }
   .hoy-actions { grid-template-columns: minmax(0, 1fr); padding-top: var(--space-md); }
   .row { grid-template-columns: minmax(0, 1fr); gap: var(--space-xs); }
-  .row .meta { justify-self: start; text-align: left; margin-top: 6px; }
+  .row .meta { grid-column: auto; justify-self: start; text-align: left; margin-top: 6px; }
   .quick { grid-column: auto; margin-top: var(--space-xs); }
   .quick a { flex: 1 1 calc(50% - var(--space-sm)); justify-content: center; }
   .clima-head { grid-template-columns: minmax(0, 1fr); }
@@ -196,7 +196,6 @@
   <img src="assets/court.jpg" alt="Cancha de polvo de ladrillo del club, con las sierras de fondo" fetchpriority="high">
   <div class="wrap">
     <h1 class="reveal" style="--i:0">Todo el tenis del club, <span class="accent">en un solo lugar.</span></h1>
-    <p class="lede reveal" style="--i:1">Tabla y fixture de la liga, novedades, turnos y el clima para saber si está lindo para jugar.</p>
   </div>
 </section>
 
@@ -223,17 +222,14 @@
     </div>
     <a class="row" href="novedades.html">
       <h2>Novedades <span class="go" aria-hidden="true">→</span></h2>
-      <p>Anuncios del club y agenda de eventos. Lo importante queda fijado arriba.</p>
       <span class="meta" id="metaNov"></span>
     </a>
     <a class="row" href="mercado.html">
       <h2>Mercado del usado <span class="go" aria-hidden="true">→</span></h2>
-      <p>Raquetas, zapatillas y bolsos que venden socios y profes. Publicá lo tuyo o encontrá algo a buen precio.</p>
       <span class="meta" id="metaMercado"></span>
     </a>
     <a class="row" href="info.html">
       <h2>El club <span class="go" aria-hidden="true">→</span></h2>
-      <p>Cuota y alias de pago, cuidado de la cancha, teléfonos y la subcomisión.</p>
     </a>
   </nav>
 
@@ -270,7 +266,7 @@
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="novedades.js?v=202610182316"></script>
+<script src="novedades.js?v=202610182318"></script>
 <script>
   /* ---- Hoy: clima (lo llama el script del clima cuando termina) ---- */
   function renderHoyClima(days) {
@@ -510,6 +506,6 @@
   loadWeather();
 
 </script>
-<script src="site.js?v=202610182316"></script>
+<script src="site.js?v=202610182318"></script>
 </body>
 </html>
