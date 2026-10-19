@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=202610182303">
+<link rel="stylesheet" href="site.css?v=202610182316">
 <style>
 /* ---- Apertura con la foto de la cancha ---- */
 .open { position: relative; min-height: clamp(380px, 58vh, 640px); display: grid; align-items: end; isolation: isolate; color: var(--color-on-photo); }
@@ -70,7 +70,7 @@
 
 @media (max-width: 900px) {
   .hoy-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-  .hoy-actions { grid-column: 1 / -1; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); padding: 0 0 var(--space-lg); }
+  .hoy-actions { grid-column: 1 / -1; padding: 0 0 var(--space-lg); }
   .hoy-card:nth-child(2) { border-right: 0; }
 }
 @media (max-width: 640px) {
@@ -196,7 +196,7 @@
   <img src="assets/court.jpg" alt="Cancha de polvo de ladrillo del club, con las sierras de fondo" fetchpriority="high">
   <div class="wrap">
     <h1 class="reveal" style="--i:0">Todo el tenis del club, <span class="accent">en un solo lugar.</span></h1>
-    <p class="lede reveal" style="--i:1">Ranking de la liga, novedades, turnos y el clima para saber si está lindo para jugar.</p>
+    <p class="lede reveal" style="--i:1">Tabla y fixture de la liga, novedades, turnos y el clima para saber si está lindo para jugar.</p>
   </div>
 </section>
 
@@ -207,7 +207,6 @@
       <a class="hoy-card hoy-ev" href="novedades.html#eventos" id="hoyEvento"><span class="k">Próximo evento</span><p>Cargando…</p></a>
       <div class="hoy-actions">
         <a class="btn fill" href="https://darturnos.com/AutomotoTenis/" target="_blank" rel="noopener">Reservar turno ↗</a>
-        <a class="btn" href="tabla.html#cargar">Cargá tu resultado</a>
       </div>
     </div>
   </section>
@@ -271,7 +270,7 @@
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="novedades.js?v=202610182303"></script>
+<script src="novedades.js?v=202610182316"></script>
 <script>
   /* ---- Hoy: clima (lo llama el script del clima cuando termina) ---- */
   function renderHoyClima(days) {
@@ -511,6 +510,6 @@
   loadWeather();
 
 </script>
-<script src="site.js?v=202610182303"></script>
+<script src="site.js?v=202610182316"></script>
 </body>
 </html>
