@@ -49,14 +49,14 @@
   --color-on-photo: oklch(97% 0.01 90);
   --photo-tint: oklch(40% 0.14 265); --photo-tint-a: 0.6; --color-accent-photo: oklch(86% 0.17 92);
 }
-/* ---- Club (demo): crema casi blanco · tinta azul · rojo, los colores del escudo ---- */
+/* ---- Club (demo): el crema de Roland Garros · tinta azul · rojo, los colores del escudo ---- */
 :root[data-slam="club"] {
-  --color-paper: oklch(97.8% 0.01 85); --color-paper-2: oklch(94.5% 0.016 82); --color-paper-3: oklch(89.5% 0.026 80);
+  --color-paper: oklch(96% 0.02 80); --color-paper-2: oklch(92% 0.035 75); --color-paper-3: oklch(86% 0.05 70);
   --color-ink: oklch(29% 0.1 265); --color-ink-2: oklch(43% 0.09 262); --color-ink-3: oklch(58% 0.05 260);
-  --color-rule: oklch(87% 0.02 80);
+  --color-rule: oklch(82% 0.04 75);
   --color-accent: oklch(54% 0.19 25); --color-accent-deep: oklch(45% 0.17 25);
-  --color-on-photo: oklch(98% 0.01 85);
-  --photo-tint: oklch(32% 0.12 265); --photo-tint-a: 0; --color-accent-photo: oklch(74% 0.16 22);
+  --color-on-photo: oklch(97% 0.02 80);
+  --photo-tint: oklch(32% 0.12 265); --photo-tint-a: 0; --color-accent-photo: oklch(60% 0.22 27);
 }
 :root[data-slam="uso"] .row .meta b, :root[data-slam="uso"] .mast-nav [aria-current] { color: var(--color-accent-deep); }
 *, *::before, *::after { box-sizing: border-box; }

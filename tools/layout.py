@@ -124,7 +124,7 @@ def bump_asset_versions():
     Cloudflare hace que el navegador guarde CSS y JS 4 horas: con una versión nueva en el link,
     cada publicación se ve al instante."""
     import time
-    v = time.strftime("%Y%m%d%H%M")
+    v = time.strftime("%Y%m%d%H%M%S")
     for p in ROOT.glob("*.html"):
         s = p.read_text()
         s2 = re.sub(r'(href|src)="(site\.css|site\.js|liga\.js|novedades\.js)(\?v=\d+)?"', rf'\1="\2?v={v}"', s)
