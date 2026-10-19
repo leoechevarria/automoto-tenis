@@ -56,7 +56,7 @@
   --color-rule: oklch(82% 0.04 75);
   --color-accent: oklch(54% 0.19 25); --color-accent-deep: oklch(45% 0.17 25);
   --color-on-photo: oklch(97% 0.02 80);
-  --photo-tint: oklch(32% 0.12 265); --photo-tint-a: 0; --color-accent-photo: oklch(60% 0.22 27);
+  --photo-tint: oklch(32% 0.12 265); --photo-tint-a: 0; --color-accent-photo: oklch(66% 0.17 258);
 }
 :root[data-slam="uso"] .row .meta b, :root[data-slam="uso"] .mast-nav [aria-current] { color: var(--color-accent-deep); }
 *, *::before, *::after { box-sizing: border-box; }
