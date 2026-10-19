@@ -42,7 +42,7 @@ def liga_top(page):
   <!-- /layout:liga -->'''
 CLUB = [("info.html#pagos", "Cuota y alias de pago"), ("info.html#escuela", "Escuela de tenis"),
         ("info.html#subcomision", "Subcomisión de Tenis"), ("info.html#cancha", "Cuidado de la cancha"),
-        ("info.html#contacto", "Otros contactos"), ("info.html#ubicacion", "Cómo llegar")]
+        ("info.html#contacto", "Otros contactos"), ("info.html#ubicacion", "Dónde estamos")]
 
 
 def header(page):
@@ -57,10 +57,10 @@ def header(page):
     <a class="mast-brand" href="index.html" aria-label="Automoto Tenis, inicio"><img src="assets/logo.png" alt=""><span>Automoto Club Deportivo<b>Tenis</b></span></a>
     <nav class="mast-nav" aria-label="Secciones">
       <a href="tabla.html"{cur("liga")}>Liga</a>
-      <a href="deporte.html"{cur("deporte")}>El deporte</a>
-      <a href="novedades.html"{cur("novedades")}>Novedades</a>
-      <a href="mercado.html"{cur("mercado")}>Mercado</a>
+      <a href="novedades.html"{cur("novedades")}>Noticias</a>
       <a href="info.html"{cur("club")}>El club</a>
+      <a href="deporte.html"{cur("deporte")}>El deporte</a>
+      <a href="mercado.html"{cur("mercado")}>Mercado</a>
     </nav>
     <div class="mast-end">
       {SOCIAL}
@@ -74,10 +74,10 @@ def header(page):
   <div class="drawer-group">
     <a class="big" href="index.html"{here("index.html")}>Inicio</a>
     <a class="big" href="tabla.html"{cur("liga")}>Liga</a>
-    <a class="big" href="deporte.html"{cur("deporte")}>El deporte</a>
-    <a class="big" href="novedades.html"{here("novedades.html")}>Novedades</a>
-    <a class="big" href="mercado.html"{here("mercado.html")}>Mercado del usado</a>
+    <a class="big" href="novedades.html"{cur("novedades")}>Noticias</a>
     <a class="big" href="info.html"{cur("club")}>El club</a>
+    <a class="big" href="deporte.html"{cur("deporte")}>El deporte</a>
+    <a class="big" href="mercado.html"{cur("mercado")}>Mercado del usado</a>
   </div>
   {SOCIAL}
 </nav>
