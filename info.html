@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=202610190048">
+<link rel="stylesheet" href="site.css?v=202610191110">
 <style>
 .sec { padding: var(--space-md) 0 0; }
 .sec-head { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-xl); align-items: end; border-bottom: 3px solid var(--color-ink); padding-bottom: var(--space-sm); margin-bottom: var(--space-lg); }
@@ -66,11 +66,9 @@ main { padding-bottom: var(--space-3xl); }
       <div class="menu">
         <button type="button" class="menu-btn" aria-current="page" aria-expanded="false" aria-haspopup="true">El club <span class="chev" aria-hidden="true">▾</span></button>
         <div class="menu-list">
-          <a href="info.html#pagos">Cuota y alias de pago</a>
           <a href="info.html#cancha">Cuidado de la cancha</a>
           <a href="info.html#contacto">Teléfonos y contactos</a>
           <a href="info.html#ubicacion">Cómo llegar</a>
-          <a href="subcomision.html">Subcomisión de Tenis</a>
         </div>
       </div>
     </nav>
@@ -102,11 +100,9 @@ main { padding-bottom: var(--space-3xl); }
   </div>
   <div class="drawer-group">
     <span class="k">El club</span>
-      <a href="info.html#pagos">Cuota y alias de pago</a>
       <a href="info.html#cancha">Cuidado de la cancha</a>
       <a href="info.html#contacto">Teléfonos y contactos</a>
       <a href="info.html#ubicacion">Cómo llegar</a>
-      <a href="subcomision.html">Subcomisión de Tenis</a>
   </div>
   <div class="social">
         <a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener" aria-label="Instagram de Automoto Tenis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
@@ -121,36 +117,7 @@ main { padding-bottom: var(--space-3xl); }
   </div>
 
 
-    <!-- ===== Pagos ===== -->
-    <details class="fold sec reveal" id="pagos" open style="--i:1">
-      <summary><div>
-          <h2>Cuota y alias de pago</h2></div><span class="chev">▾</span></summary>
-      <div class="fold-body"><div>
-      </div>
-
-      <div class="note">Valores y alias de ejemplo · reemplazar por los reales del club.</div>
-
-      <table class="pay-table">
-        <tr><td>Cuota mensual — socio<span class="muted">Acceso a canchas y actividades</span></td><td class="val">$ XX.XXX</td></tr>
-        <tr><td>Cuota mensual — menores / estudiantes</td><td class="val">$ XX.XXX</td></tr>
-        <tr><td>Matrícula anual</td><td class="val">$ XX.XXX</td></tr>
-        <tr><td>Alquiler de cancha — no socios<span class="muted">Por hora</span></td><td class="val">$ X.XXX</td></tr>
-        <tr><td>Escuela de tenis — clases<span class="muted">Consultar con el profe</span></td><td class="val">a convenir</td></tr>
-      </table>
-
-      <div class="alias-box">
-        <div>
-          <div class="lbl">Alias para transferir</div>
-          <div class="alias" id="aliasText">AUTOMOTO.TENIS.MP</div>
-          <div class="who">Titular: Club Automoto · CBU/CVU a solicitar por privado</div>
-        </div>
-        <button class="btn fill copy-btn" id="copyAlias" type="button">
-          <span id="copyLabel">Copiar alias</span>
-        </button>
-      </div>
-          </div></div>
-    </details>
-
+    
     <!-- ===== Cuidado de la cancha ===== -->
     <details class="fold sec reveal" id="cancha" style="--i:2">
       <summary><div>
@@ -169,7 +136,7 @@ main { padding-bottom: var(--space-3xl); }
         </div>
         <div class="care-item">
           <span class="ck">Sí</span>
-          <div><h4>Regá si está seca</h4><p>Una cancha bien regada juega mejor y levanta menos tierra. Si el canchero no está, ayudá con el riego.</p></div>
+          <div><h4>Regá si está seca</h4><p>Una cancha bien regada juega mejor y levanta menos tierra.</p></div>
         </div>
         <div class="care-item">
           <span class="ck">Sí</span>
@@ -181,7 +148,7 @@ main { padding-bottom: var(--space-3xl); }
         </div>
         <div class="care-item no">
           <span class="ck">No</span>
-          <div><h4>No dejes basura ni botellas</h4><p>Llevate lo tuyo. Los tachos están en la entrada de las canchas.</p></div>
+          <div><h4>No dejes basura ni botellas</h4><p>Llevate lo tuyo.</p></div>
         </div>
       </div>
           </div></div>
@@ -194,39 +161,13 @@ main { padding-bottom: var(--space-3xl); }
       <div class="fold-body"><div>
       </div>
 
-      <div class="note">Nombres y teléfonos de ejemplo · reemplazar por los reales.</div>
-
       <div class="contact-grid">
         <div class="contact-card">
-          <div class="role">Organizador de la liga</div>
-          <div class="name">Gonza</div>
+          <div class="role">Liga · carga de resultados</div>
+          <div class="name">Gonzalo Andes</div>
           <div class="contact-actions">
-            <a class="btn" href="https://wa.me/5492915555555" target="_blank" rel="noopener">WhatsApp</a>
-            <a class="btn" href="tel:+5492915555555">Llamar</a>
-          </div>
-        </div>
-        <div class="contact-card">
-          <div class="role">Subcomisión / cuotas</div>
-          <div class="name">Tesorería</div>
-          <div class="contact-actions">
-            <a class="btn" href="https://wa.me/5492915555555" target="_blank" rel="noopener">WhatsApp</a>
-            <a class="btn" href="tel:+5492915555555">Llamar</a>
-          </div>
-        </div>
-        <div class="contact-card">
-          <div class="role">Turnos y cancha</div>
-          <div class="name">Seba</div>
-          <div class="contact-actions">
-            <a class="btn" href="https://wa.me/5492915555555" target="_blank" rel="noopener">WhatsApp</a>
-            <a class="btn" href="tel:+5492915555555">Llamar</a>
-          </div>
-        </div>
-        <div class="contact-card">
-          <div class="role">Escuela de tenis</div>
-          <div class="name">Profes</div>
-          <div class="contact-actions">
-            <a class="btn" href="https://wa.me/5492915555555" target="_blank" rel="noopener">WhatsApp</a>
-            <a class="btn" href="tel:+5492915555555">Llamar</a>
+            <a class="btn" href="https://wa.me/5492914136214" target="_blank" rel="noopener">WhatsApp</a>
+            <a class="btn" href="tel:+5492914136214">Llamar</a>
           </div>
         </div>
       </div>
@@ -248,47 +189,6 @@ main { padding-bottom: var(--space-3xl); }
   </div>
 </footer>
 <!-- /layout:footer -->
-<script>
-  /* ---- Copiar alias (con fallback para mobile / HTTP) ---- */
-  const copyBtn = document.getElementById('copyAlias');
-  const copyLabel = document.getElementById('copyLabel');
-
-  // fallback que funciona en contextos no seguros (HTTP) y en móviles
-  function legacyCopy(text) {
-    try {
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      ta.setAttribute('readonly', '');
-      ta.style.position = 'fixed';
-      ta.style.top = '0';
-      ta.style.left = '0';
-      ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.focus();
-      ta.select();
-      ta.setSelectionRange(0, text.length); // iOS
-      const ok = document.execCommand('copy');
-      document.body.removeChild(ta);
-      return ok;
-    } catch (e) { return false; }
-  }
-
-  async function copyAlias() {
-    const alias = document.getElementById('aliasText').textContent.trim();
-    let ok = false;
-    // método moderno solo en contexto seguro (HTTPS o localhost)
-    if (navigator.clipboard && window.isSecureContext) {
-      try { await navigator.clipboard.writeText(alias); ok = true; } catch (e) { ok = false; }
-    }
-    if (!ok) ok = legacyCopy(alias);
-
-    copyBtn.classList.add('done');
-    copyLabel.textContent = ok ? '¡Copiado!' : 'Copiá: ' + alias;
-    setTimeout(() => { copyBtn.classList.remove('done'); copyLabel.textContent = 'Copiar alias'; }, ok ? 1800 : 3500);
-  }
-
-  copyBtn.addEventListener('click', copyAlias);
-</script>
-<script src="site.js?v=202610190048"></script>
+<script src="site.js?v=202610191110"></script>
 </body>
 </html>

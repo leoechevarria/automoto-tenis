@@ -30,9 +30,9 @@ SOCIAL = f'''<div class="social">
       </div>'''
 
 LIGA = [("tabla.html", "Tabla"), ("fixture.html", "Fixture"), ("tabla.html#cargar", "Cargá tu resultado"), ("reglas.html", "Reglas de la liga")]
-CLUB = [("info.html#pagos", "Cuota y alias de pago"), ("info.html#cancha", "Cuidado de la cancha"),
-        ("info.html#contacto", "Teléfonos y contactos"), ("info.html#ubicacion", "Cómo llegar"),
-        ("subcomision.html", "Subcomisión de Tenis")]
+# Cuota y alias de pago (info.html#pagos) y Subcomisión de Tenis (subcomision.html) vuelven cuando haya datos reales.
+CLUB = [("info.html#cancha", "Cuidado de la cancha"), ("info.html#contacto", "Teléfonos y contactos"),
+        ("info.html#ubicacion", "Cómo llegar")]
 
 
 def header(page):
