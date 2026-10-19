@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=202610191130">
+<link rel="stylesheet" href="site.css?v=202610191132">
 <style>
 .rank-wrap { padding: var(--space-lg) 0 var(--space-3xl); }
 .vista:empty { display: none; }
@@ -168,7 +168,7 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="liga.js?v=202610191130"></script>
+<script src="liga.js?v=202610191132"></script>
 <script>
   const navEl = document.getElementById('nav');
   const subtitleEl = document.getElementById('subtitle');
@@ -362,10 +362,10 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
     fillSelect(rWin, [...zonaDe.keys()]);
     fillLose();
   }
-  // Rival: con zonas, solo los de la zona del ganador.
+  // Rival: nunca el mismo ganador; con zonas, solo los de la zona del ganador.
   function fillLose() {
-    const z = zonaDe.get(rWin.value);
-    fillSelect(rLose, [...zonaDe.keys()].filter(n => !z || zonaDe.get(n) === z));
+    const w = rWin.value, z = zonaDe.get(w);
+    fillSelect(rLose, [...zonaDe.keys()].filter(n => n !== w && (!z || zonaDe.get(n) === z)));
     preview();
   }
   function fillSelect(sel, names) {
@@ -446,6 +446,6 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
     dlg.close();
   });
 </script>
-<script src="site.js?v=202610191130"></script>
+<script src="site.js?v=202610191132"></script>
 </body>
 </html>
