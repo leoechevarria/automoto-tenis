@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=202610191110">
+<link rel="stylesheet" href="site.css?v=202610191112">
 <style>
 .fixture { padding: 0 0 var(--space-3xl); }
 .fx-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: var(--space-md); border-bottom: 3px solid var(--color-ink); padding-bottom: var(--space-sm); }
@@ -36,11 +36,10 @@
 .fx-zona { font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-ink-3); padding: 10px 0 2px; }
 .fx-zona:first-child { padding-top: 0; }
 .fx-libre { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-ink-3); padding: 4px 0 6px; }
-.fx-tools { padding: var(--space-lg) 0 var(--space-sm); }
+.fx-tools { padding: var(--space-lg) 0 var(--space-xl); }   /* deja lugar al resaltado de la fecha en juego */
 .fx-who { display: grid; gap: 6px; max-width: 480px; }
 .fx-who span { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; text-transform: uppercase; }
 .fx-who select { font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; text-transform: uppercase; padding: 10px 44px 10px 14px; min-height: 56px; border: 2px solid var(--color-ink); background: var(--color-paper) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23143a2a' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center; color: var(--color-ink); appearance: none; -webkit-appearance: none; border-radius: 0; width: 100%; }
-.fx-who select.on { background-color: var(--color-ink); color: var(--color-paper); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); }
 main { padding-bottom: var(--space-3xl); }
 </style>
 </head>
@@ -129,7 +128,7 @@ main { padding-bottom: var(--space-3xl); }
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="liga.js?v=202610191110"></script>
+<script src="liga.js?v=202610191112"></script>
 <script>
   const navEl = document.getElementById('nav'), subtitleEl = document.getElementById('subtitle');
   const statusDot = document.getElementById('status-dot'), statusText = document.getElementById('status-text');
@@ -152,7 +151,6 @@ main { padding-bottom: var(--space-3xl); }
       let yo = ''; try { yo = localStorage.getItem('fxJugador') || ''; } catch (e) {}
       fxPlayer.value = names.includes(yo) ? yo : '';
     }
-    fxPlayer.classList.toggle('on', !!fxPlayer.value);
     const who = fxPlayer.value;
     // Zonas: las de la inscripción de cada jugador en esta temporada y categoría
     const ins = model.rowsFor(temporadaSel).filter(r => r.key === key);
@@ -222,6 +220,6 @@ main { padding-bottom: var(--space-3xl); }
   load();
   setInterval(() => load(true), REFRESH_MS);
 </script>
-<script src="site.js?v=202610191110"></script>
+<script src="site.js?v=202610191112"></script>
 </body>
 </html>
