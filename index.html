@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=20261019174143">
+<link rel="stylesheet" href="site.css?v=20261019175633">
 <style>
 /* ---- Apertura con la foto de la cancha ---- */
 .open { position: relative; min-height: clamp(380px, 58vh, 640px); display: grid; align-items: end; isolation: isolate; color: var(--color-on-photo); }
@@ -87,11 +87,11 @@
   .row .meta { grid-column: auto; justify-self: start; text-align: left; margin-top: 6px; }
   .quick { grid-column: auto; margin-top: var(--space-xs); }
   .quick a { flex: 1 1 calc(50% - var(--space-sm)); justify-content: center; }
-  .clima-head { grid-template-columns: minmax(0, 1fr); }
 }
 /* ---- Clima ---- */
 .clima { padding: var(--space-3xl) 0 var(--space-2xl); }
-.clima-head { display: flex; justify-content: space-between; align-items: end; gap: var(--space-lg); border-bottom: 3px solid var(--color-ink); padding-bottom: var(--space-sm); }
+.clima-head { display: grid; grid-template-columns: auto minmax(0, 1fr) max-content; align-items: end; gap: var(--space-sm) var(--space-lg); border-bottom: 3px solid var(--color-ink); padding-bottom: var(--space-sm); }
+.clima-head .clima-quote { justify-self: end; text-align: right; margin: 0; }
 .clima h2 { font-size: var(--text-2xl); font-weight: 800; text-transform: uppercase; }
 .clima-quote { display: flex; align-items: center; gap: var(--space-md); margin: var(--space-sm) 0 var(--space-xs); }
 .clima-quote img { width: 56px; height: auto; flex: none; filter: drop-shadow(0 1px 0 var(--color-rule)); }
@@ -99,6 +99,10 @@
 .clima-quote cite { display: block; margin-top: 2px; font-family: var(--font-mono); font-size: var(--text-xs); font-style: normal; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-ink-3); }
 .clima-quote cite::before { content: "— "; }
 .clima-head .arrows { display: flex; gap: var(--space-sm); flex: none; }
+@media (max-width: 640px) {   /* en el celu: título y flechas arriba, la frase abajo y sola */
+  .clima-head { grid-template-columns: minmax(0, 1fr) max-content; }
+  .clima-head .clima-quote { grid-column: 1 / -1; grid-row: 2; justify-self: start; text-align: left; }
+}
 .wx-arrow { width: 44px; height: 44px; border: 1px solid var(--color-rule); background: var(--color-paper); color: var(--color-ink); font-family: var(--font-display); font-size: 1.5rem; cursor: pointer; transition: transform var(--dur-fast) var(--ease-out), opacity var(--dur-fast); }
 .wx-arrow:active { transform: scale(0.96); }
 .wx-arrow[hidden] { display: inline-block; opacity: .3; pointer-events: none; }
@@ -227,13 +231,11 @@
 
   <section class="clima" id="clima">
     <div class="clima-head">
-      <div>
-        <h2>Clima</h2>
-        <figure class="clima-quote">
+      <h2>Pronóstico del tiempo</h2>
+      <figure class="clima-quote">
           <img src="assets/clima-tenista.webp" alt="" width="240" height="292">
           <blockquote>“Siempre es un lindo día para jugar al tenis.”<cite>John MacOulighnt</cite></blockquote>
         </figure>
-      </div>
       <div class="arrows">
         <button class="wx-arrow prev" id="wxPrev" type="button" aria-label="Días anteriores" hidden>‹</button>
         <button class="wx-arrow next" id="wxNext" type="button" aria-label="Más días" hidden>›</button>
@@ -250,7 +252,7 @@
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="novedades.js?v=20261019174143"></script>
+<script src="novedades.js?v=20261019175633"></script>
 <script>
   /* ---- Hoy: clima (lo llama el script del clima cuando termina) ---- */
   function renderHoyClima(days) {
@@ -488,6 +490,6 @@
   loadWeather();
 
 </script>
-<script src="site.js?v=20261019174143"></script>
+<script src="site.js?v=20261019175633"></script>
 </body>
 </html>
