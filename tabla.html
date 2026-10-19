@@ -391,7 +391,8 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
     const cat = label(rCat.value), d = document.getElementById('rDate').value;
     const fecha = d ? new Date(d + 'T12:00:00').toLocaleDateString('es-AR', { day: 'numeric', month: 'long' }) : 'hoy';
     const w = rWin.value === '__otro' ? '(otro)' : rWin.value, l = rLose.value === '__otro' ? '(otro)' : rLose.value;
-    return `Hola Gonza, cargo un resultado de la liga 🎾\n${cat}\n${w || '…'} le ganó a ${l || '…'}\n${score() || '…'}\nJugado ${fecha}.`;
+    const z = zonaDe.get(rWin.value) || zonaDe.get(rLose.value);
+    return `Hola Gonza, cargo un resultado de la liga 🎾\n${cat}${z ? ` · Zona ${z}` : ''}\n${w || '…'} le ganó a ${l || '…'}\n${score() || '…'}\nJugado ${fecha}.`;
   }
   /* ---- Vista previa: cómo cambian el rating y el puesto con este resultado ---- */
   const rImpact = document.getElementById('rImpact');
