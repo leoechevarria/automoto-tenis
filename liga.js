@@ -60,11 +60,51 @@
     return { temporada: activa, enJuego: estado(filaActiva) === 'activa', pts, rows, rules, partidos, jugadores, ins, rowsFor, ptsDe, temporadas, keyOf };
   }
 
-  // Orden: el puesto final oficial si la temporada lo tiene; si no, puntos, ganados, menos no presentados.
-  function sortRows(list) {
+  /* Orden de la tabla: el puesto final oficial si la temporada lo tiene. Si no, reglas 2026:
+     1. puntos; 2. entre los empatados, partidos ganados entre ellos; 3. sets ganados; 4. games ganados.
+     d = desempate(m, temporada, key); sin d, desempata por ganados y no presentados. */
+  function sortRows(list, d) {
     const conPuesto = list.length && list.every(r => r.puesto);
-    return list.slice().sort((a, b) => conPuesto ? a.puesto - b.puesto
-      : b.pts - a.pts || b.pg - a.pg || a.np - b.np || a.jugador.localeCompare(b.jugador));
+    if (conPuesto) return list.slice().sort((a, b) => a.puesto - b.puesto);
+    const base = (a, b) => b.pts - a.pts;
+    const resto = (a, b) => d
+      ? (d.sets.get(b.jugador) || 0) - (d.sets.get(a.jugador) || 0) || (d.games.get(b.jugador) || 0) - (d.games.get(a.jugador) || 0) || a.jugador.localeCompare(b.jugador)
+      : b.pg - a.pg || a.np - b.np || a.jugador.localeCompare(b.jugador);
+    const out = list.slice().sort(base);
+    // grupos con los mismos puntos: primero los partidos ganados entre ellos
+    for (let i = 0; i < out.length;) {
+      let j = i; while (j < out.length && out[j].pts === out[i].pts) j++;
+      if (j - i > 1) {
+        const grupo = out.slice(i, j), nombres = new Set(grupo.map(r => r.jugador));
+        const entre = r => d ? [...nombres].filter(o => o !== r.jugador && d.gana.has(r.jugador + '|' + o)).length : 0;
+        grupo.sort((a, b) => entre(b) - entre(a) || resto(a, b));
+        out.splice(i, j - i, ...grupo);
+      }
+      i = j;
+    }
+    return out;
+  }
+  // Datos para desempatar en una temporada y categoría: sets y games ganados, y quién le ganó a quién.
+  // Cuentan los partidos de liga jugados (no anulados ni walkover). El super tie-break cuenta como set, no como games.
+  function desempate(m, temporada, key, hasta = null) {
+    const sets = new Map(), games = new Map(), gana = new Set();
+    const suma = (mp, k, v) => mp.set(k, (mp.get(k) || 0) + v);
+    for (const r of m.partidos || []) {
+      if (r[0] !== temporada || m.keyOf(r[1], r[2]) !== key || (r[3] || 'Liga') !== 'Liga' || /^s/i.test(r[13] || '') || /^s/i.test(r[12] || '')) continue;
+      const a = r[8], b = r[9], g = ganadorDe(r);
+      if (!a || !b || (g !== a && g !== b)) continue;
+      if (hasta) { const f = parseFecha(r[7]) || parseFecha(r[6]); if (!f || f >= hasta) continue; }
+      gana.add(g + '|' + (g === a ? b : a));
+      let lista = String(r[10] || '').split(/[,;\s]+/).map(t => t.match(/^(\d+)-(\d+)$/)).filter(Boolean).map(x => [+x[1], +x[2]]);
+      // si los sets están escritos desde el lado del ganador y no del Jugador 1, se dan vuelta
+      const setsA = lista.filter(([x, y]) => x > y).length, setsB = lista.filter(([x, y]) => y > x).length;
+      if ((g === a && setsB > setsA) || (g === b && setsA > setsB)) lista = lista.map(([x, y]) => [y, x]);
+      for (const [ga, gb] of lista) {
+        if (ga !== gb) suma(sets, ga > gb ? a : b, 1);
+        if (Math.max(ga, gb) < 10) { suma(games, a, ga); suma(games, b, gb); }
+      }
+    }
+    return { sets, games, gana };
   }
   // Zonas de una lista de filas de la tabla: [['A', filas], ['B', filas]]; [['', filas]] si la categoría no tiene zonas.
   function porZona(rows) {
@@ -260,7 +300,7 @@
         else { c.pts += pts.p; c.pp++; c.partidos.push(`perdió con ${rival}`); }
       }
     }
-    const lunesRows = sortRows(rows.map(r => { const c = cambio.get(r.jugador); return { ...r, pts: r.pts - c.pts, pg: r.pg - c.pg, pp: r.pp - c.pp, np: r.np - c.np }; }));
+    const lunesRows = sortRows(rows.map(r => { const c = cambio.get(r.jugador); return { ...r, pts: r.pts - c.pts, pg: r.pg - c.pg, pp: r.pp - c.pp, np: r.np - c.np }; }), desempate(m, temporada, key, lunes));
     const antes = new Map(lunesRows.map((r, i) => [r.jugador, i + 1]));
     const out = new Map();
     rows.forEach((r, i) => { const c = cambio.get(r.jugador); out.set(r.jugador, { dPts: c.pts, dPos: antes.get(r.jugador) - (i + 1), partidos: c.partidos }); });

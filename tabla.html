@@ -12,10 +12,17 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=202610182318">
+<link rel="stylesheet" href="site.css?v=202610190048">
 <style>
 .page-head .meta .dot { transition: background-color 300ms var(--ease-out); }
 .rank-wrap { padding: var(--space-lg) 0 var(--space-3xl); }
+.vista:empty { display: none; }
+.vista { padding: var(--space-md) 0 0; }
+.vista .seg { display: inline-flex; border: 1px solid var(--color-ink); }
+.vista .seg button { font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; text-transform: uppercase; padding: 6px 14px; min-height: 40px; background: none; border: 0; color: var(--color-ink); cursor: pointer; }
+.vista .seg button + button { border-left: 1px solid var(--color-ink); }
+.vista .seg button[aria-pressed="true"] { background: var(--color-ink); color: var(--color-paper); }
+@media (hover: hover) { .vista .seg button[aria-pressed="false"]:hover { background: var(--color-paper-2); } }
 h2.zona { font-size: var(--text-2xl); font-weight: 800; text-transform: uppercase; margin: var(--space-xl) 0 var(--space-sm); }
 h2.zona:first-child { margin-top: var(--space-sm); }
 .legend { display: flex; flex-wrap: wrap; gap: 6px var(--space-lg); padding: var(--space-md) 0; font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-ink-2); text-transform: uppercase; letter-spacing: 0.04em; }
@@ -176,6 +183,7 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
   </dialog>
   <div class="rank-wrap reveal" style="--i:2">
     <div class="liga-bar"><nav id="nav" aria-label="Rama y categoría"></nav></div>
+    <div class="vista" id="vista"></div>
     <div class="legend" id="legend"></div>
     <div id="content"><div class="state"><div class="spinner"></div>Cargando la tabla…</div></div>
     <div class="temp-foot" id="tempSel"></div>
@@ -188,7 +196,7 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="liga.js?v=202610182318"></script>
+<script src="liga.js?v=202610190048"></script>
 <script>
   const navEl = document.getElementById('nav');
   const subtitleEl = document.getElementById('subtitle');
@@ -230,7 +238,8 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
       if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e?.error?.message || `HTTP ${res.status}`); }
       return ((await res.json()).values || []).slice(1).filter(r => r[0] && r[0].trim()).map(r => ({ jugador: r[0], pj: n(r[1]), pg: n(r[2]), pp: n(r[3]), np: n(r[4]), pts: n(r[5]) }));
     }
-    return sortRows(model.rowsFor(temporada || temporadaSel).filter(r => r.key === key));
+    const t = temporada || temporadaSel;
+    return sortRows(model.rowsFor(t).filter(r => r.key === key), desempate(model, t, key));
   }
 
   function renderNav() { ligaNav(navEl, currentCat, visibleKeys()); }
@@ -251,31 +260,40 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
     legendEl.innerHTML = items.join('');
   }
 
+  // Categorías con zonas: 'zonas' (tabla de cada zona, marca el Master) o 'general'
+  // (ranking de la categoría del 1 al último, con ascensos, descensos y repechaje).
+  let vista = 'zonas';
+  const vistaEl = document.getElementById('vista');
+  const SIN_MARCAS = { up: 0, down: 0, promoUp: 0, promoDown: 0 };
   function renderTable(rows, key) {
     const zonas = porZona(rows);
+    const conZonas = zonas.length > 1;
+    const general = !conZonas || vista === 'general';
     // Sin partidos jugados en la categoría no se marca nada (ascensos, promoción, Master).
-    // Con zonas, la planilla todavía no dice quién asciende o desciende en cada una: tampoco se marca.
     const jugado = rows.some(r => r.pj > 0);
-    const cfg = zonas.length > 1 || !jugado ? { up: 0, down: 0, promoUp: 0, promoDown: 0 } : rulesFor(key);
-    const master = jugado && zonas.length > 1 ? MASTER_POR_ZONA[key] || 0 : 0;
+    const cfg = general && jugado ? rulesFor(key) : SIN_MARCAS;
+    const master = !general && jugado ? MASTER_POR_ZONA[key] || 0 : 0;
+    const d = model && !legacy ? desempate(model, temporadaSel, key) : null;
+    vistaEl.innerHTML = conZonas ? `<div class="seg" role="group" aria-label="Vista"><button type="button" data-v="zonas" aria-pressed="${!general}">Por zona</button><button type="button" data-v="general" aria-pressed="${general}">Ranking general</button></div>` : '';
+    vistaEl.querySelectorAll('[data-v]').forEach(btn => btn.addEventListener('click', () => { vista = btn.dataset.v; renderTable(rows, key); }));
     renderLegend(cfg, rows.length);
     if (!rows.length) {
       contentEl.innerHTML = `<div class="state">Todavía no hay jugadores inscriptos en ${escapeHtml(label(key))}.</div>`;
       return;
     }
     let hayCambios = false;
-    const tablas = zonas.map(([zona, list]) => {
-      list = sortRows(list);
+    const tablas = (general ? [['', rows]] : zonas).map(([zona, list]) => {
+      list = sortRows(list, d);
       const semana = model && !legacy ? semanaTabla(model, temporadaSel, key, list) : null;
       if (semana && [...semana.values()].some(c => c.dPts || c.dPos)) hayCambios = true;
-      return tableHtml(list, key, cfg, semana, zona, master);
+      return tableHtml(list, key, cfg, semana, zona, master, general && conZonas);
     });
     if (master) legendEl.insertAdjacentHTML('beforeend', `<div class="legend-item"><span class="legend-swatch ascend"></span> Los ${master} primeros de cada zona van al Master</div>`);
     if (hayCambios) { const lu = lunesDeEstaSemana(); legendEl.insertAdjacentHTML('afterbegin', `<div class="legend-item">Cambios desde el lunes ${lu.getDate()}/${lu.getMonth() + 1}</div>`); }
     contentEl.innerHTML = tablas.join('');
   }
 
-  function tableHtml(rows, key, cfg, semana, zona, master) {
+  function tableHtml(rows, key, cfg, semana, zona, master, conZona) {
     const total = rows.length;
     const bottomStart = total - cfg.down + 1;
     let html = `${zona ? `<h2 class="zona">Zona ${escapeHtml(zona)}</h2>` : ''}
@@ -309,7 +327,7 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
       html += `
         <tr class="rank-${rank} ${rowClass}">
           <td class="pos"><span class="pos-badge">${rank}</span>${c && c.dPos ? `<span class="mv ${c.dPos > 0 ? 'up' : 'dn'}">${c.dPos > 0 ? '▲' : '▼'}${Math.abs(c.dPos)}</span>` : ''}</td>
-          <td><div class="player">${escapeHtml(r.jugador)}</div>${r.extra ? `<div class="vs-sem">(+${r.extra} por el Apertura)</div>` : ''}${c && c.partidos.length ? `<div class="vs-sem">(${c.partidos.map(escapeHtml).join(' · ')})</div>` : ''}${tag}</td>
+          <td><div class="player">${escapeHtml(r.jugador)}</div>${conZona && r.zona ? `<div class="vs-sem">Zona ${escapeHtml(r.zona)}</div>` : ''}${r.extra ? `<div class="vs-sem">(+${r.extra} por el Apertura)</div>` : ''}${c && c.partidos.length ? `<div class="vs-sem">(${c.partidos.map(escapeHtml).join(' · ')})</div>` : ''}${tag}</td>
           <td class="num">${r.pj}</td>
           <td class="num">${r.pg}</td>
           <td class="num">${r.pp}</td>
@@ -417,10 +435,11 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
     // tabla de la liga: solo si la temporada está en juego y los dos están inscriptos
     let tabla = null;
     if (model.enJuego) {
-      const cur = sortRows(model.rows.filter(r => r.key === key && (r.zona || '') === (zonaDe.get(w) || '')));
+      const dz = desempate(model, model.temporada, key);
+      const cur = sortRows(model.rows.filter(r => r.key === key && (r.zona || '') === (zonaDe.get(w) || '')), dz);
       if (cur.some(r => r.jugador === w) && cur.some(r => r.jugador === l)) {
         const next = sortRows(cur.map(r => r.jugador === w ? { ...r, pj: r.pj + 1, pg: r.pg + 1, pts: r.pts + model.pts.g }
-          : r.jugador === l ? { ...r, pj: r.pj + 1, pp: r.pp + 1, pts: r.pts + model.pts.p } : r));
+          : r.jugador === l ? { ...r, pj: r.pj + 1, pp: r.pp + 1, pts: r.pts + model.pts.p } : r), { ...dz, gana: new Set([...dz.gana, w + '|' + l]) });
         tabla = name => [cur.findIndex(r => r.jugador === name) + 1, next.findIndex(r => r.jugador === name) + 1];
       }
     }
@@ -460,6 +479,6 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
     dlg.close();
   });
 </script>
-<script src="site.js?v=202610182318"></script>
+<script src="site.js?v=202610190048"></script>
 </body>
 </html>
