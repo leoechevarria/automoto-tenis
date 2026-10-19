@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=20261019164709">
+<link rel="stylesheet" href="site.css?v=20261019165430">
 <style>
 .fixture { padding: 0 0 var(--space-3xl); }
 .fx-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: var(--space-md); border-bottom: 3px solid var(--color-ink); padding-bottom: var(--space-sm); }
@@ -50,6 +50,7 @@ main { padding-bottom: var(--space-3xl); }
     <a class="mast-brand" href="index.html" aria-label="Automoto Tenis, inicio"><img src="assets/logo.png" alt=""><span>Automoto Club Deportivo<b>Tenis</b></span></a>
     <nav class="mast-nav" aria-label="Secciones">
       <a href="tabla.html" aria-current="page">Liga</a>
+      <a href="deporte.html">El deporte</a>
       <a href="novedades.html">Novedades</a>
       <a href="mercado.html">Mercado</a>
       <a href="info.html">El club</a>
@@ -69,6 +70,7 @@ main { padding-bottom: var(--space-3xl); }
   <div class="drawer-group">
     <a class="big" href="index.html">Inicio</a>
     <a class="big" href="tabla.html" aria-current="page">Liga</a>
+    <a class="big" href="deporte.html">El deporte</a>
     <a class="big" href="novedades.html">Novedades</a>
     <a class="big" href="mercado.html">Mercado del usado</a>
     <a class="big" href="info.html">El club</a>
@@ -100,7 +102,7 @@ main { padding-bottom: var(--space-3xl); }
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="liga.js?v=20261019164709"></script>
+<script src="liga.js?v=20261019165430"></script>
 <script>
   const navEl = document.getElementById('nav'), subtitleEl = document.getElementById('subtitle');
   let model = null, currentCat = keyFromHash(), temporadaSel = null;
@@ -196,6 +198,6 @@ main { padding-bottom: var(--space-3xl); }
   load();
   setInterval(() => load(true), REFRESH_MS);
 </script>
-<script src="site.js?v=20261019164709"></script>
+<script src="site.js?v=20261019165430"></script>
 </body>
 </html>

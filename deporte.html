@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Automoto Tenis — El deporte</title>
+<link rel="icon" href="assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/favicon-192.png">
+<link rel="apple-touch-icon" href="assets/favicon-180.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#12265c">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css?v=20261019165430">
+<style>
+main { padding-bottom: var(--space-3xl); }
+.sec { padding: var(--space-md) 0 0; }
+.why { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--space-xl); }
+.why div { padding: var(--space-md) 0; border-bottom: 1px solid var(--color-rule); }
+.why h3 { font-size: 1.45rem; font-weight: 700; text-transform: uppercase; margin: 0 0 4px; }
+.why p { margin: 0; color: var(--color-ink-2); max-width: 60ch; }
+.dato { margin: var(--space-lg) 0 0; padding: var(--space-md) var(--space-lg); border-left: 4px solid var(--color-accent); background: var(--color-paper-2); max-width: 70ch; }
+.dato b { color: var(--color-ink); }
+.modos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-lg); }
+.modo { padding: var(--space-lg); border: 1px solid var(--color-rule); background: var(--color-paper); }
+.modo .k { font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-accent-deep); }
+.modo h3 { font-size: 2rem; font-weight: 800; text-transform: uppercase; margin: 2px 0 6px; }
+.modo p { margin: 0; color: var(--color-ink-2); }
+.paso { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-lg); align-items: center; padding: var(--space-lg) 0; border-bottom: 1px solid var(--color-rule); }
+.paso h3 { font-size: 1.6rem; font-weight: 800; text-transform: uppercase; margin: 0 0 4px; }
+.paso p { margin: 0; color: var(--color-ink-2); max-width: 62ch; }
+.paso .acts { display: flex; gap: var(--space-sm); flex-wrap: wrap; justify-content: flex-end; }
+.paso a.link { text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 720px) { .why, .modos { grid-template-columns: minmax(0, 1fr); } .paso { grid-template-columns: minmax(0, 1fr); } .paso .acts { justify-content: flex-start; } }
+</style>
+</head>
+<body>
+<!-- layout:header -->
+<header class="mast" id="mast">
+  <div class="wrap mast-in">
+    <a class="mast-brand" href="index.html" aria-label="Automoto Tenis, inicio"><img src="assets/logo.png" alt=""><span>Automoto Club Deportivo<b>Tenis</b></span></a>
+    <nav class="mast-nav" aria-label="Secciones">
+      <a href="tabla.html">Liga</a>
+      <a href="deporte.html" aria-current="page">El deporte</a>
+      <a href="novedades.html">Novedades</a>
+      <a href="mercado.html">Mercado</a>
+      <a href="info.html">El club</a>
+    </nav>
+    <div class="mast-end">
+      <div class="social">
+        <a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener" aria-label="Instagram de Automoto Tenis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="https://www.instagram.com/masu.tenis/" target="_blank" rel="noopener" aria-label="Instagram de Masu Tenis" class="masu"><img src="assets/masu-mark.png" alt=""></a>
+      </div>
+      <button type="button" class="nav-toggle" aria-controls="drawer" aria-expanded="false" aria-label="Abrir menú"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    </div>
+  </div>
+</header>
+<div class="drawer-backdrop" id="drawerBackdrop"></div>
+<nav class="drawer" id="drawer" aria-label="Menú" aria-hidden="true">
+  <div class="drawer-head"><strong>Menú</strong><button type="button" class="drawer-close" aria-label="Cerrar menú">✕</button></div>
+  <div class="drawer-group">
+    <a class="big" href="index.html">Inicio</a>
+    <a class="big" href="tabla.html">Liga</a>
+    <a class="big" href="deporte.html" aria-current="page">El deporte</a>
+    <a class="big" href="novedades.html">Novedades</a>
+    <a class="big" href="mercado.html">Mercado del usado</a>
+    <a class="big" href="info.html">El club</a>
+  </div>
+  <div class="social">
+        <a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener" aria-label="Instagram de Automoto Tenis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="https://www.instagram.com/masu.tenis/" target="_blank" rel="noopener" aria-label="Instagram de Masu Tenis" class="masu"><img src="assets/masu-mark.png" alt=""></a>
+      </div>
+</nav>
+<!-- /layout:header -->
+
+<main class="wrap">
+  <div class="page-head reveal" style="--i:0">
+    <div><h1>El deporte</h1></div>
+  </div>
+
+  <details class="fold sec reveal" id="por-que" open style="--i:1">
+    <summary><div><h2>Por qué jugar al tenis</h2></div><span class="chev">▾</span></summary>
+    <div class="fold-body"><div>
+      <div class="why">
+        <div><h3>Corazón y resistencia</h3><p>Es un ejercicio aeróbico con piques cortos: mejora la resistencia y cuida el corazón.</p></div>
+        <div><h3>Todo el cuerpo</h3><p>Trabajan piernas, tronco y brazos. Fortalece músculos y huesos.</p></div>
+        <div><h3>Coordinación y reflejos</h3><p>Cada pelota pide leer la jugada, moverse y decidir en un segundo.</p></div>
+        <div><h3>La cabeza</h3><p>Exige concentración y estrategia, y es una gran forma de descargar el estrés.</p></div>
+        <div><h3>Siempre con alguien</h3><p>Nunca se juega solo: se arman partidos, amistades y un grupo dentro y fuera de la cancha.</p></div>
+        <div><h3>Para toda la vida</h3><p>Se puede empezar a cualquier edad y se sigue jugando muchos años, adaptando el ritmo.</p></div>
+      </div>
+      <p class="dato">Un estudio de Copenhague que siguió a más de 8.000 personas durante 25 años asoció el tenis con <b>casi 10 años más de expectativa de vida</b>, más que cualquier otro deporte del estudio. Buena parte del efecto se atribuye a que es un deporte social.</p>
+    </div></div>
+  </details>
+
+  <details class="fold sec reveal" id="modos" open style="--i:2">
+    <summary><div><h2>Singles o dobles</h2></div><span class="chev">▾</span></summary>
+    <div class="fold-body"><div>
+      <div class="modos">
+        <div class="modo"><span class="k">Uno contra uno</span><h3>Singles</h3><p>Cubrís toda la cancha: es más físico y te hace correr cada pelota.</p></div>
+        <div class="modo"><span class="k">Dos contra dos</span><h3>Dobles</h3><p>Se juega en pareja: es más táctico, se corre menos y es ideal para empezar o para sumar amigos.</p></div>
+      </div>
+    </div></div>
+  </details>
+
+  <details class="fold sec reveal" id="empezar" open style="--i:3">
+    <summary><div><h2>Empezá a jugar</h2></div><span class="chev">▾</span></summary>
+    <div class="fold-body"><div>
+      <div class="paso">
+        <div><h3>Clases</h3><p>Si querés empezar a tomar clases, escribile a Sebastián Mazzulli, director de la escuela de tenis. Te ayuda a encontrar un profesor y horarios que te queden bien.</p></div>
+        <div class="acts"><a class="btn fill" href="https://wa.me/5492914461829?text=Hola%20Sebas!%20Me%20interesa%20empezar%20a%20tomar%20clases%20de%20tenis." target="_blank" rel="noopener">Escribile a Sebas ↗</a></div>
+      </div>
+      <div class="paso">
+        <div><h3>Reservá cancha</h3><p>Los turnos se reservan online. Si tenés la membresía de tenis, el turno no tiene costo adicional. Si no la tenés, se paga un adicional por turno. <a class="link" href="info.html#pagos">Ver cuota y membresía</a> · <a class="link" href="info.html#canchas">Nuestras canchas</a></p></div>
+        <div class="acts"><a class="btn fill" href="https://darturnos.com/AutomotoTenis/" target="_blank" rel="noopener">Reservar turno ↗</a></div>
+      </div>
+    </div></div>
+  </details>
+</main>
+
+<!-- layout:footer -->
+<footer>
+  <div class="wrap foot-cols">
+    <div><strong>Automoto Club Deportivo · Tenis</strong><a href="https://maps.app.goo.gl/wUV2pwQLxERQxQDT8" target="_blank" rel="noopener">Tornquist, Provincia de Buenos Aires</a></div>
+  </div>
+</footer>
+<!-- /layout:footer -->
+<script src="site.js?v=20261019165430"></script>
+</body>
+</html>

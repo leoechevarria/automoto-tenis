@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=20261019164709">
+<link rel="stylesheet" href="site.css?v=20261019165430">
 <style>
 .sec { padding: var(--space-md) 0 0; }
 .sec-head { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-xl); align-items: end; border-bottom: 3px solid var(--color-ink); padding-bottom: var(--space-sm); margin-bottom: var(--space-lg); }
@@ -33,6 +33,11 @@
 .care-item.no .ck { color: var(--color-accent); }
 .care-item h4 { margin: 0 0 2px; font-family: var(--font-display); font-size: 1.35rem; font-weight: 700; text-transform: uppercase; }
 .care-item p { margin: 0; color: var(--color-ink-2); font-size: var(--text-sm); }
+.canchas { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: var(--space-xl); align-items: center; }
+.canchas img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; display: block; }
+.canchas p { margin: 0 0 var(--space-md); font-size: var(--text-xl); line-height: 1.35; max-width: 34ch; }
+.canchas p:last-child { margin: 0; }
+@media (max-width: 720px) { .canchas { grid-template-columns: minmax(0, 1fr); gap: var(--space-md); } }
 .staff { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 var(--space-xl); }
 .staff.canchero { margin-bottom: var(--space-md); }
 .who-card { padding: var(--space-md) 0; border-bottom: 1px solid var(--color-rule); }
@@ -60,6 +65,7 @@ main { padding-bottom: var(--space-3xl); }
     <a class="mast-brand" href="index.html" aria-label="Automoto Tenis, inicio"><img src="assets/logo.png" alt=""><span>Automoto Club Deportivo<b>Tenis</b></span></a>
     <nav class="mast-nav" aria-label="Secciones">
       <a href="tabla.html">Liga</a>
+      <a href="deporte.html">El deporte</a>
       <a href="novedades.html">Novedades</a>
       <a href="mercado.html">Mercado</a>
       <a href="info.html" aria-current="page">El club</a>
@@ -79,6 +85,7 @@ main { padding-bottom: var(--space-3xl); }
   <div class="drawer-group">
     <a class="big" href="index.html">Inicio</a>
     <a class="big" href="tabla.html">Liga</a>
+    <a class="big" href="deporte.html">El deporte</a>
     <a class="big" href="novedades.html">Novedades</a>
     <a class="big" href="mercado.html">Mercado del usado</a>
     <a class="big" href="info.html" aria-current="page">El club</a>
@@ -97,6 +104,20 @@ main { padding-bottom: var(--space-3xl); }
 
 
     
+    <!-- ===== Canchas ===== -->
+    <details class="fold sec reveal" id="canchas" open style="--i:1">
+      <summary><div><h2>Nuestras canchas</h2></div><span class="chev">▾</span></summary>
+      <div class="fold-body"><div>
+        <div class="canchas">
+          <img src="assets/court.jpg" alt="Cancha de polvo de ladrillo del club, con las sierras de fondo" loading="lazy">
+          <div>
+            <p>Tenemos <b>dos canchas de polvo de ladrillo</b>, con una vista hermosa a las sierras.</p>
+            <p>Y está en plena construcción <b>una tercera cancha</b>, también de polvo de ladrillo.</p>
+          </div>
+        </div>
+      </div></div>
+    </details>
+
     <!-- ===== Pagos ===== -->
     <details class="fold sec reveal" id="pagos" open style="--i:1">
       <summary><div><h2>Cuota y alias de pago</h2></div><span class="chev">▾</span></summary>
@@ -253,6 +274,6 @@ main { padding-bottom: var(--space-3xl); }
     setTimeout(() => { copyBtn.classList.remove('done'); copyLabel.textContent = 'Copiar alias'; }, ok ? 1800 : 3500);
   });
 </script>
-<script src="site.js?v=20261019164709"></script>
+<script src="site.js?v=20261019165430"></script>
 </body>
 </html>

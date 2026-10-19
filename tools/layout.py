@@ -20,6 +20,7 @@ PAGES = {
     "novedades.html": "novedades",
     "mercado.html": "mercado",
     "info.html": "club",
+    "deporte.html": "deporte",
 }
 
 IG_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>'
@@ -56,6 +57,7 @@ def header(page):
     <a class="mast-brand" href="index.html" aria-label="Automoto Tenis, inicio"><img src="assets/logo.png" alt=""><span>Automoto Club Deportivo<b>Tenis</b></span></a>
     <nav class="mast-nav" aria-label="Secciones">
       <a href="tabla.html"{cur("liga")}>Liga</a>
+      <a href="deporte.html"{cur("deporte")}>El deporte</a>
       <a href="novedades.html"{cur("novedades")}>Novedades</a>
       <a href="mercado.html"{cur("mercado")}>Mercado</a>
       <a href="info.html"{cur("club")}>El club</a>
@@ -72,6 +74,7 @@ def header(page):
   <div class="drawer-group">
     <a class="big" href="index.html"{here("index.html")}>Inicio</a>
     <a class="big" href="tabla.html"{cur("liga")}>Liga</a>
+    <a class="big" href="deporte.html"{cur("deporte")}>El deporte</a>
     <a class="big" href="novedades.html"{here("novedades.html")}>Novedades</a>
     <a class="big" href="mercado.html"{here("mercado.html")}>Mercado del usado</a>
     <a class="big" href="info.html"{cur("club")}>El club</a>
