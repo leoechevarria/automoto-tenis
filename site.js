@@ -1,7 +1,7 @@
 /* Automoto Tenis · comportamiento compartido: paleta, navegación y motion */
 (() => {
   /* ---- Paleta según el Grand Slam en juego o por jugar ----
-     Fechas aproximadas (varían un par de días por año). ?tema=ao|rg|wim|uso|random|auto fuerza una; por defecto Roland Garros. */
+     Fechas aproximadas (varían un par de días por año). ?tema=ao|rg|wim|uso|random|auto fuerza una; por defecto, los colores del club (azul y rojo). */
   const SLAMS = [
     { key: 'ao',  name: 'Australian Open', start: [1, 12],  end: [2, 1]  },
     { key: 'rg',  name: 'Roland Garros',   start: [5, 24],  end: [6, 7]  },
@@ -29,17 +29,10 @@
   // ?tema=... queda guardado en la pestaña mientras se navega el sitio (así se puede mostrar una demo de colores)
   let param = new URLSearchParams(location.search).get('tema');
   try { if (param) sessionStorage.setItem('tema', param); else param = sessionStorage.getItem('tema'); } catch (e) {}
-  if (param === 'club') {   // demo con los colores del club: azul y rojo
-    document.documentElement.dataset.slam = 'club';
-    addEventListener('DOMContentLoaded', () => {
-      const url = new URL(location.href); url.searchParams.set('tema', 'rg');
-      document.body.insertAdjacentHTML('afterbegin', `<div class="demo-bar" style="position: static">Demo: colores del club. <a href="${url.pathname}${url.search}${url.hash}">Volver a los colores de siempre</a></div>`);
-    });
-  }
-  else if (param === 'random') { const s = SLAMS[Math.floor(Math.random() * 4)]; applySlam(s.key, 'al azar'); }
+  if (param === 'random') { const s = SLAMS[Math.floor(Math.random() * 4)]; applySlam(s.key, 'al azar'); }
   else if (param && SLAMS.some(s => s.key === param)) applySlam(param, 'elegido a mano');
   else if (param === 'auto') { const s = pickSlam(); applySlam(s.key, s.why); }
-  else applySlam('rg', ''); // por defecto Roland Garros; ?tema=auto elige por calendario
+  else document.documentElement.dataset.slam = 'club'; // por defecto los colores del club; ?tema=rg|ao|wim|uso|auto|random cambia
 
 
   /* ---- Desplazamiento a sección: ease-out largo + aterrizaje con barrido del acento ---- */
