@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=202609301442">
+<link rel="stylesheet" href="site.css?v=202610182213">
 <style>
 .fixture { padding: 0 0 var(--space-3xl); }
 .fx-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: var(--space-md); border-bottom: 3px solid var(--color-ink); padding-bottom: var(--space-sm); }
@@ -35,6 +35,9 @@
 .fx-match .sc.pend { color: var(--color-ink-3); }
 .fx-match.mine .p { text-decoration: underline; text-decoration-color: var(--color-accent); text-underline-offset: 4px; }
 @media (max-width: 640px) { .fx-round { grid-template-columns: minmax(0, 1fr); gap: var(--space-sm); } .fx-match { grid-template-columns: minmax(0, 1fr); gap: 2px; } .fx-match .sc { text-align: left; } }
+.fx-zona { font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-ink-3); padding: 10px 0 2px; }
+.fx-zona:first-child { padding-top: 0; }
+.fx-libre { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-ink-3); padding: 4px 0 6px; }
 .fx-tools { display: flex; justify-content: flex-end; padding: var(--space-md) 0 0; }
 main { padding-bottom: var(--space-3xl); }
 </style>
@@ -129,7 +132,7 @@ main { padding-bottom: var(--space-3xl); }
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="liga.js?v=202609301442"></script>
+<script src="liga.js?v=202610182213"></script>
 <script>
   const navEl = document.getElementById('nav'), subtitleEl = document.getElementById('subtitle');
   const statusDot = document.getElementById('status-dot'), statusText = document.getElementById('status-text');
@@ -151,28 +154,47 @@ main { padding-bottom: var(--space-3xl); }
       fxPlayer.innerHTML = '<option value="">Todos</option>' + names.map(n => `<option>${escapeHtml(n)}</option>`).join('');
     }
     const who = fxPlayer.value;
+    // Zonas: las de la inscripción de cada jugador en esta temporada y categoría
+    const ins = model.rowsFor(temporadaSel).filter(r => r.key === key);
+    const zonaDe = new Map(ins.map(r => [r.jugador, r.zona || '']));
+    const zonas = porZona(ins).map(([z, l]) => [z, l.map(r => r.jugador)]);
     const rounds = new Map();
     ms.forEach(r => { const k = r[4] || '—'; if (!rounds.has(k)) rounds.set(k, []); rounds.get(k).push(r); });
     const fmt = d => d ? `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}` : '';
     fxList.innerHTML = [...rounds.entries()].sort((a, b) => (parseInt(a[0], 10) || 0) - (parseInt(b[0], 10) || 0)).map(([ronda, list]) => {
       const d1 = parseFecha(list[0][5]), d2 = parseFecha(list[0][6]);
       const now = d1 && d2 && hoy >= d1 && hoy <= d2;
-      const shown = who ? list.filter(r => r[8] === who || r[9] === who) : list;
-      if (!shown.length) return '';
+      // Libres en esta fecha: inscriptos de la zona que no juegan (solo en la liga)
+      const juegan = new Set(list.flatMap(r => [r[8], r[9]]));
+      const esLiga = (list[0][3] || 'Liga') === 'Liga';
+      const bloques = zonas.map(([z, jugadores]) => {
+        const partidos = list.filter(r => (!z || zonaDe.get(r[8]) === z) && (!who || r[8] === who || r[9] === who));
+        const libres = esLiga ? jugadores.filter(j => !juegan.has(j) && (!who || j === who)) : [];
+        if (!partidos.length && !libres.length) return '';
+        return (z && zonas.length > 1 ? `<div class="fx-zona">Zona ${escapeHtml(z)}</div>` : '')
+          + partidos.map(r => matchHtml(r, hoy, d2, who)).join('')
+          + (libres.length ? `<div class="fx-libre">Libre: ${libres.map(escapeHtml).join(', ')}</div>` : '');
+      }).join('');
+      // partidos de jugadores sin inscripción en la categoría (no deberían existir)
+      const sueltos = list.filter(r => !zonaDe.has(r[8]) && (!who || r[8] === who || r[9] === who));
+      const html = bloques + (zonas.length > 1 || !ins.length ? sueltos.map(r => matchHtml(r, hoy, d2, who)).join('') : '');
+      if (!html) return '';
+      const titulo = /^\d+$/.test(ronda) ? `Fecha ${ronda}` : escapeHtml(ronda);
       return `<div class="fx-round${now ? ' now' : ''}" ${now ? 'id="fx-now"' : ''}>
-        <div class="r">Ronda ${escapeHtml(ronda)}<small>${fmt(d1)}${d2 ? ' al ' + fmt(d2) : ''}</small>${now ? '<span class="live">En juego</span>' : ''}</div>
-        <div>${shown.map(r => {
-          const [a, b, sets, gan] = [r[8], r[9], r[10], ganadorDe(r)];
-          const wo = (r[12] || '').toLowerCase().startsWith('s');
-          const cls = n => gan ? (n === gan ? 'w' : 'l') : '';
-          let sc;
-          if (wo) sc = gan ? `W.O. · ganó ${escapeHtml(gan)}` : 'No se presentaron';
-          else if (gan) sc = escapeHtml(String(sets || '').split(',').map(x => x.trim()).filter(Boolean).join('  '));
-          else sc = d2 && hoy > d2 ? 'Sin resultado' : 'Pendiente';
-          return `<div class="fx-match${who ? ' mine' : ''}"><div class="who"><span class="p ${cls(a)}">${escapeHtml(a)}</span><span class="vs">vs</span><span class="p ${cls(b)}">${escapeHtml(b)}</span></div><div class="sc${gan || wo ? '' : ' pend'}">${sc}</div></div>`;
-        }).join('')}</div>
+        <div class="r">${titulo}<small>${fmt(d1)}${d2 ? ' al ' + fmt(d2) : ''}</small>${now ? '<span class="live">En juego</span>' : ''}</div>
+        <div>${html}</div>
       </div>`;
     }).join('');
+  }
+  function matchHtml(r, hoy, d2, who) {
+    const [a, b, sets, gan] = [r[8], r[9], r[10], ganadorDe(r)];
+    const wo = (r[12] || '').toLowerCase().startsWith('s');
+    const cls = n => gan ? (n === gan ? 'w' : 'l') : '';
+    let sc;
+    if (wo) sc = gan ? `W.O. · ganó ${escapeHtml(gan)}` : 'No se presentaron';
+    else if (gan) sc = escapeHtml(String(sets || '').split(',').map(x => x.trim()).filter(Boolean).join('  '));
+    else sc = d2 && hoy > d2 ? 'Sin resultado' : 'Pendiente';
+    return `<div class="fx-match${who ? ' mine' : ''}"><div class="who"><span class="p ${cls(a)}">${escapeHtml(a)}</span><span class="vs">vs</span><span class="p ${cls(b)}">${escapeHtml(b)}</span></div><div class="sc${gan || wo ? '' : ' pend'}">${sc}</div></div>`;
   }
   fxPlayer.addEventListener('change', () => renderFixture(currentCat));
 
@@ -195,6 +217,6 @@ main { padding-bottom: var(--space-3xl); }
   load();
   setInterval(() => load(true), REFRESH_MS);
 </script>
-<script src="site.js?v=202609301442"></script>
+<script src="site.js?v=202610182213"></script>
 </body>
 </html>

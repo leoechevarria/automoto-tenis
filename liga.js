@@ -35,7 +35,7 @@
 
   /* ---- Datos: formato nuevo (una sola planilla por temporadas) o planilla anterior ---- */
   async function loadModel() {
-    const ranges = ['Temporadas!A2:G', 'Inscripciones!A2:M', 'Categorías!A2:F', 'Partidos!A2:P', 'Jugadores!A2:D'].map(r => 'ranges=' + encodeURIComponent(r)).join('&');
+    const ranges = ['Temporadas!A2:G', 'Inscripciones!A2:O', 'Categorías!A2:F', 'Partidos!A2:P', 'Jugadores!A2:D'].map(r => 'ranges=' + encodeURIComponent(r)).join('&');
     const res = await fetch(`${SHEETS}/values:batchGet?${ranges}&key=${API_KEY}`);
     if (!res.ok) return null; // las pestañas no existen: planilla anterior
     const [temps, ins, cats, partidos, jugadores] = (await res.json()).valueRanges.map(v => v.values || []);
@@ -49,7 +49,7 @@
     const pts = { g: n(filaActiva[4]) || 100, p: n(filaActiva[5]) || 40, np: filaActiva[6] !== undefined && filaActiva[6] !== '' ? n(filaActiva[6]) : -20 };
     const keyOf = (rama, cat) => Object.keys(CATEGORIES).find(k => CATEGORIES[k].rama === rama && CATEGORIES[k].cat === cat);
     if (DEMO) partidos.push(...partidosDemo(jugadores, activa));
-    const rowsFor = t => ins.filter(r => r[0] === t && r[3]).map(r => ({ key: keyOf(r[1], r[2]), jugador: r[3], pj: n(r[4]), pg: n(r[5]), pp: n(r[6]), np: n(r[7]), pts: n(r[8]), puesto: n(r[12]) || null })).filter(r => r.key);
+    const rowsFor = t => ins.filter(r => r[0] === t && r[3]).map(r => ({ key: keyOf(r[1], r[2]), jugador: r[3], pj: n(r[4]), pg: n(r[5]), pp: n(r[6]), np: n(r[7]), pts: n(r[8]), puesto: n(r[12]) || null, zona: (r[14] || '').trim() })).filter(r => r.key);
     const rows = rowsFor(activa);
     const ptsDe = t => { const f = temps.find(r => r[0] === t) || []; return { g: n(f[4]) || 100, p: n(f[5]) || 40, np: f[6] !== undefined && f[6] !== '' ? n(f[6]) : -20 }; };
     const temporadas = temps.filter(r => r[0]).map(r => ({ nombre: r[0], estado: estado(r), conTabla: conInscriptos(r[0]), conPartidos: partidos.some(p => p[0] === r[0]) }));
@@ -63,6 +63,13 @@
     const conPuesto = list.length && list.every(r => r.puesto);
     return list.slice().sort((a, b) => conPuesto ? a.puesto - b.puesto
       : b.pts - a.pts || b.pg - a.pg || a.np - b.np || a.jugador.localeCompare(b.jugador));
+  }
+  // Zonas de una lista de filas de la tabla: [['A', filas], ['B', filas]]; [['', filas]] si la categoría no tiene zonas.
+  function porZona(rows) {
+    if (!rows.some(r => r.zona)) return [['', rows]];
+    const z = new Map();
+    rows.forEach(r => { const k = r.zona || '—'; if (!z.has(k)) z.set(k, []); z.get(k).push(r); });
+    return [...z.entries()].sort((a, b) => a[0].localeCompare(b[0]));
   }
   // Ganador de una fila de Partidos: columna P (calculada); compatible con Ganó = nombre.
   const ganadorDe = r => r[15] || (/^jugador [12]$/i.test(r[11] || '') ? (r[11].endsWith('1') ? r[8] : r[9]) : r[11]) || '';

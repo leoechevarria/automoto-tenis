@@ -12,10 +12,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=202609301442">
+<link rel="stylesheet" href="site.css?v=202610182213">
 <style>
 .page-head .meta .dot { transition: background-color 300ms var(--ease-out); }
 .rank-wrap { padding: var(--space-lg) 0 var(--space-3xl); }
+h2.zona { font-size: var(--text-2xl); font-weight: 800; text-transform: uppercase; margin: var(--space-xl) 0 var(--space-sm); }
+h2.zona:first-child { margin-top: var(--space-sm); }
 .legend { display: flex; flex-wrap: wrap; gap: 6px var(--space-lg); padding: var(--space-md) 0; font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-ink-2); text-transform: uppercase; letter-spacing: 0.04em; }
 .legend-item { display: inline-flex; align-items: center; gap: 8px; }
 .legend-swatch { width: 14px; height: 3px; background: var(--color-ink-3); }
@@ -187,7 +189,7 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="liga.js?v=202609301442"></script>
+<script src="liga.js?v=202610182213"></script>
 <script>
   const navEl = document.getElementById('nav');
   const subtitleEl = document.getElementById('subtitle');
@@ -251,18 +253,29 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
   }
 
   function renderTable(rows, key) {
-    const cfg = rulesFor(key);
-    const total = rows.length;
-    const bottomStart = total - cfg.down + 1;
-    renderLegend(cfg, total);
-    if (!total) {
+    const zonas = porZona(rows);
+    // Con zonas, la planilla todavía no dice quién asciende o desciende en cada una: no se marca.
+    const cfg = zonas.length > 1 ? { up: 0, down: 0, promoUp: 0, promoDown: 0 } : rulesFor(key);
+    renderLegend(cfg, rows.length);
+    if (!rows.length) {
       contentEl.innerHTML = `<div class="state">Todavía no hay jugadores inscriptos en ${escapeHtml(label(key))}.</div>`;
       return;
     }
-    const semana = model && !legacy ? semanaTabla(model, temporadaSel, key, rows) : null;
-    const hayCambios = semana && [...semana.values()].some(c => c.dPts || c.dPos);
+    let hayCambios = false;
+    const tablas = zonas.map(([zona, list]) => {
+      list = sortRows(list);
+      const semana = model && !legacy ? semanaTabla(model, temporadaSel, key, list) : null;
+      if (semana && [...semana.values()].some(c => c.dPts || c.dPos)) hayCambios = true;
+      return tableHtml(list, key, cfg, semana, zona);
+    });
     if (hayCambios) { const lu = lunesDeEstaSemana(); legendEl.insertAdjacentHTML('afterbegin', `<div class="legend-item">Cambios desde el lunes ${lu.getDate()}/${lu.getMonth() + 1}</div>`); }
-    let html = `
+    contentEl.innerHTML = tablas.join('');
+  }
+
+  function tableHtml(rows, key, cfg, semana, zona) {
+    const total = rows.length;
+    const bottomStart = total - cfg.down + 1;
+    let html = `${zona ? `<h2 class="zona">Zona ${escapeHtml(zona)}</h2>` : ''}
       <table>
         <thead>
           <tr>
@@ -304,7 +317,7 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
           <td class="num pts">${c && c.dPts ? `<span class="dl ${c.dPts > 0 ? 'up' : 'dn'}">${c.dPts > 0 ? '+' : '−'}${Math.abs(c.dPts)}</span>` : ''}${r.pts}</td>
         </tr>`;
     });
-    contentEl.innerHTML = html + '</tbody></table>';
+    return html + '</tbody></table>';
   }
 
   function renderError(message) {
@@ -352,16 +365,26 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
   const WA_NUM = '5491149404549';
   const dlg = document.getElementById('resDlg'), form = document.getElementById('resForm');
   const rCat = document.getElementById('rCat'), rWin = document.getElementById('rWin'), rLose = document.getElementById('rLose'), rPrev = document.getElementById('rPrev');
+  let zonaDe = new Map();   // jugador → zona, en la categoría elegida
   async function fillPlayers() {
     const key = rCat.value;
-    let names = [];
-    try { names = (await tableRows(key, model?.temporada)).map(r => r.jugador).sort((a, b) => a.localeCompare(b)); } catch (e) { names = []; }
-    for (const sel of [rWin, rLose]) {
-      const cur = sel.value;
-      sel.innerHTML = '<option value="">Elegí…</option>' + names.map(n => `<option>${escapeHtml(n)}</option>`).join('') + '<option value="__otro">Otro / no está en la lista</option>';
-      if (names.includes(cur)) sel.value = cur;
-    }
+    let rows = [];
+    try { rows = await tableRows(key, model?.temporada); } catch (e) { rows = []; }
+    zonaDe = new Map(rows.map(r => [r.jugador, r.zona || '']));
+    fillSelect(rWin, [...zonaDe.keys()]);
+    fillLose();
+  }
+  // Rival: con zonas, solo los de la zona del ganador.
+  function fillLose() {
+    const z = zonaDe.get(rWin.value);
+    fillSelect(rLose, [...zonaDe.keys()].filter(n => !z || zonaDe.get(n) === z));
     preview();
+  }
+  function fillSelect(sel, names) {
+    const cur = sel.value;
+    names = names.slice().sort((a, b) => a.localeCompare(b));
+    sel.innerHTML = '<option value="">Elegí…</option>' + names.map(n => `<option>${escapeHtml(n)}</option>`).join('') + '<option value="__otro">Otro / no está en la lista</option>';
+    if (names.includes(cur) || cur === '__otro') sel.value = cur;
   }
   function score() {
     const v = id => document.getElementById(id).value;
@@ -389,7 +412,7 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
     // tabla de la liga: solo si la temporada está en juego y los dos están inscriptos
     let tabla = null;
     if (model.enJuego) {
-      const cur = sortRows(model.rows.filter(r => r.key === key));
+      const cur = sortRows(model.rows.filter(r => r.key === key && (r.zona || '') === (zonaDe.get(w) || '')));
       if (cur.some(r => r.jugador === w) && cur.some(r => r.jugador === l)) {
         const next = sortRows(cur.map(r => r.jugador === w ? { ...r, pj: r.pj + 1, pg: r.pg + 1, pts: r.pts + model.pts.g }
           : r.jugador === l ? { ...r, pj: r.pj + 1, pp: r.pp + 1, pts: r.pts + model.pts.p } : r));
@@ -410,6 +433,7 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
   function preview() { rPrev.textContent = message(); impact(); }
   form.addEventListener('input', preview);
   rCat.addEventListener('change', fillPlayers);
+  rWin.addEventListener('change', fillLose);
   if (location.hash === '#cargar') setTimeout(() => document.getElementById('openRes').click(), 600);
   addEventListener('hashchange', () => { if (location.hash === '#cargar') document.getElementById('openRes').click(); });
   document.getElementById('openRes').addEventListener('click', () => {
@@ -428,6 +452,6 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
     dlg.close();
   });
 </script>
-<script src="site.js?v=202609301442"></script>
+<script src="site.js?v=202610182213"></script>
 </body>
 </html>
