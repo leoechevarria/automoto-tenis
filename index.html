@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=20261019175633">
+<link rel="stylesheet" href="site.css?v=20261019180322">
 <style>
 /* ---- Apertura con la foto de la cancha ---- */
 .open { position: relative; min-height: clamp(380px, 58vh, 640px); display: grid; align-items: end; isolation: isolate; color: var(--color-on-photo); }
@@ -24,6 +24,7 @@
 .open h1 { font-size: clamp(2.6rem, 6vw, 5.2rem); font-weight: 800; text-transform: uppercase; max-width: 14ch; }
 @media (min-width: 900px) { .open h1 { max-width: 26ch; font-size: clamp(2.6rem, 4.6vw, 4.6rem); } }   /* en la compu, en unas 3 líneas */
 .open h1 .accent { color: var(--color-accent-photo); }
+.open h1 .accent.red { color: var(--color-accent); }   /* "Automoto Club Deportivo" en el rojo del club */
 /* colores del club: el azul marino lleva borde blanco para leerse sobre la foto */
 :root:not([data-slam]) .open h1 .accent, :root[data-slam="club"] .open h1 .accent { -webkit-text-stroke: 0.09em #fff; paint-order: stroke fill; }
 .open .lede { max-width: 46ch; margin: var(--space-md) 0 0; font-size: var(--text-xl); line-height: 1.35; opacity: .92; }
@@ -180,7 +181,7 @@
 <section class="open">
   <img src="assets/court.jpg" alt="Cancha de polvo de ladrillo del club, con las sierras de fondo" fetchpriority="high">
   <div class="wrap">
-    <h1 class="reveal" style="--i:0">Todo el <span class="accent">tenis</span> del <span class="accent">Automoto Club Deportivo</span> de <span class="accent">Tornquist</span>, en un solo lugar.</h1>
+    <h1 class="reveal" style="--i:0">Todo el <span class="accent">tenis</span> del <span class="accent red">Automoto Club Deportivo</span> de <span class="accent">Tornquist</span>, en un solo lugar.</h1>
   </div>
 </section>
 
@@ -252,7 +253,7 @@
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="novedades.js?v=20261019175633"></script>
+<script src="novedades.js?v=20261019180322"></script>
 <script>
   /* ---- Hoy: clima (lo llama el script del clima cuando termina) ---- */
   function renderHoyClima(days) {
@@ -490,6 +491,6 @@
   loadWeather();
 
 </script>
-<script src="site.js?v=20261019175633"></script>
+<script src="site.js?v=20261019180322"></script>
 </body>
 </html>
