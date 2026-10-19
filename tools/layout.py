@@ -41,7 +41,7 @@ def liga_top(page):
   <!-- /layout:liga -->'''
 CLUB = [("info.html#pagos", "Cuota y alias de pago"), ("info.html#escuela", "Escuela de tenis"),
         ("info.html#subcomision", "Subcomisión de Tenis"), ("info.html#cancha", "Cuidado de la cancha"),
-        ("info.html#contacto", "Teléfonos y contactos"), ("info.html#ubicacion", "Cómo llegar")]
+        ("info.html#contacto", "Otros contactos"), ("info.html#ubicacion", "Cómo llegar")]
 
 
 def header(page):
@@ -58,12 +58,7 @@ def header(page):
       <a href="tabla.html"{cur("liga")}>Liga</a>
       <a href="novedades.html"{cur("novedades")}>Novedades</a>
       <a href="mercado.html"{cur("mercado")}>Mercado</a>
-      <div class="menu">
-        <button type="button" class="menu-btn"{cur("club")} aria-expanded="false" aria-haspopup="true">El club <span class="chev" aria-hidden="true">▾</span></button>
-        <div class="menu-list">
-{sub(CLUB)}
-        </div>
-      </div>
+      <a href="info.html"{cur("club")}>El club</a>
     </nav>
     <div class="mast-end">
       {SOCIAL}
@@ -79,10 +74,7 @@ def header(page):
     <a class="big" href="tabla.html"{cur("liga")}>Liga</a>
     <a class="big" href="novedades.html"{here("novedades.html")}>Novedades</a>
     <a class="big" href="mercado.html"{here("mercado.html")}>Mercado del usado</a>
-  </div>
-  <div class="drawer-group">
-    <span class="k">El club</span>
-{dsub(CLUB)}
+    <a class="big" href="info.html"{cur("club")}>El club</a>
   </div>
   {SOCIAL}
 </nav>
