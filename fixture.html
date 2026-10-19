@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=202610191132">
+<link rel="stylesheet" href="site.css?v=202610191133">
 <style>
 .fixture { padding: 0 0 var(--space-3xl); }
 .fx-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: var(--space-md); border-bottom: 3px solid var(--color-ink); padding-bottom: var(--space-sm); }
@@ -114,7 +114,7 @@ main { padding-bottom: var(--space-3xl); }
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="liga.js?v=202610191132"></script>
+<script src="liga.js?v=202610191133"></script>
 <script>
   const navEl = document.getElementById('nav'), subtitleEl = document.getElementById('subtitle');
   let model = null, currentCat = keyFromHash(), temporadaSel = null;
@@ -132,7 +132,12 @@ main { padding-bottom: var(--space-3xl); }
     if (fxKey !== key) {   // cambió la categoría: rearmar la lista de jugadores
       fxKey = key;
       const names = [...new Set(ms.flatMap(r => [r[8], r[9]]))].sort((a, b) => a.localeCompare(b));
-      fxPlayer.innerHTML = '<option value="">Todos los jugadores</option>' + names.map(n => `<option>${escapeHtml(n)}</option>`).join('');
+      const zDe = new Map(model.rowsFor(temporadaSel).filter(r => r.key === key).map(r => [r.jugador, r.zona || '']));
+      const zs = [...new Set(names.map(n => zDe.get(n) || ''))].sort();
+      const opt = n => `<option>${escapeHtml(n)}</option>`;
+      fxPlayer.innerHTML = '<option value="">Todos los jugadores</option>' + (zs.length > 1
+        ? zs.map(z => `<optgroup label="${z ? 'Zona ' + escapeHtml(z) : 'Sin zona'}">${names.filter(n => (zDe.get(n) || '') === z).map(opt).join('')}</optgroup>`).join('')
+        : names.map(opt).join(''));
       let yo = ''; try { yo = localStorage.getItem('fxJugador') || ''; } catch (e) {}
       fxPlayer.value = names.includes(yo) ? yo : '';
     }
@@ -205,6 +210,6 @@ main { padding-bottom: var(--space-3xl); }
   load();
   setInterval(() => load(true), REFRESH_MS);
 </script>
-<script src="site.js?v=202610191132"></script>
+<script src="site.js?v=202610191133"></script>
 </body>
 </html>

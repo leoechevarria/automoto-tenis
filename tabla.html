@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=202610191132">
+<link rel="stylesheet" href="site.css?v=202610191133">
 <style>
 .rank-wrap { padding: var(--space-lg) 0 var(--space-3xl); }
 .vista:empty { display: none; }
@@ -168,7 +168,7 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="liga.js?v=202610191132"></script>
+<script src="liga.js?v=202610191133"></script>
 <script>
   const navEl = document.getElementById('nav');
   const subtitleEl = document.getElementById('subtitle');
@@ -368,10 +368,16 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
     fillSelect(rLose, [...zonaDe.keys()].filter(n => n !== w && (!z || zonaDe.get(n) === z)));
     preview();
   }
+  // Con zonas (y más de una en la lista), los nombres van en grupos: Zona A, Zona B.
   function fillSelect(sel, names) {
     const cur = sel.value;
     names = names.slice().sort((a, b) => a.localeCompare(b));
-    sel.innerHTML = '<option value="">Elegí…</option>' + names.map(n => `<option>${escapeHtml(n)}</option>`).join('') + '<option value="__otro">Otro / no está en la lista</option>';
+    const opt = n => `<option>${escapeHtml(n)}</option>`;
+    const zonas = [...new Set(names.map(n => zonaDe.get(n) || ''))].sort();
+    const lista = zonas.length > 1
+      ? zonas.map(z => `<optgroup label="${z ? 'Zona ' + escapeHtml(z) : 'Sin zona'}">${names.filter(n => (zonaDe.get(n) || '') === z).map(opt).join('')}</optgroup>`).join('')
+      : names.map(opt).join('');
+    sel.innerHTML = '<option value="">Elegí…</option>' + lista + '<option value="__otro">Otro / no está en la lista</option>';
     if (names.includes(cur) || cur === '__otro') sel.value = cur;
   }
   function score() {
@@ -446,6 +452,6 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
     dlg.close();
   });
 </script>
-<script src="site.js?v=202610191132"></script>
+<script src="site.js?v=202610191133"></script>
 </body>
 </html>
