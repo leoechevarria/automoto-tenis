@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=202610191138">
+<link rel="stylesheet" href="site.css?v=202610191551">
 <style>
 .sec { padding: var(--space-md) 0 0; }
 .sec-head { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-xl); align-items: end; border-bottom: 3px solid var(--color-ink); padding-bottom: var(--space-sm); margin-bottom: var(--space-lg); }
@@ -33,6 +33,12 @@
 .care-item.no .ck { color: var(--color-accent); }
 .care-item h4 { margin: 0 0 2px; font-family: var(--font-display); font-size: 1.35rem; font-weight: 700; text-transform: uppercase; }
 .care-item p { margin: 0; color: var(--color-ink-2); font-size: var(--text-sm); }
+.staff { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 var(--space-xl); }
+.staff.canchero { margin-bottom: var(--space-md); }
+.who-card { padding: var(--space-md) 0; border-bottom: 1px solid var(--color-rule); }
+.who-card .role { font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-ink-2); }
+.who-card .name { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; text-transform: uppercase; }
+@media (max-width: 720px) { .staff { grid-template-columns: minmax(0, 1fr); } }
 .contact-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--space-xl); }
 .contact-card { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-md); align-items: center; padding: var(--space-md) 0; border-bottom: 1px solid var(--color-rule); }
 .contact-card .role { font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-ink-2); }
@@ -58,6 +64,9 @@ main { padding-bottom: var(--space-3xl); }
       <div class="menu">
         <button type="button" class="menu-btn" aria-current="page" aria-expanded="false" aria-haspopup="true">El club <span class="chev" aria-hidden="true">▾</span></button>
         <div class="menu-list">
+          <a href="info.html#pagos">Cuota y alias de pago</a>
+          <a href="info.html#escuela">Escuela de tenis</a>
+          <a href="info.html#subcomision">Subcomisión de Tenis</a>
           <a href="info.html#cancha">Cuidado de la cancha</a>
           <a href="info.html#contacto">Teléfonos y contactos</a>
           <a href="info.html#ubicacion">Cómo llegar</a>
@@ -65,7 +74,6 @@ main { padding-bottom: var(--space-3xl); }
       </div>
     </nav>
     <div class="mast-end">
-      <a class="btn fill turno" href="https://darturnos.com/AutomotoTenis/" target="_blank" rel="noopener">Reservar turno ↗</a>
       <div class="social">
         <a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener" aria-label="Instagram de Automoto Tenis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
         <a href="https://www.instagram.com/masu.tenis/" target="_blank" rel="noopener" aria-label="Instagram de Masu Tenis" class="masu"><img src="assets/masu-mark.png" alt=""></a>
@@ -77,7 +85,6 @@ main { padding-bottom: var(--space-3xl); }
 <div class="drawer-backdrop" id="drawerBackdrop"></div>
 <nav class="drawer" id="drawer" aria-label="Menú" aria-hidden="true">
   <div class="drawer-head"><strong>Menú</strong><button type="button" class="drawer-close" aria-label="Cerrar menú">✕</button></div>
-  <a class="btn fill turno" href="https://darturnos.com/AutomotoTenis/" target="_blank" rel="noopener">Reservar turno ↗</a>
   <div class="drawer-group">
     <a class="big" href="index.html">Inicio</a>
     <a class="big" href="tabla.html">Liga</a>
@@ -86,6 +93,9 @@ main { padding-bottom: var(--space-3xl); }
   </div>
   <div class="drawer-group">
     <span class="k">El club</span>
+      <a href="info.html#pagos">Cuota y alias de pago</a>
+      <a href="info.html#escuela">Escuela de tenis</a>
+      <a href="info.html#subcomision">Subcomisión de Tenis</a>
       <a href="info.html#cancha">Cuidado de la cancha</a>
       <a href="info.html#contacto">Teléfonos y contactos</a>
       <a href="info.html#ubicacion">Cómo llegar</a>
@@ -104,14 +114,68 @@ main { padding-bottom: var(--space-3xl); }
 
 
     
+    <!-- ===== Pagos ===== -->
+    <details class="fold sec reveal" id="pagos" open style="--i:1">
+      <summary><div><h2>Cuota y alias de pago</h2></div><span class="chev">▾</span></summary>
+      <div class="fold-body"><div>
+        <table class="pay-table">
+          <tr><td>Cuota social del club</td><td class="val">$ 10.000</td></tr>
+          <tr><td>Membresía de tenis</td><td class="val">$ 30.000</td></tr>
+        </table>
+        <div class="alias-box">
+          <div>
+            <div class="lbl">Alias para transferir · cuota y membresía</div>
+            <div class="alias" id="aliasText">membresiaautomoto</div>
+            <div class="who">A nombre de Sebastián Mazzulli · Banco Nación</div>
+          </div>
+          <button class="btn fill copy-btn" id="copyAlias" type="button"><span id="copyLabel">Copiar alias</span></button>
+        </div>
+      </div></div>
+    </details>
+
+    <!-- ===== Escuela de tenis ===== -->
+    <details class="fold sec reveal" id="escuela" style="--i:2">
+      <summary><div><h2>Escuela de tenis</h2></div><span class="chev">▾</span></summary>
+      <div class="fold-body"><div>
+        <div class="staff">
+          <div class="who-card"><div class="role">Director</div><div class="name">Sebastián Mazzulli</div></div>
+          <div class="who-card"><div class="role">Profesor</div><div class="name">Nicolás Méndez</div></div>
+          <div class="who-card"><div class="role">Profesor</div><div class="name">Juan Vigil</div></div>
+          <div class="who-card"><div class="role">Profesora</div><div class="name">Luz Méndez</div></div>
+          <div class="who-card"><div class="role">Profesor</div><div class="name">Tomás Santos</div></div>
+        </div>
+      </div></div>
+    </details>
+
+    <!-- ===== Subcomisión ===== -->
+    <details class="fold sec reveal" id="subcomision" style="--i:2">
+      <summary><div><h2>Subcomisión de Tenis</h2></div><span class="chev">▾</span></summary>
+      <div class="fold-body"><div>
+        <div class="staff">
+          <div class="who-card"><div class="name">Felipe Kleine</div></div>
+          <div class="who-card"><div class="name">Mariana López</div></div>
+          <div class="who-card"><div class="name">Javier Di Clemente</div></div>
+        </div>
+      </div></div>
+    </details>
+
     <!-- ===== Cuidado de la cancha ===== -->
-    <details class="fold sec reveal" id="cancha" style="--i:2">
+    <details class="fold sec reveal" id="cancha" style="--i:3">
       <summary><div>
           <h2>Cuidado de la cancha</h2></div><span class="chev">▾</span></summary>
       <div class="fold-body"><div>
       </div>
 
+      <div class="staff canchero"><div class="who-card"><div class="role">Canchero</div><div class="name">Nahuel Zúñiga</div></div></div>
       <div class="care-grid">
+        <div class="care-item">
+          <span class="ck">Sí</span>
+          <div><h4>Cerrá el gabinete del teclado</h4><p>Dejá siempre cerrado el gabinete del teclado de acceso.</p></div>
+        </div>
+        <div class="care-item">
+          <span class="ck">Sí</span>
+          <div><h4>Luces: solo la térmica LUCES</h4><p>Si jugás de noche, prendé las luces solo con la térmica que tiene la etiqueta LUCES.</p></div>
+        </div>
         <div class="care-item">
           <span class="ck">Sí</span>
           <div><h4>Pasá la red al terminar</h4><p>Arrastrá la red (drag) por toda la cancha para emparejar el polvillo y borrar las pisadas.</p></div>
@@ -175,6 +239,30 @@ main { padding-bottom: var(--space-3xl); }
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="site.js?v=202610191138"></script>
+<script>
+  /* ---- Copiar alias (con alternativa para celulares y HTTP) ---- */
+  const copyBtn = document.getElementById('copyAlias'), copyLabel = document.getElementById('copyLabel');
+  function legacyCopy(text) {
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text; ta.setAttribute('readonly', '');
+      Object.assign(ta.style, { position: 'fixed', top: '0', left: '0', opacity: '0' });
+      document.body.appendChild(ta); ta.focus(); ta.select(); ta.setSelectionRange(0, text.length);
+      const ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      return ok;
+    } catch (e) { return false; }
+  }
+  copyBtn.addEventListener('click', async () => {
+    const alias = document.getElementById('aliasText').textContent.trim();
+    let ok = false;
+    if (navigator.clipboard && window.isSecureContext) { try { await navigator.clipboard.writeText(alias); ok = true; } catch (e) {} }
+    if (!ok) ok = legacyCopy(alias);
+    copyBtn.classList.add('done');
+    copyLabel.textContent = ok ? '¡Copiado!' : 'Copiá: ' + alias;
+    setTimeout(() => { copyBtn.classList.remove('done'); copyLabel.textContent = 'Copiar alias'; }, ok ? 1800 : 3500);
+  });
+</script>
+<script src="site.js?v=202610191551"></script>
 </body>
 </html>

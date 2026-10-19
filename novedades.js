@@ -1,4 +1,4 @@
-/* Automoto Tenis · anuncios y eventos. Fuente única: data/novedades.json
+/* Automoto Tenis · noticias ("anuncios" en el JSON) y eventos. Fuente única: data/novedades.json
    Las listas muestran un resumen; el contenido completo se abre en un popup. */
 window.Novedades = (() => {
   const MES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
@@ -30,7 +30,7 @@ window.Novedades = (() => {
     if (e.hasta) { const h = day(e.hasta); s = `del ${d.getDate()} al ${h.getDate()} de ${MES[h.getMonth()]}`; }
     return [s, e.hora, e.lugar].filter(Boolean).join(' · ');
   }
-  const etiqueta = a => `${a.fijado ? 'Fijado · ' : ''}${esc(a.etiqueta || 'Aviso')}${a.publicado ? ' · ' + day(a.publicado).getDate() + ' ' + MES[day(a.publicado).getMonth()] : ''}`;
+  const etiqueta = a => `${a.fijado ? 'Fijado · ' : ''}${esc(a.etiqueta || 'Noticia')}${a.publicado ? ' · ' + day(a.publicado).getDate() + ' ' + MES[day(a.publicado).getMonth()] : ''}`;
   const primero = t => String(t || '').split(/\n\s*\n/)[0];
 
   function anuncio(a) {

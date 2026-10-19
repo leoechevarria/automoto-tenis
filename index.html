@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=202610191138">
+<link rel="stylesheet" href="site.css?v=202610191551">
 <style>
 /* ---- Apertura con la foto de la cancha ---- */
 .open { position: relative; min-height: clamp(380px, 58vh, 640px); display: grid; align-items: end; isolation: isolate; color: var(--color-on-photo); }
@@ -38,6 +38,7 @@
 .hoy-clima .big .ico { font-size: 2rem; }
 .hoy-clima .stars { font-size: 1.4rem; letter-spacing: 2px; color: var(--color-rule); }
 .hoy-clima .stars .on { color: var(--color-accent); }
+.hoy-nov .txt { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .hoy-ev { grid-template-columns: 64px minmax(0, 1fr); column-gap: var(--space-md); }
 .hoy-ev .k { grid-column: 1 / -1; }
 .hoy-ev .d { text-align: center; border-right: 1px solid var(--color-rule); padding-right: var(--space-sm); }
@@ -135,6 +136,9 @@
       <div class="menu">
         <button type="button" class="menu-btn" aria-expanded="false" aria-haspopup="true">El club <span class="chev" aria-hidden="true">▾</span></button>
         <div class="menu-list">
+          <a href="info.html#pagos">Cuota y alias de pago</a>
+          <a href="info.html#escuela">Escuela de tenis</a>
+          <a href="info.html#subcomision">Subcomisión de Tenis</a>
           <a href="info.html#cancha">Cuidado de la cancha</a>
           <a href="info.html#contacto">Teléfonos y contactos</a>
           <a href="info.html#ubicacion">Cómo llegar</a>
@@ -142,7 +146,6 @@
       </div>
     </nav>
     <div class="mast-end">
-      <a class="btn fill turno" href="https://darturnos.com/AutomotoTenis/" target="_blank" rel="noopener">Reservar turno ↗</a>
       <div class="social">
         <a href="https://www.instagram.com/automototenis/" target="_blank" rel="noopener" aria-label="Instagram de Automoto Tenis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
         <a href="https://www.instagram.com/masu.tenis/" target="_blank" rel="noopener" aria-label="Instagram de Masu Tenis" class="masu"><img src="assets/masu-mark.png" alt=""></a>
@@ -154,7 +157,6 @@
 <div class="drawer-backdrop" id="drawerBackdrop"></div>
 <nav class="drawer" id="drawer" aria-label="Menú" aria-hidden="true">
   <div class="drawer-head"><strong>Menú</strong><button type="button" class="drawer-close" aria-label="Cerrar menú">✕</button></div>
-  <a class="btn fill turno" href="https://darturnos.com/AutomotoTenis/" target="_blank" rel="noopener">Reservar turno ↗</a>
   <div class="drawer-group">
     <a class="big" href="index.html" aria-current="page">Inicio</a>
     <a class="big" href="tabla.html">Liga</a>
@@ -163,6 +165,9 @@
   </div>
   <div class="drawer-group">
     <span class="k">El club</span>
+      <a href="info.html#pagos">Cuota y alias de pago</a>
+      <a href="info.html#escuela">Escuela de tenis</a>
+      <a href="info.html#subcomision">Subcomisión de Tenis</a>
       <a href="info.html#cancha">Cuidado de la cancha</a>
       <a href="info.html#contacto">Teléfonos y contactos</a>
       <a href="info.html#ubicacion">Cómo llegar</a>
@@ -185,7 +190,7 @@
   <section class="hoy" aria-label="Hoy en el club">
     <div class="hoy-grid">
       <a class="hoy-card hoy-clima" href="#clima" id="hoyClima"><span class="k">Clima para jugar</span><p>Cargando el pronóstico…</p></a>
-      <a class="hoy-card hoy-ev" href="novedades.html#eventos" id="hoyEvento"><span class="k">Próximo evento</span><p>Cargando…</p></a>
+      <a class="hoy-card hoy-nov" href="novedades.html#noticias" id="hoyNoticia"><span class="k">Última noticia</span><p>Cargando…</p></a>
       <div class="hoy-actions">
         <a class="btn fill" href="https://darturnos.com/AutomotoTenis/" target="_blank" rel="noopener">Reservar turno ↗</a>
       </div>
@@ -216,16 +221,10 @@
   </nav>
 
   <section class="tablon" id="novedades">
-    <div class="split">
-      <div class="col">
-        <div class="col-head"><h2>Anuncios</h2><a href="novedades.html">Ver todos →</a></div>
-        <p class="note" id="novNote" hidden>Contenido de ejemplo</p>
-        <div id="homeAnuncios"><p class="empty">Cargando…</p></div>
-      </div>
-      <div class="col">
-        <div class="col-head"><h2>Próximos eventos</h2><a href="novedades.html#eventos">Agenda completa →</a></div>
-        <div id="homeEventos"><p class="empty">Cargando…</p></div>
-      </div>
+    <div class="col">
+      <div class="col-head"><h2>Noticias</h2><a href="novedades.html#noticias">Ver todas →</a></div>
+      <p class="note" id="novNote" hidden>Contenido de ejemplo</p>
+      <div id="homeAnuncios"><p class="empty">Cargando…</p></div>
     </div>
   </section>
 
@@ -248,7 +247,7 @@
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="novedades.js?v=202610191138"></script>
+<script src="novedades.js?v=202610191551"></script>
 <script>
   /* ---- Hoy: clima (lo llama el script del clima cuando termina) ---- */
   function renderHoyClima(days) {
@@ -267,29 +266,26 @@
       <p>${v.t}${best ? ' · mejor ' + (best.b.key === 'mañ' ? 'a la mañana' : best.b.key === 'tar' ? 'a la tarde' : 'a la noche') : ''} · 💨 ${day.wind} km/h</p>`;
   }
 
-  /* ---- Novedades: anuncios, próximo evento y dato de la fila ---- */
+  /* ---- Novedades: noticias (franja Hoy y bloque) y dato de la fila ---- */
   (async () => {
     const N = window.Novedades;
+    const hoy = document.getElementById('hoyNoticia');
     try {
-      const { anuncios, proximos } = await N.load();
-      const a3 = anuncios.slice(0, 3), e3 = proximos.slice(0, 3);
-      document.getElementById('homeAnuncios').innerHTML = a3.length ? a3.map(N.anuncio).join('') : '<p class="empty">No hay anuncios por ahora.</p>';
-      document.getElementById('homeEventos').innerHTML = e3.length ? e3.map(N.evento).join('') : '<p class="empty">No hay eventos programados.</p>';
-      document.getElementById('novNote').hidden = !N.hayEjemplos([...a3, ...e3]);
-      document.getElementById('novedades').hidden = !a3.length && !e3.length;   // sin anuncios ni eventos: no se muestra el bloque
-      if (anuncios[0]) document.getElementById('metaNov').innerHTML = `Último: <b>${N.esc(anuncios[0].titulo)}</b>`;
-      const ev = document.getElementById('hoyEvento');
-      const e = proximos[0];
-      if (e) {
-        const d = N.day(e.fecha);
-        ev.href = 'novedades.html#' + e.id;
-        ev.dataset.nid = e.id;
-        ev.innerHTML = `<span class="k">Próximo evento</span><div class="d"><b>${d.getDate()}</b><small>${N.MES[d.getMonth()]}</small></div>
-          <div><h3>${N.esc(e.titulo)}</h3><p>${N.esc(N.cuando(e))}</p></div>`;
-      } else ev.innerHTML = '<span class="k">Próximo evento</span><p>No hay eventos programados.</p>';
+      const { anuncios } = await N.load();
+      const a3 = anuncios.slice(0, 3);
+      document.getElementById('homeAnuncios').innerHTML = a3.map(N.anuncio).join('');
+      document.getElementById('novNote').hidden = !N.hayEjemplos(a3);
+      document.getElementById('novedades').hidden = !a3.length;   // sin noticias no se muestra el bloque
+      const n = anuncios[0];
+      if (n) {
+        document.getElementById('metaNov').innerHTML = `Último: <b>${N.esc(n.titulo)}</b>`;
+        hoy.href = 'novedades.html#' + n.id;
+        hoy.dataset.nid = n.id;
+        hoy.innerHTML = `<span class="k">Última noticia</span><h3>${N.esc(n.titulo)}</h3><p class="txt">${N.esc(String(n.texto || '').split(/\n\s*\n/)[0])}</p>`;
+      } else hoy.innerHTML = '<span class="k">Última noticia</span><p>No hay noticias por ahora.</p>';
     } catch (err) {
-      document.getElementById('homeAnuncios').innerHTML = '<p class="empty">No se pudieron cargar las novedades.</p>';
-      document.getElementById('homeEventos').innerHTML = '';
+      hoy.innerHTML = '<span class="k">Última noticia</span><p>No se pudieron cargar las noticias.</p>';
+      document.getElementById('novedades').hidden = true;
     }
   })();
 
@@ -489,6 +485,6 @@
   loadWeather();
 
 </script>
-<script src="site.js?v=202610191138"></script>
+<script src="site.js?v=202610191551"></script>
 </body>
 </html>

@@ -20,7 +20,6 @@ PAGES = {
     "novedades.html": "novedades",
     "mercado.html": "mercado",
     "info.html": "club",
-    "subcomision.html": "club",
 }
 
 IG_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>'
@@ -40,9 +39,9 @@ def liga_top(page):
   <a class="liga-cta" id="openRes" href="tabla.html#cargar">¿Jugaste? Cargá tu resultado <span aria-hidden="true">→</span></a>
   <div class="liga-tabs"><nav aria-label="Liga">{tabs}</nav><span class="liga-temp" id="subtitle"></span></div>
   <!-- /layout:liga -->'''
-# Cuota y alias de pago (info.html#pagos) y Subcomisión de Tenis (subcomision.html) vuelven cuando haya datos reales.
-CLUB = [("info.html#cancha", "Cuidado de la cancha"), ("info.html#contacto", "Teléfonos y contactos"),
-        ("info.html#ubicacion", "Cómo llegar")]
+CLUB = [("info.html#pagos", "Cuota y alias de pago"), ("info.html#escuela", "Escuela de tenis"),
+        ("info.html#subcomision", "Subcomisión de Tenis"), ("info.html#cancha", "Cuidado de la cancha"),
+        ("info.html#contacto", "Teléfonos y contactos"), ("info.html#ubicacion", "Cómo llegar")]
 
 
 def header(page):
@@ -67,7 +66,6 @@ def header(page):
       </div>
     </nav>
     <div class="mast-end">
-      <a class="btn fill turno" href="{TURNOS}" target="_blank" rel="noopener">Reservar turno ↗</a>
       {SOCIAL}
       <button type="button" class="nav-toggle" aria-controls="drawer" aria-expanded="false" aria-label="Abrir menú"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     </div>
@@ -76,7 +74,6 @@ def header(page):
 <div class="drawer-backdrop" id="drawerBackdrop"></div>
 <nav class="drawer" id="drawer" aria-label="Menú" aria-hidden="true">
   <div class="drawer-head"><strong>Menú</strong><button type="button" class="drawer-close" aria-label="Cerrar menú">✕</button></div>
-  <a class="btn fill turno" href="{TURNOS}" target="_blank" rel="noopener">Reservar turno ↗</a>
   <div class="drawer-group">
     <a class="big" href="index.html"{here("index.html")}>Inicio</a>
     <a class="big" href="tabla.html"{cur("liga")}>Liga</a>
