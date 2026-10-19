@@ -26,8 +26,17 @@
     const cap = document.getElementById('slamCap'); if (cap) cap.hidden = !why;
     requestAnimationFrame(() => document.documentElement.classList.remove('theming'));
   }
-  const param = new URLSearchParams(location.search).get('tema');
-  if (param === 'random') { const s = SLAMS[Math.floor(Math.random() * 4)]; applySlam(s.key, 'al azar'); }
+  // ?tema=... queda guardado en la pestaña mientras se navega el sitio (así se puede mostrar una demo de colores)
+  let param = new URLSearchParams(location.search).get('tema');
+  try { if (param) sessionStorage.setItem('tema', param); else param = sessionStorage.getItem('tema'); } catch (e) {}
+  if (param === 'club') {   // demo con los colores del club: azul y rojo
+    document.documentElement.dataset.slam = 'club';
+    addEventListener('DOMContentLoaded', () => {
+      const url = new URL(location.href); url.searchParams.set('tema', 'rg');
+      document.body.insertAdjacentHTML('afterbegin', `<div class="demo-bar" style="position: static">Demo: colores del club. <a href="${url.pathname}${url.search}${url.hash}">Volver a los colores de siempre</a></div>`);
+    });
+  }
+  else if (param === 'random') { const s = SLAMS[Math.floor(Math.random() * 4)]; applySlam(s.key, 'al azar'); }
   else if (param && SLAMS.some(s => s.key === param)) applySlam(param, 'elegido a mano');
   else if (param === 'auto') { const s = pickSlam(); applySlam(s.key, s.why); }
   else applySlam('rg', ''); // por defecto Roland Garros; ?tema=auto elige por calendario
