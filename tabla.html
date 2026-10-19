@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=202610182258">
+<link rel="stylesheet" href="site.css?v=202610182303">
 <style>
 .page-head .meta .dot { transition: background-color 300ms var(--ease-out); }
 .rank-wrap { padding: var(--space-lg) 0 var(--space-3xl); }
@@ -175,9 +175,10 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
     </form>
   </dialog>
   <div class="rank-wrap reveal" style="--i:2">
-    <div class="liga-bar"><nav id="nav" aria-label="Rama y categoría"></nav><div id="tempSel"></div></div>
+    <div class="liga-bar"><nav id="nav" aria-label="Rama y categoría"></nav></div>
     <div class="legend" id="legend"></div>
     <div id="content"><div class="state"><div class="spinner"></div>Cargando la tabla…</div></div>
+    <div class="temp-foot" id="tempSel"></div>
   </div>
 </main>
 <!-- layout:footer -->
@@ -187,7 +188,7 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="liga.js?v=202610182258"></script>
+<script src="liga.js?v=202610182303"></script>
 <script>
   const navEl = document.getElementById('nav');
   const subtitleEl = document.getElementById('subtitle');
@@ -459,6 +460,6 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
     dlg.close();
   });
 </script>
-<script src="site.js?v=202610182258"></script>
+<script src="site.js?v=202610182303"></script>
 </body>
 </html>

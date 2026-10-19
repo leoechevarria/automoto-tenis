@@ -12,13 +12,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=202610182258">
+<link rel="stylesheet" href="site.css?v=202610182303">
 <style>
 .fixture { padding: 0 0 var(--space-3xl); }
 .fx-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: var(--space-md); border-bottom: 3px solid var(--color-ink); padding-bottom: var(--space-sm); }
 .fx-head h2 { font-size: var(--text-2xl); font-weight: 800; text-transform: uppercase; }
-.fx-filter { display: flex; align-items: center; gap: var(--space-sm); font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-ink-2); }
-.fx-filter select { font: inherit; font-family: var(--font-body); font-size: 16px; text-transform: none; letter-spacing: 0; padding: 8px 10px; border: 1px solid var(--color-ink); background: var(--color-paper); color: var(--color-ink); min-height: 44px; }
 .fx-round { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 10fr); gap: var(--space-lg); padding: var(--space-md) 0; border-bottom: 1px solid var(--color-rule); }
 .fx-round.now { background: var(--color-paper-2); box-shadow: 0 0 0 var(--space-md) var(--color-paper-2); }
 .fx-round .r { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; text-transform: uppercase; line-height: 1; }
@@ -38,7 +36,11 @@
 .fx-zona { font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-ink-3); padding: 10px 0 2px; }
 .fx-zona:first-child { padding-top: 0; }
 .fx-libre { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-ink-3); padding: 4px 0 6px; }
-.fx-tools { display: flex; justify-content: flex-end; padding: var(--space-md) 0 0; }
+.fx-tools { padding: var(--space-lg) 0 var(--space-sm); }
+.fx-who { display: grid; gap: 6px; max-width: 480px; }
+.fx-who span { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; text-transform: uppercase; }
+.fx-who select { font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; text-transform: uppercase; padding: 10px 44px 10px 14px; min-height: 56px; border: 2px solid var(--color-ink); background: var(--color-paper) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23143a2a' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center; color: var(--color-ink); appearance: none; -webkit-appearance: none; border-radius: 0; width: 100%; }
+.fx-who select.on { background-color: var(--color-ink); color: var(--color-paper); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); }
 main { padding-bottom: var(--space-3xl); }
 </style>
 </head>
@@ -117,9 +119,10 @@ main { padding-bottom: var(--space-3xl); }
     <p class="meta"><span class="dot" id="status-dot"></span><span id="status-text">Actualizando…</span></p>
   </div>
   <div class="reveal" style="--i:1; padding-top: var(--space-lg)">
-    <div class="liga-bar"><nav id="nav" aria-label="Rama y categoría"></nav><div id="tempSel"></div></div>
-    <div class="fx-tools" id="fxTools" hidden><label class="fx-filter">Ver partidos de <select id="fxPlayer"><option value="">Todos</option></select></label></div>
+    <div class="liga-bar"><nav id="nav" aria-label="Rama y categoría"></nav></div>
+    <div class="fx-tools" id="fxTools" hidden><label class="fx-who"><span>¿Cuándo juego? Elegí tu nombre</span><select id="fxPlayer"><option value="">Todos los jugadores</option></select></label></div>
     <div id="fxList"><div class="state"><div class="spinner"></div>Cargando el fixture…</div></div>
+    <div class="temp-foot" id="tempSel"></div>
   </div>
 </main>
 
@@ -130,7 +133,7 @@ main { padding-bottom: var(--space-3xl); }
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="liga.js?v=202610182258"></script>
+<script src="liga.js?v=202610182303"></script>
 <script>
   const navEl = document.getElementById('nav'), subtitleEl = document.getElementById('subtitle');
   const statusDot = document.getElementById('status-dot'), statusText = document.getElementById('status-text');
@@ -149,8 +152,11 @@ main { padding-bottom: var(--space-3xl); }
     if (fxKey !== key) {   // cambió la categoría: rearmar la lista de jugadores
       fxKey = key;
       const names = [...new Set(ms.flatMap(r => [r[8], r[9]]))].sort((a, b) => a.localeCompare(b));
-      fxPlayer.innerHTML = '<option value="">Todos</option>' + names.map(n => `<option>${escapeHtml(n)}</option>`).join('');
+      fxPlayer.innerHTML = '<option value="">Todos los jugadores</option>' + names.map(n => `<option>${escapeHtml(n)}</option>`).join('');
+      let yo = ''; try { yo = localStorage.getItem('fxJugador') || ''; } catch (e) {}
+      fxPlayer.value = names.includes(yo) ? yo : '';
     }
+    fxPlayer.classList.toggle('on', !!fxPlayer.value);
     const who = fxPlayer.value;
     // Zonas: las de la inscripción de cada jugador en esta temporada y categoría
     const ins = model.rowsFor(temporadaSel).filter(r => r.key === key);
@@ -167,7 +173,9 @@ main { padding-bottom: var(--space-3xl); }
       const esLiga = (list[0][3] || 'Liga') === 'Liga';
       const bloques = zonas.map(([z, jugadores]) => {
         const partidos = list.filter(r => (!z || zonaDe.get(r[8]) === z) && (!who || r[8] === who || r[9] === who));
-        const libres = esLiga ? jugadores.filter(j => !juegan.has(j) && (!who || j === who)) : [];
+        // una zona sin partidos en esta fecha ya terminó (zona más chica): nadie queda libre
+        const zonaJuega = list.some(r => !z || zonaDe.get(r[8]) === z);
+        const libres = esLiga && zonaJuega ? jugadores.filter(j => !juegan.has(j) && (!who || j === who)) : [];
         if (!partidos.length && !libres.length) return '';
         return (z && zonas.length > 1 ? `<div class="fx-zona">Zona ${escapeHtml(z)}</div>` : '')
           + partidos.map(r => matchHtml(r, hoy, d2, who)).join('')
@@ -194,7 +202,10 @@ main { padding-bottom: var(--space-3xl); }
     else sc = d2 && hoy > d2 ? 'Sin resultado' : 'Pendiente';
     return `<div class="fx-match${who ? ' mine' : ''}"><div class="who"><span class="p ${cls(a)}">${escapeHtml(a)}</span><span class="vs">vs</span><span class="p ${cls(b)}">${escapeHtml(b)}</span></div><div class="sc${gan || wo ? '' : ' pend'}">${sc}</div></div>`;
   }
-  fxPlayer.addEventListener('change', () => renderFixture(currentCat));
+  fxPlayer.addEventListener('change', () => {
+    try { if (fxPlayer.value) localStorage.setItem('fxJugador', fxPlayer.value); else localStorage.removeItem('fxJugador'); } catch (e) {}
+    renderFixture(currentCat);
+  });
 
 
   async function load(refresh) {
@@ -215,6 +226,6 @@ main { padding-bottom: var(--space-3xl); }
   load();
   setInterval(() => load(true), REFRESH_MS);
 </script>
-<script src="site.js?v=202610182258"></script>
+<script src="site.js?v=202610182303"></script>
 </body>
 </html>

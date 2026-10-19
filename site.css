@@ -204,6 +204,10 @@ td.pos { white-space: nowrap; }
 .vs-sem { font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-ink-3); margin-top: 2px; }
 .temp-sel { display: inline-flex; align-items: center; gap: var(--space-sm); font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-ink-2); }
 .temp-sel select { font: inherit; font-family: var(--font-body); font-size: 16px; text-transform: none; letter-spacing: 0; padding: 8px 10px; border: 1px solid var(--color-ink); background: var(--color-paper); color: var(--color-ink); min-height: 44px; }
+.temp-foot { margin-top: var(--space-xl); padding-top: var(--space-md); border-top: 1px solid var(--color-rule); }
+.temp-foot:empty { display: none; }
+.temp-foot .temp-sel { color: var(--color-ink-3); }
+.temp-foot .temp-sel select { min-height: 40px; padding: 6px 8px; font-size: 15px; border-color: var(--color-rule); }
 .liga-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: start; gap: var(--space-md); }
 
 /* ---- Selectores de la liga (rama y categoría) ---- */

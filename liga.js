@@ -24,7 +24,7 @@
     db: { up: 0, down: 0, promoUp: 0, promoDown: 0 },
   };
   // Master (reglas del Clausura 2026): cuántos de cada zona clasifican, por categoría.
-  const MASTER_POR_ZONA = { ca: 4 };
+  const MASTER_POR_ZONA = { ca: 4, da: 4 };
   const DEFAULT_CATEGORY = 'ca';
   // ------------------------
 
