@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=20261019160801">
+<link rel="stylesheet" href="site.css?v=20261019160932">
 <style>
 /* ---- Apertura con la foto de la cancha ---- */
 .open { position: relative; min-height: clamp(380px, 58vh, 640px); display: grid; align-items: end; isolation: isolate; color: var(--color-on-photo); }
@@ -23,6 +23,8 @@
 .open .wrap { padding: var(--space-3xl) 0 var(--space-xl); }
 .open h1 { font-size: clamp(2.6rem, 6vw, 5.2rem); font-weight: 800; text-transform: uppercase; max-width: 14ch; }
 .open h1 .accent { color: var(--color-accent-photo); }
+/* colores del club: el azul marino lleva borde blanco para leerse sobre la foto */
+:root:not([data-slam]) .open h1 .accent, :root[data-slam="club"] .open h1 .accent { -webkit-text-stroke: 0.09em #fff; paint-order: stroke fill; }
 .open .lede { max-width: 46ch; margin: var(--space-md) 0 0; font-size: var(--text-xl); line-height: 1.35; opacity: .92; }
 
 /* ---- Hoy en el club ---- */
@@ -258,7 +260,7 @@
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="novedades.js?v=20261019160801"></script>
+<script src="novedades.js?v=20261019160932"></script>
 <script>
   /* ---- Hoy: clima (lo llama el script del clima cuando termina) ---- */
   function renderHoyClima(days) {
@@ -496,6 +498,6 @@
   loadWeather();
 
 </script>
-<script src="site.js?v=20261019160801"></script>
+<script src="site.js?v=20261019160932"></script>
 </body>
 </html>
