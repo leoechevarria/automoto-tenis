@@ -12,9 +12,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=202610191112">
+<link rel="stylesheet" href="site.css?v=202610191128">
 <style>
-.page-head .meta .dot { transition: background-color 300ms var(--ease-out); }
 .rank-wrap { padding: var(--space-lg) 0 var(--space-3xl); }
 .vista:empty { display: none; }
 .vista { padding: var(--space-md) 0 0; }
@@ -48,9 +47,6 @@ td.pts { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; 
 .win-rate-fill { height: 100%; background: var(--color-ink); transform-origin: left; }
 @media (max-width: 640px) { th:nth-child(4), th:nth-child(5), th:nth-child(6), td:nth-child(4), td:nth-child(5), td:nth-child(6) { display: none; } .player { font-size: 1.15rem; } td, th { padding-inline: 4px; } }
 
-.load-cta { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-lg); align-items: center; padding: var(--space-lg) 0; border-bottom: 1px solid var(--color-rule); }
-.load-cta h2 { font-size: var(--text-2xl); font-weight: 800; text-transform: uppercase; }
-.load-cta p { margin: 4px 0 0; color: var(--color-ink-2); }
 .btn.big { min-height: 64px; padding: 0 var(--space-xl); font-size: 1.5rem; }
 dialog.res { border: 3px solid var(--color-ink); background: var(--color-paper); color: var(--color-ink); padding: 0; width: min(640px, 100vw - 32px); max-width: none; box-sizing: border-box; max-height: 92vh; overflow-y: auto; overflow-x: hidden; }
 dialog.res::backdrop { background: oklch(20% 0.03 60 / 0.55); }
@@ -69,8 +65,7 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
 .res .who { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-sm); }
 .res .preview { font-family: var(--font-mono); font-size: var(--text-xs); white-space: pre-line; overflow-wrap: anywhere; border-left: 3px solid var(--color-accent); padding: 8px 12px; color: var(--color-ink-2); background: var(--color-paper-2); }
 .res .acts { display: flex; gap: var(--space-sm); justify-content: flex-end; flex-wrap: wrap; }
-@media (max-width: 640px) { .load-cta { grid-template-columns: minmax(0, 1fr); } .res .sets { grid-template-columns: minmax(0, 1fr); } }
-td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; font-weight: 400; color: var(--color-ink-3); }
+@media (max-width: 640px) { td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; font-weight: 400; color: var(--color-ink-3); }
 .res .impact { display: grid; gap: 6px; }
 .res .impact .row-i { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; align-items: baseline; padding: 8px 0; border-bottom: 1px solid var(--color-rule); }
 .res .impact .nm { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; text-transform: uppercase; }
@@ -86,15 +81,7 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
   <div class="wrap mast-in">
     <a class="mast-brand" href="index.html" aria-label="Automoto Tenis, inicio"><img src="assets/logo.png" alt=""><span>Automoto Club Deportivo<b>Tenis</b></span></a>
     <nav class="mast-nav" aria-label="Secciones">
-      <div class="menu">
-        <button type="button" class="menu-btn" aria-current="page" aria-expanded="false" aria-haspopup="true">Liga <span class="chev" aria-hidden="true">▾</span></button>
-        <div class="menu-list">
-          <a href="tabla.html" aria-current="page">Tabla</a>
-          <a href="fixture.html">Fixture</a>
-          <a href="tabla.html#cargar">Cargá tu resultado</a>
-          <a href="reglas.html">Reglas de la liga</a>
-        </div>
-      </div>
+      <a href="tabla.html" aria-current="page">Liga</a>
       <a href="novedades.html">Novedades</a>
       <a href="mercado.html">Mercado</a>
       <div class="menu">
@@ -122,15 +109,9 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
   <a class="btn fill turno" href="https://darturnos.com/AutomotoTenis/" target="_blank" rel="noopener">Reservar turno ↗</a>
   <div class="drawer-group">
     <a class="big" href="index.html">Inicio</a>
+    <a class="big" href="tabla.html" aria-current="page">Liga</a>
     <a class="big" href="novedades.html">Novedades</a>
     <a class="big" href="mercado.html">Mercado del usado</a>
-  </div>
-  <div class="drawer-group">
-    <span class="k">Liga</span>
-      <a href="tabla.html" aria-current="page">Tabla</a>
-      <a href="fixture.html">Fixture</a>
-      <a href="tabla.html#cargar">Cargá tu resultado</a>
-      <a href="reglas.html">Reglas de la liga</a>
   </div>
   <div class="drawer-group">
     <span class="k">El club</span>
@@ -146,14 +127,10 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
 <!-- /layout:header -->
 
 <main class="wrap">
-  <div class="page-head reveal" style="--i:0">
-    <div><h1>Tabla de la liga</h1><p class="sub" id="subtitle">Caballeros · Categoría A</p></div>
-    <p class="meta"><span class="dot" id="status-dot"></span><span id="status-text">Actualizando…</span></p>
-  </div>
-  <div class="load-cta reveal" id="cargar" style="--i:1">
-    <div><h2>¿Jugaste?</h2></div>
-    <button class="btn fill big" id="openRes" type="button">Cargá tu resultado</button>
-  </div>
+  <!-- layout:liga -->
+  <a class="liga-cta" id="openRes" href="tabla.html#cargar">¿Jugaste? Cargá tu resultado <span aria-hidden="true">→</span></a>
+  <div class="liga-tabs"><nav aria-label="Liga"><a href="tabla.html" aria-current="page">Tabla</a><a href="fixture.html">Fixture</a><a href="reglas.html">Reglas</a></nav><span class="liga-temp" id="subtitle"></span></div>
+  <!-- /layout:liga -->
   <dialog class="res" id="resDlg">
     <form method="dialog" id="resForm">
       <h2>Resultado de la liga</h2>
@@ -192,14 +169,12 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="liga.js?v=202610191112"></script>
+<script src="liga.js?v=202610191128"></script>
 <script>
   const navEl = document.getElementById('nav');
   const subtitleEl = document.getElementById('subtitle');
   const legendEl = document.getElementById('legend');
   const contentEl = document.getElementById('content');
-  const statusDot = document.getElementById('status-dot');
-  const statusText = document.getElementById('status-text');
 
   let currentCat = DEFAULT_CATEGORY;
   let temporadaSel = null;
@@ -341,8 +316,6 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
   function renderError(message) {
     legendEl.innerHTML = '';
     contentEl.innerHTML = `<div class="state error">No se pudo cargar la tabla.<br>${escapeHtml(message)}</div>`;
-    statusDot.classList.remove('live');
-    statusText.textContent = 'Error de conexión';
   }
 
   async function loadRanking(refresh) {
@@ -352,10 +325,8 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
     try {
       const rows = await tableRows(key);
       if (key !== currentCat) return;
-      subtitleEl.textContent = label(key) + (temporadaSel ? ` · ${temporadaSel}` : '');
+      subtitleEl.textContent = temporadaSel || '';
       renderTable(rows, key);
-      statusDot.classList.add('live');
-      statusText.textContent = 'Actualizado ' + new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
     } catch (err) {
       renderError(err.message || 'Error desconocido');
     }
@@ -367,11 +338,11 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
     if (!CATEGORIES[key]) key = DEFAULT_CATEGORY;
     currentCat = key;
     renderNav();
-    subtitleEl.textContent = label(key);
     loadRanking();
   }
 
   window.addEventListener('hashchange', () => {
+    if (location.hash === '#cargar') return;   // abre el formulario, no cambia la categoría
     setCategory(location.hash.replace('#', '') || DEFAULT_CATEGORY);
   });
 
@@ -459,7 +430,8 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
   rWin.addEventListener('change', fillLose);
   if (location.hash === '#cargar') setTimeout(() => document.getElementById('openRes').click(), 600);
   addEventListener('hashchange', () => { if (location.hash === '#cargar') document.getElementById('openRes').click(); });
-  document.getElementById('openRes').addEventListener('click', () => {
+  document.getElementById('openRes').addEventListener('click', e => {
+    e.preventDefault();   // en esta página abre el formulario sin cambiar de página
     rCat.innerHTML = visibleKeys().map(k => `<option value="${k}">${label(k)}</option>`).join('');
     rCat.value = CATEGORIES[currentCat] ? currentCat : DEFAULT_CATEGORY;
     const t = new Date(); document.getElementById('rDate').value = `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}-${String(t.getDate()).padStart(2, '0')}`;
@@ -475,6 +447,6 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
     dlg.close();
   });
 </script>
-<script src="site.js?v=202610191112"></script>
+<script src="site.js?v=202610191128"></script>
 </body>
 </html>

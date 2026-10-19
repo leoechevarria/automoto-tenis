@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=202610191112">
+<link rel="stylesheet" href="site.css?v=202610191128">
 <style>
 .fixture { padding: 0 0 var(--space-3xl); }
 .fx-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: var(--space-md); border-bottom: 3px solid var(--color-ink); padding-bottom: var(--space-sm); }
@@ -49,15 +49,7 @@ main { padding-bottom: var(--space-3xl); }
   <div class="wrap mast-in">
     <a class="mast-brand" href="index.html" aria-label="Automoto Tenis, inicio"><img src="assets/logo.png" alt=""><span>Automoto Club Deportivo<b>Tenis</b></span></a>
     <nav class="mast-nav" aria-label="Secciones">
-      <div class="menu">
-        <button type="button" class="menu-btn" aria-current="page" aria-expanded="false" aria-haspopup="true">Liga <span class="chev" aria-hidden="true">▾</span></button>
-        <div class="menu-list">
-          <a href="tabla.html">Tabla</a>
-          <a href="fixture.html" aria-current="page">Fixture</a>
-          <a href="tabla.html#cargar">Cargá tu resultado</a>
-          <a href="reglas.html">Reglas de la liga</a>
-        </div>
-      </div>
+      <a href="tabla.html" aria-current="page">Liga</a>
       <a href="novedades.html">Novedades</a>
       <a href="mercado.html">Mercado</a>
       <div class="menu">
@@ -85,15 +77,9 @@ main { padding-bottom: var(--space-3xl); }
   <a class="btn fill turno" href="https://darturnos.com/AutomotoTenis/" target="_blank" rel="noopener">Reservar turno ↗</a>
   <div class="drawer-group">
     <a class="big" href="index.html">Inicio</a>
+    <a class="big" href="tabla.html" aria-current="page">Liga</a>
     <a class="big" href="novedades.html">Novedades</a>
     <a class="big" href="mercado.html">Mercado del usado</a>
-  </div>
-  <div class="drawer-group">
-    <span class="k">Liga</span>
-      <a href="tabla.html">Tabla</a>
-      <a href="fixture.html" aria-current="page">Fixture</a>
-      <a href="tabla.html#cargar">Cargá tu resultado</a>
-      <a href="reglas.html">Reglas de la liga</a>
   </div>
   <div class="drawer-group">
     <span class="k">El club</span>
@@ -109,10 +95,10 @@ main { padding-bottom: var(--space-3xl); }
 <!-- /layout:header -->
 
 <main class="wrap">
-  <div class="page-head reveal" style="--i:0">
-    <div><h1>Fixture</h1><p class="sub" id="subtitle">Caballeros · Categoría A</p></div>
-    <p class="meta"><span class="dot" id="status-dot"></span><span id="status-text">Actualizando…</span></p>
-  </div>
+  <!-- layout:liga -->
+  <a class="liga-cta" id="openRes" href="tabla.html#cargar">¿Jugaste? Cargá tu resultado <span aria-hidden="true">→</span></a>
+  <div class="liga-tabs"><nav aria-label="Liga"><a href="tabla.html">Tabla</a><a href="fixture.html" aria-current="page">Fixture</a><a href="reglas.html">Reglas</a></nav><span class="liga-temp" id="subtitle"></span></div>
+  <!-- /layout:liga -->
   <div class="reveal" style="--i:1; padding-top: var(--space-lg)">
     <div class="liga-bar"><nav id="nav" aria-label="Rama y categoría"></nav></div>
     <div class="fx-tools" id="fxTools" hidden><label class="fx-who"><span>¿Cuándo juego? Elegí tu nombre</span><select id="fxPlayer"><option value="">Todos los jugadores</option></select></label></div>
@@ -128,10 +114,9 @@ main { padding-bottom: var(--space-3xl); }
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="liga.js?v=202610191112"></script>
+<script src="liga.js?v=202610191128"></script>
 <script>
   const navEl = document.getElementById('nav'), subtitleEl = document.getElementById('subtitle');
-  const statusDot = document.getElementById('status-dot'), statusText = document.getElementById('status-text');
   let model = null, currentCat = keyFromHash(), temporadaSel = null;
   const tempSelEl = document.getElementById('tempSel');
   /* ---- Fixture: partidos de la categoría en la temporada activa, por ronda ---- */
@@ -205,21 +190,19 @@ main { padding-bottom: var(--space-3xl); }
   async function load(refresh) {
     if (refresh || !model) {
       try { model = await loadModel(); } catch (e) { model = null; }
-      if (!model) { document.getElementById('fxList').innerHTML = '<div class="state error">No se pudo cargar la planilla.</div>'; statusText.textContent = 'Error de conexión'; return; }
+      if (!model) { document.getElementById('fxList').innerHTML = '<div class="state error">No se pudo cargar la planilla.</div>'; return; }
       temporadaSel = temporadaElegida(model);
       temporadaSelect(tempSelEl, model, x => x.conTabla || x.conPartidos, temporadaSel, t => { temporadaSel = t; fxKey = null; load(); });
     }
     ligaNav(navEl, currentCat, Object.keys(CATEGORIES));
-    subtitleEl.textContent = `${CATEGORIES[currentCat].rama} · Categoría ${CATEGORIES[currentCat].cat}` + (temporadaSel ? ` · ${temporadaSel}` : '');
+    subtitleEl.textContent = temporadaSel || '';
     renderFixture(currentCat);
-    statusDot.classList.add('live');
-    statusText.textContent = 'Actualizado ' + new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
     const now = document.getElementById('fx-now'); if (now && !load.scrolled) { load.scrolled = true; now.scrollIntoView({ block: 'center' }); }
   }
   addEventListener('hashchange', () => { currentCat = keyFromHash(); load(); });
   load();
   setInterval(() => load(true), REFRESH_MS);
 </script>
-<script src="site.js?v=202610191112"></script>
+<script src="site.js?v=202610191128"></script>
 </body>
 </html>

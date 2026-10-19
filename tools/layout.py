@@ -29,7 +29,17 @@ SOCIAL = f'''<div class="social">
         <a href="https://www.instagram.com/masu.tenis/" target="_blank" rel="noopener" aria-label="Instagram de Masu Tenis" class="masu"><img src="assets/masu-mark.png" alt=""></a>
       </div>'''
 
-LIGA = [("tabla.html", "Tabla"), ("fixture.html", "Fixture"), ("tabla.html#cargar", "Cargá tu resultado"), ("reglas.html", "Reglas de la liga")]
+# Pestañas de la liga, arriba de tabla, fixture y reglas
+LIGA = [("tabla.html", "Tabla"), ("fixture.html", "Fixture"), ("reglas.html", "Reglas")]
+LIGA_PAGES = [h for h, _ in LIGA]
+
+
+def liga_top(page):
+    tabs = "".join(f'<a href="{h}"{" aria-current=\"page\"" if h == page else ""}>{t}</a>' for h, t in LIGA)
+    return f'''<!-- layout:liga -->
+  <a class="liga-cta" id="openRes" href="tabla.html#cargar">¿Jugaste? Cargá tu resultado <span aria-hidden="true">→</span></a>
+  <div class="liga-tabs"><nav aria-label="Liga">{tabs}</nav><span class="liga-temp" id="subtitle"></span></div>
+  <!-- /layout:liga -->'''
 # Cuota y alias de pago (info.html#pagos) y Subcomisión de Tenis (subcomision.html) vuelven cuando haya datos reales.
 CLUB = [("info.html#cancha", "Cuidado de la cancha"), ("info.html#contacto", "Teléfonos y contactos"),
         ("info.html#ubicacion", "Cómo llegar")]
@@ -46,12 +56,7 @@ def header(page):
   <div class="wrap mast-in">
     <a class="mast-brand" href="index.html" aria-label="Automoto Tenis, inicio"><img src="assets/logo.png" alt=""><span>Automoto Club Deportivo<b>Tenis</b></span></a>
     <nav class="mast-nav" aria-label="Secciones">
-      <div class="menu">
-        <button type="button" class="menu-btn"{cur("liga")} aria-expanded="false" aria-haspopup="true">Liga <span class="chev" aria-hidden="true">▾</span></button>
-        <div class="menu-list">
-{sub(LIGA)}
-        </div>
-      </div>
+      <a href="tabla.html"{cur("liga")}>Liga</a>
       <a href="novedades.html"{cur("novedades")}>Novedades</a>
       <a href="mercado.html"{cur("mercado")}>Mercado</a>
       <div class="menu">
@@ -74,12 +79,9 @@ def header(page):
   <a class="btn fill turno" href="{TURNOS}" target="_blank" rel="noopener">Reservar turno ↗</a>
   <div class="drawer-group">
     <a class="big" href="index.html"{here("index.html")}>Inicio</a>
+    <a class="big" href="tabla.html"{cur("liga")}>Liga</a>
     <a class="big" href="novedades.html"{here("novedades.html")}>Novedades</a>
     <a class="big" href="mercado.html"{here("mercado.html")}>Mercado del usado</a>
-  </div>
-  <div class="drawer-group">
-    <span class="k">Liga</span>
-{dsub(LIGA)}
   </div>
   <div class="drawer-group">
     <span class="k">El club</span>
@@ -108,6 +110,9 @@ def apply(page):
     else:
         s, n = re.subn(r'<header class="mast">.*?</header>', lambda m: h, s, count=1, flags=re.S)
         assert n == 1, f"{page}: no encontré el header"
+    if page in LIGA_PAGES:
+        s, n = re.subn(r"<!-- layout:liga -->.*?<!-- /layout:liga -->", lambda m: liga_top(page), s, flags=re.S)
+        assert n == 1, f"{page}: falta <!-- layout:liga -->"
     if "<!-- layout:footer -->" in s:
         s = re.sub(r"<!-- layout:footer -->.*?<!-- /layout:footer -->", lambda m: FOOTER, s, flags=re.S)
     else:
