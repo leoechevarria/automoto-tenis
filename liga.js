@@ -37,10 +37,11 @@
 
   /* ---- Datos: formato nuevo (una sola planilla por temporadas) o planilla anterior ---- */
   async function loadModel() {
-    const ranges = ['Temporadas!A2:G', 'Inscripciones!A2:P', 'Categorías!A2:F', 'Partidos!A2:P', 'Jugadores!A2:D'].map(r => 'ranges=' + encodeURIComponent(r)).join('&');
+    const ranges = ['Temporadas!A2:G', 'Inscripciones!A2:P', 'Categorías!A2:F', 'Partidos!A1:Z', 'Jugadores!A2:D'].map(r => 'ranges=' + encodeURIComponent(r)).join('&');
     const res = await fetch(`${SHEETS}/values:batchGet?${ranges}&key=${API_KEY}`);
     if (!res.ok) return null; // las pestañas no existen: planilla anterior
-    const [temps, ins, cats, partidos, jugadores] = (await res.json()).valueRanges.map(v => v.values || []);
+    const [temps, ins, cats, partidosHoja, jugadores] = (await res.json()).valueRanges.map(v => v.values || []);
+    const partidos = partidosPorColumna(partidosHoja);
     // Temporada a mostrar: la Activa; si no hay, la última Cerrada con inscriptos.
     const estado = r => (r[3] || '').trim().toLowerCase();
     const conInscriptos = t => ins.some(r => r[0] === t);
@@ -58,6 +59,17 @@
     const rules = {};
     cats.forEach(r => { const k = keyOf(r[0], r[1]); if (k && r.slice(2).some(v => v !== '' && v != null)) rules[k] = { up: n(r[2]), down: n(r[3]), promoUp: n(r[4]), promoDown: n(r[5]) }; });
     return { temporada: activa, enJuego: estado(filaActiva) === 'activa', pts, rows, rules, partidos, jugadores, ins, rowsFor, ptsDe, temporadas, keyOf };
+  }
+
+  /* Partidos: se leen por el nombre de cada columna (fila 1), así se pueden agregar o mover columnas en la planilla.
+     Cada fila queda en el orden de siempre: 0 Temporada, 1 Rama, 2 Categoría, 3 Tipo, 4 Ronda, 5 Desde, 6 Hasta,
+     7 Jugado el, 8 Jugador 1, 9 Jugador 2, 10 Sets, 11 Ganó, 12 Walkover, 13 Anulado, 14 Notas, 15 Ganador, 16 Zona. */
+  const COLS_PARTIDOS = ['Temporada', 'Rama', 'Categoría', 'Tipo', 'Ronda', 'Desde', 'Hasta', 'Jugado el', 'Jugador 1', 'Jugador 2', 'Sets', 'Ganó', 'Walkover', 'Anulado', 'Notas', 'Ganador', 'Zona'];
+  function partidosPorColumna(hoja) {
+    const [head = [], ...filas] = hoja;
+    const norm = t => String(t || '').trim().toLowerCase();
+    const idx = COLS_PARTIDOS.map((c, i) => { const j = head.findIndex(h => norm(h) === norm(c)); return j >= 0 ? j : (i < 16 && !head.length ? i : -1); });
+    return filas.map(r => idx.map(j => (j >= 0 ? r[j] : undefined) ?? ''));
   }
 
   /* Orden de la tabla: el puesto final oficial si la temporada lo tiene. Si no, reglas 2026:
