@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=202610182243">
+<link rel="stylesheet" href="site.css?v=202610182244">
 <style>
 .page-head .meta .dot { transition: background-color 300ms var(--ease-out); }
 .rank-wrap { padding: var(--space-lg) 0 var(--space-3xl); }
@@ -189,7 +189,7 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="liga.js?v=202610182243"></script>
+<script src="liga.js?v=202610182244"></script>
 <script>
   const navEl = document.getElementById('nav');
   const subtitleEl = document.getElementById('subtitle');
@@ -254,8 +254,11 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
 
   function renderTable(rows, key) {
     const zonas = porZona(rows);
-    // Con zonas, la planilla todavía no dice quién asciende o desciende en cada una: no se marca.
-    const cfg = zonas.length > 1 ? { up: 0, down: 0, promoUp: 0, promoDown: 0 } : rulesFor(key);
+    // Sin partidos jugados en la categoría no se marca nada (ascensos, promoción, Master).
+    // Con zonas, la planilla todavía no dice quién asciende o desciende en cada una: tampoco se marca.
+    const jugado = rows.some(r => r.pj > 0);
+    const cfg = zonas.length > 1 || !jugado ? { up: 0, down: 0, promoUp: 0, promoDown: 0 } : rulesFor(key);
+    const master = jugado && zonas.length > 1 ? MASTER_POR_ZONA[key] || 0 : 0;
     renderLegend(cfg, rows.length);
     if (!rows.length) {
       contentEl.innerHTML = `<div class="state">Todavía no hay jugadores inscriptos en ${escapeHtml(label(key))}.</div>`;
@@ -266,14 +269,14 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
       list = sortRows(list);
       const semana = model && !legacy ? semanaTabla(model, temporadaSel, key, list) : null;
       if (semana && [...semana.values()].some(c => c.dPts || c.dPos)) hayCambios = true;
-      return tableHtml(list, key, cfg, semana, zona);
+      return tableHtml(list, key, cfg, semana, zona, master);
     });
-    if (zonas.length > 1 && MASTER_POR_ZONA[key]) legendEl.insertAdjacentHTML('beforeend', `<div class="legend-item"><span class="legend-swatch ascend"></span> Los ${MASTER_POR_ZONA[key]} primeros de cada zona van al Master</div>`);
+    if (master) legendEl.insertAdjacentHTML('beforeend', `<div class="legend-item"><span class="legend-swatch ascend"></span> Los ${master} primeros de cada zona van al Master</div>`);
     if (hayCambios) { const lu = lunesDeEstaSemana(); legendEl.insertAdjacentHTML('afterbegin', `<div class="legend-item">Cambios desde el lunes ${lu.getDate()}/${lu.getMonth() + 1}</div>`); }
     contentEl.innerHTML = tablas.join('');
   }
 
-  function tableHtml(rows, key, cfg, semana, zona) {
+  function tableHtml(rows, key, cfg, semana, zona, master) {
     const total = rows.length;
     const bottomStart = total - cfg.down + 1;
     let html = `${zona ? `<h2 class="zona">Zona ${escapeHtml(zona)}</h2>` : ''}
@@ -300,7 +303,7 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
       const isDescend = cfg.down > 0 && cfg.below && rank >= bottomStart;
       const isDescendPromo = cfg.promoDown > 0 && cfg.below && rank < bottomStart && rank >= bottomStart - cfg.promoDown;
       let rowClass = '', tag = '';
-      if (zona && MASTER_POR_ZONA[key] && rank <= MASTER_POR_ZONA[key]) { rowClass = 'ascends'; tag = '<span class="tag ascend">Master</span>'; }
+      if (master && rank <= master) { rowClass = 'ascends'; tag = '<span class="tag ascend">Master</span>'; }
       else if (isAscend) { rowClass = 'ascends'; tag = '<span class="tag ascend">Asciende</span>'; }
       else if (isDescend) { rowClass = 'descends'; tag = '<span class="tag descend">Desciende</span>'; }
       else if (isAscendPromo || isDescendPromo) { rowClass = 'promo'; tag = '<span class="tag promo">Promoción</span>'; }
@@ -454,6 +457,6 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
     dlg.close();
   });
 </script>
-<script src="site.js?v=202610182243"></script>
+<script src="site.js?v=202610182244"></script>
 </body>
 </html>
