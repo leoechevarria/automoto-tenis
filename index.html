@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=202610182254">
+<link rel="stylesheet" href="site.css?v=202610182258">
 <style>
 /* ---- Apertura con la foto de la cancha ---- */
 .open { position: relative; min-height: clamp(380px, 58vh, 640px); display: grid; align-items: end; isolation: isolate; color: var(--color-on-photo); }
@@ -136,7 +136,6 @@
           <a href="fixture.html">Fixture</a>
           <a href="tabla.html#cargar">Cargá tu resultado</a>
           <a href="reglas.html">Reglas de la liga</a>
-          <a href="rating.html">Rating (ELO)</a>
         </div>
       </div>
       <a href="novedades.html">Novedades</a>
@@ -177,7 +176,6 @@
       <a href="fixture.html">Fixture</a>
       <a href="tabla.html#cargar">Cargá tu resultado</a>
       <a href="reglas.html">Reglas de la liga</a>
-      <a href="rating.html">Rating (ELO)</a>
   </div>
   <div class="drawer-group">
     <span class="k">El club</span>
@@ -218,10 +216,10 @@
     <div class="row row-liga">
       <h2><a href="tabla.html">Liga <span class="go" aria-hidden="true">→</span></a></h2>
       <nav class="quick" aria-label="Liga">
-        <a href="tabla.html">Tabla</a>
+        <a href="tabla.html#cargar">Cargá resultado</a>
         <a href="fixture.html">Fixture</a>
+        <a href="tabla.html">Tabla</a>
         <a href="reglas.html">Reglas</a>
-        <a href="rating.html">Rating (ELO)</a>
       </nav>
     </div>
     <a class="row" href="novedades.html">
@@ -273,7 +271,7 @@
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="novedades.js?v=202610182254"></script>
+<script src="novedades.js?v=202610182258"></script>
 <script>
   /* ---- Hoy: clima (lo llama el script del clima cuando termina) ---- */
   function renderHoyClima(days) {
@@ -513,6 +511,6 @@
   loadWeather();
 
 </script>
-<script src="site.js?v=202610182254"></script>
+<script src="site.js?v=202610182258"></script>
 </body>
 </html>

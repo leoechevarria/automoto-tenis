@@ -29,7 +29,7 @@ SOCIAL = f'''<div class="social">
         <a href="https://www.instagram.com/masu.tenis/" target="_blank" rel="noopener" aria-label="Instagram de Masu Tenis" class="masu"><img src="assets/masu-mark.png" alt=""></a>
       </div>'''
 
-LIGA = [("tabla.html", "Tabla"), ("fixture.html", "Fixture"), ("tabla.html#cargar", "Cargá tu resultado"), ("reglas.html", "Reglas de la liga"), ("rating.html", "Rating (ELO)")]
+LIGA = [("tabla.html", "Tabla"), ("fixture.html", "Fixture"), ("tabla.html#cargar", "Cargá tu resultado"), ("reglas.html", "Reglas de la liga")]
 CLUB = [("info.html#pagos", "Cuota y alias de pago"), ("info.html#cancha", "Cuidado de la cancha"),
         ("info.html#contacto", "Teléfonos y contactos"), ("info.html#ubicacion", "Cómo llegar"),
         ("subcomision.html", "Subcomisión de Tenis")]

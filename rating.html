@@ -2,6 +2,7 @@
 <html lang="es-AR">
 <head>
 <meta charset="UTF-8">
+<meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Automoto Tenis — Rating (ELO)</title>
 <link rel="icon" href="assets/favicon.ico" sizes="any">
@@ -12,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=202610182254">
+<link rel="stylesheet" href="site.css?v=202610182258">
 <style>
 .page-head .meta .dot { transition: background-color 300ms var(--ease-out); }
 .rank-wrap { padding: var(--space-lg) 0 var(--space-3xl); }
@@ -91,7 +92,6 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
           <a href="fixture.html">Fixture</a>
           <a href="tabla.html#cargar">Cargá tu resultado</a>
           <a href="reglas.html">Reglas de la liga</a>
-          <a href="rating.html" aria-current="page">Rating (ELO)</a>
         </div>
       </div>
       <a href="novedades.html">Novedades</a>
@@ -132,7 +132,6 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
       <a href="fixture.html">Fixture</a>
       <a href="tabla.html#cargar">Cargá tu resultado</a>
       <a href="reglas.html">Reglas de la liga</a>
-      <a href="rating.html" aria-current="page">Rating (ELO)</a>
   </div>
   <div class="drawer-group">
     <span class="k">El club</span>
@@ -176,7 +175,7 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="liga.js?v=202610182254"></script>
+<script src="liga.js?v=202610182258"></script>
 <script>
   const navEl = document.getElementById('nav'), subtitleEl = document.getElementById('subtitle');
   const legendEl = document.getElementById('legend'), contentEl = document.getElementById('content');
@@ -223,6 +222,6 @@ td.pts .rd { display: block; font-family: var(--font-mono); font-size: 0.7rem; f
   load();
   setInterval(() => load(true), REFRESH_MS);
 </script>
-<script src="site.js?v=202610182254"></script>
+<script src="site.js?v=202610182258"></script>
 </body>
 </html>
