@@ -87,7 +87,7 @@ def page(item, tipo, v):
 
 <main class="wrap">
   <article class="art reveal" style="--i:0">
-    <a class="art-back" href="novedades.html">← Todas las noticias</a>
+    <a class="art-back" href="novedades.html">← Todas las novedades</a>
     {foto}
     {head}
     <div class="dlg-body">{paras(item.get("texto"))}</div>

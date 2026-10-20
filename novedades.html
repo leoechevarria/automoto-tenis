@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Automoto Tenis — Noticias</title>
+<title>Automoto Tenis — Novedades</title>
 <link rel="icon" href="assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon-192.png">
 <link rel="apple-touch-icon" href="assets/favicon-180.png">
@@ -14,7 +14,7 @@
 <link rel="preload" href="assets/fonts/barlow-condensed-800.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/barlow-condensed-700.woff2" as="font" type="font/woff2" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=20261020145958">
+<link rel="stylesheet" href="site.css?v=20261020151350">
 <style>
 main { padding-bottom: var(--space-3xl); }
 .nov { padding-top: var(--space-xl); }
@@ -35,9 +35,10 @@ details.past-list summary { cursor: pointer; font-family: var(--font-mono); font
     <a class="mast-brand" href="index.html" aria-label="Automoto Tenis, inicio"><img src="assets/logo.png" alt=""><span>Automoto Club Deportivo<b>Tenis</b></span></a>
     <nav class="mast-nav" aria-label="Secciones">
       <a href="tabla.html">Liga</a>
-      <a href="novedades.html" aria-current="page">Noticias</a>
-      <a href="info.html">El club</a>
+      <a href="novedades.html" aria-current="page">Novedades</a>
       <a href="deporte.html">El deporte</a>
+      <a href="clases.html">Tomar clases</a>
+      <a href="info.html">El club</a>
       <a href="mercado.html">Mercado</a>
     </nav>
     <div class="mast-end">
@@ -55,9 +56,10 @@ details.past-list summary { cursor: pointer; font-family: var(--font-mono); font
   <div class="drawer-group">
     <a class="big" href="index.html">Inicio</a>
     <a class="big" href="tabla.html">Liga</a>
-    <a class="big" href="novedades.html" aria-current="page">Noticias</a>
-    <a class="big" href="info.html">El club</a>
+    <a class="big" href="novedades.html" aria-current="page">Novedades</a>
     <a class="big" href="deporte.html">El deporte</a>
+    <a class="big" href="clases.html">Tomar clases</a>
+    <a class="big" href="info.html">El club</a>
     <a class="big" href="mercado.html">Mercado del usado</a>
   </div>
   <div class="social">
@@ -69,12 +71,12 @@ details.past-list summary { cursor: pointer; font-family: var(--font-mono); font
 
 <main class="wrap">
   <div class="page-head reveal" style="--i:0">
-    <div><h1>Noticias</h1></div>
+    <div><h1>Novedades</h1></div>
   </div>
   <p class="note reveal" id="novNote" style="--i:1; margin-top: var(--space-lg)" hidden>Contenido de ejemplo</p>
   <section class="nov split reveal" style="--i:1">
     <div class="col" id="noticias">
-      <div class="col-head"><h2>Últimas noticias</h2></div>
+      <div class="col-head"><h2>Novedades</h2></div>
       <div id="listAnuncios"><p class="empty">Cargando…</p></div>
     </div>
     <div class="col" id="eventos">
@@ -100,13 +102,13 @@ details.past-list summary { cursor: pointer; font-family: var(--font-mono); font
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="novedades.js?v=20261020145958"></script>
+<script src="novedades.js?v=20261020151350"></script>
 <script>
   (async () => {
     const N = window.Novedades;
     try {
       const { anuncios, proximos, pasados } = await N.load();
-      document.getElementById('listAnuncios').innerHTML = anuncios.length ? anuncios.map(N.anuncio).join('') : '<p class="empty">No hay noticias por ahora.</p>';
+      document.getElementById('listAnuncios').innerHTML = anuncios.length ? anuncios.map(N.anuncio).join('') : '<p class="empty">No hay novedades por ahora.</p>';
       document.getElementById('listEventos').innerHTML = proximos.length ? proximos.map(N.evento).join('') : '<p class="empty">No hay eventos programados.</p>';
       if (pasados.length) {
         document.getElementById('listPasados').innerHTML = pasados.map(e => N.evento(e, ' past')).join('');
@@ -120,6 +122,6 @@ details.past-list summary { cursor: pointer; font-family: var(--font-mono); font
     }
   })();
 </script>
-<script src="site.js?v=20261020145958"></script>
+<script src="site.js?v=20261020151350"></script>
 </body>
 </html>

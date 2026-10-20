@@ -1,7 +1,7 @@
 {
   "name": "Automoto Tenis",
   "short_name": "Automoto Tenis",
-  "description": "Tabla y fixture de la liga, noticias, turnos, clima y mercado del usado de Automoto Club Deportivo Tenis",
+  "description": "Tabla y fixture de la liga, novedades, turnos, clima y mercado del usado de Automoto Club Deportivo Tenis",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
