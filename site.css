@@ -315,3 +315,5 @@ body { transition: opacity 200ms var(--ease-out); }
 .art h1 { font-size: clamp(2.2rem, 6vw, 3.4rem); font-weight: 800; text-transform: uppercase; text-wrap: balance; }
 .art .when { margin: 0; font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-accent-deep); }
 .art-share { padding-top: var(--space-md); }
+.art-share .btn .sh-ic { display: none; }
+.art-share .btn.is-android .sh-android, .art-share .btn.is-ios .sh-ios { display: block; }

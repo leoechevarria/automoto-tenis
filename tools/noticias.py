@@ -12,6 +12,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import layout
 
 SITE = "https://automototenis.com"
+# Íconos de compartir: tres puntos unidos (Android) y cuadrado con flecha hacia arriba (iOS)
+ICON_ANDROID = '<svg class="sh-ic sh-android" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>'
+ICON_IOS = '<svg class="sh-ic sh-ios" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M8 7l4-4 4 4"/><path d="M8 10H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-2"/></svg>'
 MES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"]
 DIA = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"]
 
@@ -50,7 +53,6 @@ def page(item, tipo, v):
             d, _ = fecha(item["publicado"])
             pub = f" · {d.day} de {MES[d.month - 1]}"
         head = f'<span class="k">{esc(item.get("etiqueta") or "Noticia")}{pub}</span><h1>{esc(titulo)}</h1>'
-    wa = "https://wa.me/?text=" + __import__("urllib.parse").parse.quote(f"{titulo} {url}")
     foto = f'<img class="dlg-img" src="{esc(item["foto"])}" alt="">' if item.get("foto") else ""
     return f'''<!DOCTYPE html>
 <html lang="es-AR">
@@ -89,12 +91,28 @@ def page(item, tipo, v):
     {foto}
     {head}
     <div class="dlg-body">{paras(item.get("texto"))}</div>
-    <div class="art-share"><a class="btn" href="{wa}" target="_blank" rel="noopener">Compartir por WhatsApp</a></div>
+    <div class="art-share"><button type="button" class="btn" id="share" data-title="{esc(titulo)}" data-text="{esc(desc)}" data-url="{url}">{ICON_ANDROID}{ICON_IOS}<span>Compartir</span></button></div>
   </article>
 </main>
 
 {layout.FOOTER}
 <script src="site.js?v={v}"></script>
+<script>
+  (() => {{
+    const b = document.getElementById('share');
+    const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) || /Macintosh/.test(navigator.userAgent);
+    b.classList.add(ios ? 'is-ios' : 'is-android');
+    b.addEventListener('click', async () => {{
+      const d = b.dataset;
+      try {{
+        if (navigator.share) {{ await navigator.share({{ title: d.title, text: d.text, url: d.url }}); return; }}
+        await navigator.clipboard.writeText(d.url);
+        b.querySelector('span').textContent = 'Link copiado';
+        setTimeout(() => {{ b.querySelector('span').textContent = 'Compartir'; }}, 2500);
+      }} catch (e) {{ /* el usuario cerró el menú de compartir */ }}
+    }});
+  }})();
+</script>
 </body>
 </html>
 '''
