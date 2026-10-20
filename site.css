@@ -2,6 +2,11 @@
  * macrostructure: Index-First con apertura fotográfica (home) · genre: editorial · theme: Sport / paleta Roland Garros
  * nav: N6 Masthead · footer: Ft4 colophon · motion: una orquestación por página (reveal) + desplazamiento a sección
  */
+/* Barlow Condensed (OFL, assets/fonts/OFL.txt) servida desde el sitio y precargada: el título no cambia de tamaño al cargar */
+@font-face { font-family: 'Barlow Condensed'; font-style: normal; font-weight: 600; font-display: swap; src: url(assets/fonts/barlow-condensed-600.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Barlow Condensed'; font-style: normal; font-weight: 700; font-display: swap; src: url(assets/fonts/barlow-condensed-700.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Barlow Condensed'; font-style: normal; font-weight: 800; font-display: swap; src: url(assets/fonts/barlow-condensed-800.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
 :root {
   --font-display: 'Barlow Condensed', 'Arial Narrow', Impact, sans-serif;
   --font-body: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
@@ -273,6 +278,7 @@ details.fold > .fold-body > div > :first-child { margin-top: var(--space-lg); }
 @media (hover: hover) { .tabs button:hover { color: var(--color-ink); } }
 .state { padding: var(--space-xl) 0; color: var(--color-ink-2); font-family: var(--font-mono); font-size: var(--text-xs); display: flex; align-items: center; gap: 10px; }
 .state.error { color: var(--color-accent-deep); }
+.state:has(> .spinner) { min-height: 100vh; align-items: flex-start; }   /* mientras carga, el pie queda fuera de la pantalla: no salta */
 .state .big { font-size: 1.4rem; }
 .spinner { width: 14px; height: 14px; border: 2px solid var(--color-rule); border-top-color: var(--color-ink); border-radius: 50%; animation: spin 700ms linear infinite; flex: none; }
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -316,4 +322,5 @@ body { transition: opacity 200ms var(--ease-out); }
 @media (hover: hover) { .liga-tabs nav a:not([aria-current]):hover { color: var(--color-ink-2); } }
 .liga-temp { padding-bottom: 12px; font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-ink-3); }
 .liga-temp:empty { display: none; }
+@media (max-width: 600px) { .liga-temp.fija { flex-basis: 100%; } .liga-temp.fija:empty { display: block; } .liga-temp.fija:empty::before { content: "\a0"; } }   /* en el celu la temporada va en su línea, con el lugar reservado mientras carga */
 @media (max-width: 400px) { .liga-tabs nav { gap: var(--space-md); } }

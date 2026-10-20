@@ -38,7 +38,7 @@ def liga_top(page):
     tabs = "".join(f'<a href="{h}"{" aria-current=\"page\"" if h == page else ""}>{t}</a>' for h, t in LIGA)
     return f'''<!-- layout:liga -->
   <a class="liga-cta" id="openRes" href="tabla.html#cargar">¿Jugaste? Cargá tu resultado <span aria-hidden="true">→</span></a>
-  <div class="liga-tabs"><nav aria-label="Liga">{tabs}</nav><span class="liga-temp" id="subtitle"></span></div>
+  <div class="liga-tabs"><nav aria-label="Liga">{tabs}</nav><span class="liga-temp{" fija" if page != "reglas.html" else ""}" id="subtitle"></span></div>
   <!-- /layout:liga -->'''
 CLUB = [("info.html#pagos", "Cuota y alias de pago"), ("info.html#escuela", "Escuela de tenis"),
         ("info.html#subcomision", "Subcomisión de Tenis"), ("info.html#cancha", "Cuidado de la cancha"),

@@ -11,8 +11,10 @@
 <meta name="theme-color" content="#12265c">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=20261019184507">
+<link rel="preload" href="assets/fonts/barlow-condensed-800.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/barlow-condensed-700.woff2" as="font" type="font/woff2" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css?v=20261020142612">
 <style>
 /* ---- Apertura con la foto de la cancha ---- */
 .open { position: relative; min-height: clamp(380px, 58vh, 640px); display: grid; align-items: end; isolation: isolate; color: var(--color-on-photo); }
@@ -38,6 +40,7 @@
 .hoy-card h3 { font-size: 1.6rem; font-weight: 700; text-transform: uppercase; }
 .hoy-card p { margin: 0; color: var(--color-ink-2); font-size: var(--text-sm); }
 .hoy-card .go { color: var(--color-accent-deep); font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; }
+.hoy-clima { min-height: 180px; }   /* lugar reservado para el pronóstico mientras carga */
 .hoy-clima .big { display: flex; align-items: baseline; gap: 10px; font-family: var(--font-display); font-size: 2.6rem; font-weight: 800; line-height: 1; }
 .hoy-clima .big .ico { font-size: 2rem; }
 .hoy-clima .stars { font-size: 1.4rem; letter-spacing: 2px; color: var(--color-rule); }
@@ -82,6 +85,7 @@
 }
 @media (max-width: 640px) {
   .hoy-grid { grid-template-columns: minmax(0, 1fr); }
+  .hoy-clima { min-height: 165px; }
   .hoy-card, .hoy-card + .hoy-card { padding: var(--space-md) 0; border-right: 0; border-bottom: 1px solid var(--color-rule); }
   .hoy-actions { grid-template-columns: minmax(0, 1fr); padding-top: var(--space-md); }
   .row { grid-template-columns: minmax(0, 1fr); gap: var(--space-xs); }
@@ -222,7 +226,7 @@
     </a>
   </nav>
 
-  <section class="tablon" id="novedades">
+  <section class="tablon" id="novedades" hidden>
     <div class="col">
       <div class="col-head"><h2>Noticias</h2><a href="novedades.html#noticias">Ver todas →</a></div>
       <p class="note" id="novNote" hidden>Contenido de ejemplo</p>
@@ -253,7 +257,7 @@
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="novedades.js?v=20261019184507"></script>
+<script src="novedades.js?v=20261020142612"></script>
 <script>
   /* ---- Hoy: clima (lo llama el script del clima cuando termina) ---- */
   function renderHoyClima(days) {
@@ -491,6 +495,6 @@
   loadWeather();
 
 </script>
-<script src="site.js?v=20261019184507"></script>
+<script src="site.js?v=20261020142612"></script>
 </body>
 </html>

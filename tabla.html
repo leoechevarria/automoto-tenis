@@ -11,8 +11,10 @@
 <meta name="theme-color" content="#12265c">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=20261019184507">
+<link rel="preload" href="assets/fonts/barlow-condensed-800.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/barlow-condensed-700.woff2" as="font" type="font/woff2" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css?v=20261020142612">
 <style>
 .rank-wrap { padding: var(--space-lg) 0 var(--space-3xl); }
 .vista:empty { display: none; }
@@ -118,7 +120,7 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
 <main class="wrap">
   <!-- layout:liga -->
   <a class="liga-cta" id="openRes" href="tabla.html#cargar">¿Jugaste? Cargá tu resultado <span aria-hidden="true">→</span></a>
-  <div class="liga-tabs"><nav aria-label="Liga"><a href="tabla.html" aria-current="page">Tabla</a><a href="fixture.html">Fixture</a><a href="reglas.html">Reglas</a></nav><span class="liga-temp" id="subtitle"></span></div>
+  <div class="liga-tabs"><nav aria-label="Liga"><a href="tabla.html" aria-current="page">Tabla</a><a href="fixture.html">Fixture</a><a href="reglas.html">Reglas</a></nav><span class="liga-temp fija" id="subtitle"></span></div>
   <!-- /layout:liga -->
   <dialog class="res" id="resDlg">
     <form method="dialog" id="resForm">
@@ -158,7 +160,7 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="liga.js?v=20261019184507"></script>
+<script src="liga.js?v=20261020142612"></script>
 <script>
   const navEl = document.getElementById('nav');
   const subtitleEl = document.getElementById('subtitle');
@@ -443,6 +445,6 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
     dlg.close();
   });
 </script>
-<script src="site.js?v=20261019184507"></script>
+<script src="site.js?v=20261020142612"></script>
 </body>
 </html>
