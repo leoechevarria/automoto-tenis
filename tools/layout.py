@@ -126,12 +126,15 @@ def bump_asset_versions():
         if s2 != s:
             p.write_text(s2)
     print("versión de CSS/JS:", v)
+    return v
 
 
 if __name__ == "__main__":
-    bump_asset_versions()
+    v = bump_asset_versions()
     for page in PAGES:
         if (ROOT / page).exists():
             apply(page)
         else:
             print("falta", page)
+    import noticias
+    noticias.build(v)
