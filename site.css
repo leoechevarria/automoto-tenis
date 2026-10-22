@@ -323,3 +323,6 @@ body { transition: opacity 200ms var(--ease-out); }
 .art .alias { font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; line-height: 1.05; color: var(--color-accent-deep); user-select: all; overflow-wrap: anywhere; }
 .art .alias-box .who { font-size: var(--text-xs); color: var(--color-ink-3); margin-top: 4px; }
 .art .copy-btn.done { background: var(--color-accent-deep); border-color: var(--color-accent-deep); }
+.dlg-body a.wa-link { display: inline-flex; align-items: center; gap: 6px; color: var(--color-ink); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
+.dlg-body a.wa-link .wa-ic { width: 1.1em; height: 1.1em; color: #1f9d55; flex: none; }
+.art .btn .wa-ic { width: 1.15em; height: 1.15em; flex: none; margin-top: -2px; }

@@ -16,14 +16,15 @@
       "etiqueta": "Colaboración",
       "titulo": "Isa viaja a Mendoza: ayudala con tu pedido",
       "foto": "assets/novedades/isa-mendoza.webp",
-      "texto": "Isa va a jugar un torneo por equipos en Mendoza. Para poder viajar, vende combos de comida. Cada pedido la ayuda a llegar al torneo.\n\nHay cinco opciones, entre $7.500 y $11.000: combos con tallarines, ravioles y pizza, sorrentinos y pastelitos. El detalle y los precios están en la imagen.\n\nPara hacer el pedido, escribile por WhatsApp al 291-4075621. La entrega es el miércoles 4 de noviembre.\n\nTambién podés colaborar con una transferencia al alias de Mercado Pago.",
+      "texto": "Isa va a jugar un torneo por equipos en Mendoza. Para poder viajar, vende combos de comida. Cada pedido la ayuda a llegar al torneo.\n\nHay cinco opciones, entre $7.500 y $11.000: combos con tallarines, ravioles y pizza, sorrentinos y pastelitos. El detalle y los precios están en la imagen.\n\nPara hacer el pedido, escribile por WhatsApp al [[wa:5492914075621|291-4075621]]. La entrega es el miércoles 4 de noviembre.\n\nTambién podés colaborar con una transferencia al alias de Mercado Pago.",
       "alias": {
         "valor": "isa.tenis.torneos",
         "titular": "Mariana Andrea Lopez"
       },
       "boton": {
         "texto": "Hacer el pedido por WhatsApp",
-        "url": "https://wa.me/5492914075621?text=Hola!%20Quiero%20hacer%20un%20pedido%20para%20ayudar%20a%20Isa%20a%20viajar%20a%20Mendoza."
+        "url": "https://wa.me/5492914075621?text=Hola!%20Quiero%20hacer%20un%20pedido%20para%20ayudar%20a%20Isa%20a%20viajar%20a%20Mendoza.",
+        "whatsapp": true
       }
     }
   ],
