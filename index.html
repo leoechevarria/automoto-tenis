@@ -14,7 +14,7 @@
 <link rel="preload" href="assets/fonts/barlow-condensed-800.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/barlow-condensed-700.woff2" as="font" type="font/woff2" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=20261022131909">
+<link rel="stylesheet" href="site.css?v=20261022132403">
 <style>
 /* ---- Apertura con la foto de la cancha ---- */
 .open { position: relative; min-height: clamp(380px, 58vh, 640px); display: grid; align-items: end; isolation: isolate; color: var(--color-on-photo); }
@@ -262,7 +262,7 @@
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="novedades.js?v=20261022131909"></script>
+<script src="novedades.js?v=20261022132403"></script>
 <script>
   /* ---- Hoy: clima (lo llama el script del clima cuando termina) ---- */
   function renderHoyClima(days) {
@@ -274,11 +274,13 @@
     const w = wxCode(day.code);
     const bands = day.bands.filter(x => x.s && (tarde || x.b.to > now.getHours()));
     const best = bands.slice().sort((a, b) => b.s.stars - a.s.stars)[0];
+    // Solo se nombra una hora si es buena (3 estrellas o más) y mejor que otra de las que quedan
+    const buena = best && best.s.stars >= 3 && bands.some(x => x.s.stars < best.s.stars);
     const v = verdict(day.stars);
     el.innerHTML = `<span class="k">${tarde ? 'Mañana' : 'Hoy'} en la cancha</span>
       <div class="big"><span class="ico">${w.i}</span>${day.tmax}°<small style="font-size:.5em;color:var(--color-ink-3)">/ ${day.tmin}°</small></div>
       <div class="stars" aria-label="${day.stars} de 5 estrellas">${starsHtml(day.stars)}</div>
-      <p>${v.t}${best ? ' · mejor ' + (best.b.key === 'mañ' ? 'a la mañana' : best.b.key === 'tar' ? 'a la tarde' : 'a la noche') : ''} · 💨 ${day.wind} km/h</p>`;
+      <p>${v.t}${buena ? ' · buena hora: ' + (best.b.key === 'mañ' ? 'la mañana' : best.b.key === 'tar' ? 'la tarde' : 'la noche') : ''} · 💨 ${day.wind} km/h</p>`;
   }
 
   /* ---- Novedades: noticias (franja Hoy y bloque) y dato de la fila ---- */
@@ -499,6 +501,6 @@
   loadWeather();
 
 </script>
-<script src="site.js?v=20261022131909"></script>
+<script src="site.js?v=20261022132403"></script>
 </body>
 </html>
