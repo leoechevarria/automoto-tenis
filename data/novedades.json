@@ -5,9 +5,26 @@
       "id": "comunicado-membresias",
       "publicado": "2026-10-20",
       "etiqueta": "Comunicado",
-    "fijado": true,
+      "fijado": true,
       "titulo": "Comunicado: membresías",
       "texto": "Socios y miembros de la comunidad tenística: nos dirigimos a ustedes con el objetivo de recordarles la importancia de mantener al día las cuotas sociales y membresías, ya que constituyen el principal ingreso con el que contamos para sostener, desarrollar y seguir haciendo crecer la actividad.\n\nEstos aportes son fundamentales para afrontar los gastos habituales y reinvertir en el tenis, tanto en el mantenimiento y las mejoras de las canchas y el frontón, como en la compra de polvo de ladrillo, el pago del sueldo del canchero y los seguros correspondientes a cada jugador, un aspecto esencial de nuestro deporte.\n\nAsimismo, teniendo en cuenta que se aproximan los meses de vacaciones de enero y febrero, queremos apelar al compromiso y la responsabilidad de todos. Entendemos que durante ese período puede disminuir la frecuencia de uso de las instalaciones o que algunos socios deban ausentarse por vacaciones u otros motivos. Sin embargo, es importante comprender que la continuidad del aporte permite sostener el funcionamiento de la actividad, independientemente de la cantidad de días que cada uno pueda asistir a jugar y hacer deporte.\n\nTambién es importante tener presente que las altas y bajas de seguros, membresías y cuotas requieren una gestión administrativa y determinados plazos para su correcta tramitación. Por ese motivo, una ausencia temporal, ya sea por vacaciones o cualquier otro impedimento, no debería implicar una interrupción automática del compromiso asumido. La organización y previsibilidad de estos aportes son necesarias para garantizar el normal funcionamiento de la actividad y mantener las condiciones adecuadas para todos.\n\nApelamos entonces a la comprensión y colaboración de cada uno, entendiendo que el aporte de todos es lo que nos permite cuidar lo que tenemos, seguir mejorando y proyectar nuevos objetivos para el tenis.\n\nEsperamos sepan comprender estos argumentos y queremos agradecerles sinceramente por el apoyo, el acompañamiento y el compromiso constante.\n\nGracias a cada uno de ustedes seguimos creciendo, fortaleciendo nuestra comunidad y construyendo un espacio cada vez mejor para disfrutar del deporte que nos une.\n\nMuchas gracias por ser parte.\n\nAtentamente"
+    },
+    {
+      "id": "isa-rumbo-a-mendoza",
+      "publicado": "2026-10-22",
+      "vence": "2026-11-04",
+      "etiqueta": "Colaboración",
+      "titulo": "Isa viaja a Mendoza: ayudala con tu pedido",
+      "foto": "assets/novedades/isa-mendoza.webp",
+      "texto": "Isa va a jugar un torneo por equipos en Mendoza. Para poder viajar, vende combos de comida. Cada pedido la ayuda a llegar al torneo.\n\nHay cinco opciones, entre $7.500 y $11.000: combos con tallarines, ravioles y pizza, sorrentinos y pastelitos. El detalle y los precios están en la imagen.\n\nPara hacer el pedido, escribile por WhatsApp al 291-4075621. La entrega es el miércoles 4 de noviembre.\n\nTambién podés colaborar con una transferencia al alias de Mercado Pago.",
+      "alias": {
+        "valor": "isa.tenis.torneos",
+        "titular": "Mariana Andrea Lopez"
+      },
+      "boton": {
+        "texto": "Hacer el pedido por WhatsApp",
+        "url": "https://wa.me/5492914075621?text=Hola!%20Quiero%20hacer%20un%20pedido%20para%20ayudar%20a%20Isa%20a%20viajar%20a%20Mendoza."
+      }
     }
   ],
   "eventos": []

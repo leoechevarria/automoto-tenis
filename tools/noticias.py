@@ -53,7 +53,16 @@ def page(item, tipo, v):
             d, _ = fecha(item["publicado"])
             pub = f" · {d.day} de {MES[d.month - 1]}"
         head = f'<span class="k">{esc(item.get("etiqueta") or "Noticia")}{pub}</span><h1>{esc(titulo)}</h1>'
-    foto = f'<img class="dlg-img" src="{esc(item["foto"])}" alt="">' if item.get("foto") else ""
+    foto = f'<img class="art-foto" src="{esc(item["foto"])}" alt="{esc(titulo)}">' if item.get("foto") else ""
+    extra = ""
+    if item.get("alias"):
+        al = item["alias"]
+        extra += (f'<div class="alias-box"><div><div class="lbl">Alias de Mercado Pago</div><div class="alias" id="aliasText">{esc(al["valor"])}</div>'
+                  f'<div class="who">Titular: {esc(al["titular"])}</div></div>'
+                  f'<button class="btn fill copy-btn" id="copyAlias" type="button"><span id="copyLabel">Copiar alias</span></button></div>')
+    if item.get("boton"):
+        extra += f'<div class="art-share"><a class="btn fill" href="{esc(item["boton"]["url"])}" target="_blank" rel="noopener">{esc(item["boton"]["texto"])}</a></div>'
+
     return f'''<!DOCTYPE html>
 <html lang="es-AR">
 <head>
@@ -88,15 +97,32 @@ def page(item, tipo, v):
 <main class="wrap">
   <article class="art reveal" style="--i:0">
     <a class="art-back" href="novedades.html">← Todas las novedades</a>
-    {foto}
     {head}
+    {foto}
     <div class="dlg-body">{paras(item.get("texto"))}</div>
+    {extra}
     <div class="art-share"><button type="button" class="btn" id="share" data-title="{esc(titulo)}" data-text="{esc(desc)}" data-url="{url}">{ICON_ANDROID}{ICON_IOS}<span>Compartir</span></button></div>
   </article>
 </main>
 
 {layout.FOOTER}
 <script src="site.js?v={v}"></script>
+<script>
+  (() => {{
+    const btn = document.getElementById('copyAlias'); if (!btn) return;
+    const label = document.getElementById('copyLabel');
+    const legacy = t => {{ const a = document.createElement('textarea'); a.value = t; a.style.position = 'fixed'; a.style.opacity = '0'; document.body.appendChild(a); a.select(); let ok = false; try {{ ok = document.execCommand('copy'); }} catch (e) {{}} a.remove(); return ok; }};
+    btn.addEventListener('click', async () => {{
+      const alias = document.getElementById('aliasText').textContent.trim();
+      let ok = false;
+      if (navigator.clipboard && window.isSecureContext) {{ try {{ await navigator.clipboard.writeText(alias); ok = true; }} catch (e) {{}} }}
+      if (!ok) ok = legacy(alias);
+      btn.classList.add('done');
+      label.textContent = ok ? '¡Copiado!' : 'Copiá: ' + alias;
+      setTimeout(() => {{ btn.classList.remove('done'); label.textContent = 'Copiar alias'; }}, ok ? 1800 : 3500);
+    }});
+  }})();
+</script>
 <script>
   (() => {{
     const b = document.getElementById('share');

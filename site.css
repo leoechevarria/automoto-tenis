@@ -317,3 +317,9 @@ body { transition: opacity 200ms var(--ease-out); }
 .art-share { padding-top: var(--space-md); }
 .art-share .btn .sh-ic { display: none; }
 .art-share .btn.is-android .sh-android, .art-share .btn.is-ios .sh-ios { display: block; }
+.art-foto { display: block; width: 100%; max-width: 560px; height: auto; border: 1px solid var(--color-rule); margin: var(--space-sm) 0; }
+.art .alias-box { display: flex; justify-content: space-between; align-items: center; gap: var(--space-lg); flex-wrap: wrap; padding: var(--space-lg) 0; border-top: 1px solid var(--color-rule); border-bottom: 1px solid var(--color-rule); }
+.art .alias-box .lbl { font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-ink-2); }
+.art .alias { font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; line-height: 1.05; color: var(--color-accent-deep); user-select: all; overflow-wrap: anywhere; }
+.art .alias-box .who { font-size: var(--text-xs); color: var(--color-ink-3); margin-top: 4px; }
+.art .copy-btn.done { background: var(--color-accent-deep); border-color: var(--color-accent-deep); }
