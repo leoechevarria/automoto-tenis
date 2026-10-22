@@ -14,7 +14,7 @@
 <link rel="preload" href="assets/fonts/barlow-condensed-800.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/barlow-condensed-700.woff2" as="font" type="font/woff2" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=20261022132639">
+<link rel="stylesheet" href="site.css?v=20261022132840">
 <style>
 /* ---- Apertura con la foto de la cancha ---- */
 .open { position: relative; min-height: clamp(380px, 58vh, 640px); display: grid; align-items: end; isolation: isolate; color: var(--color-on-photo); }
@@ -262,7 +262,7 @@
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="novedades.js?v=20261022132639"></script>
+<script src="novedades.js?v=20261022132840"></script>
 <script>
   /* ---- Hoy: clima (lo llama el script del clima cuando termina) ---- */
   function renderHoyClima(days) {
@@ -283,12 +283,12 @@
     const N = window.Novedades;
     const hoy = document.getElementById('hoyNoticia');
     try {
-      const { anuncios } = await N.load();
+      const { anuncios, ultimo } = await N.load();
       const a3 = anuncios.slice(0, 3);
       document.getElementById('homeAnuncios').innerHTML = a3.map(N.anuncio).join('');
       document.getElementById('novNote').hidden = !N.hayEjemplos(a3);
       document.getElementById('novedades').hidden = !a3.length;   // sin noticias no se muestra el bloque
-      const n = anuncios[0];
+      const n = ultimo;
       if (n) {
         document.getElementById('metaNov').innerHTML = `Último: <b>${N.esc(n.titulo)}</b>`;
         hoy.href = 'n/' + n.id;
@@ -488,6 +488,6 @@
   loadWeather();
 
 </script>
-<script src="site.js?v=20261022132639"></script>
+<script src="site.js?v=20261022132840"></script>
 </body>
 </html>
