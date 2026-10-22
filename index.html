@@ -14,7 +14,7 @@
 <link rel="preload" href="assets/fonts/barlow-condensed-800.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/barlow-condensed-700.woff2" as="font" type="font/woff2" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=20261022132521">
+<link rel="stylesheet" href="site.css?v=20261022132639">
 <style>
 /* ---- Apertura con la foto de la cancha ---- */
 .open { position: relative; min-height: clamp(380px, 58vh, 640px); display: grid; align-items: end; isolation: isolate; color: var(--color-on-photo); }
@@ -194,7 +194,7 @@
 <main class="wrap">
   <section class="hoy" aria-label="Hoy en el club">
     <div class="hoy-grid">
-      <a class="hoy-card hoy-clima" href="#clima" id="hoyClima"><span class="k">Clima para jugar</span><p>Cargando el pronóstico…</p></a>
+      <a class="hoy-card hoy-clima" href="#clima" id="hoyClima"><span class="k">Pronóstico del tiempo</span><p>Cargando el pronóstico…</p></a>
       <a class="hoy-card hoy-nov" href="novedades.html#noticias" id="hoyNoticia"><span class="k">Última novedad</span><p>Cargando…</p></a>
       <div class="hoy-actions">
         <a class="btn fill" href="https://darturnos.com/AutomotoTenis/" target="_blank" rel="noopener">Reservar turno ↗</a>
@@ -262,7 +262,7 @@
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="novedades.js?v=20261022132521"></script>
+<script src="novedades.js?v=20261022132639"></script>
 <script>
   /* ---- Hoy: clima (lo llama el script del clima cuando termina) ---- */
   function renderHoyClima(days) {
@@ -272,15 +272,10 @@
     const day = days[tarde ? 1 : 0];
     if (!day) return;
     const w = wxCode(day.code);
-    const bands = day.bands.filter(x => x.s && (tarde || x.b.to > now.getHours()));
-    const best = bands.slice().sort((a, b) => b.s.stars - a.s.stars)[0];
-    // Solo se nombra una hora si es buena (3 estrellas o más) y mejor que otra de las que quedan
-    const buena = best && best.s.stars >= 3 && bands.some(x => x.s.stars < best.s.stars);
-    const v = verdict(day.stars);
-    el.innerHTML = `<span class="k">${tarde ? 'Mañana' : 'Hoy'} en la cancha</span>
+    el.innerHTML = `<span class="k">Pronóstico del tiempo${tarde ? ' · mañana' : ''}</span>
       <div class="big"><span class="ico">${w.i}</span>${day.tmax}°<small style="font-size:.5em;color:var(--color-ink-3)">/ ${day.tmin}°</small></div>
       <div class="stars" aria-label="${day.stars} de 5 estrellas">${starsHtml(day.stars)}</div>
-      <p>${v.t}${buena ? ' · buena hora: ' + (best.b.key === 'mañ' ? 'la mañana' : best.b.key === 'tar' ? 'la tarde' : 'la noche') : ''} · 💨 ${day.wind} km/h</p>`;
+      <p>💨 ${day.wind} km/h</p>`;
   }
 
   /* ---- Novedades: noticias (franja Hoy y bloque) y dato de la fila ---- */
@@ -371,14 +366,6 @@
   }
 
   // colores claros para el veredicto (sobre fondo oscuro)
-  function verdict(stars) {
-    if (stars >= 5) return { t: '¡Ideal!', c: '#b6e05f' };
-    if (stars === 4) return { t: 'Muy bueno', c: '#a6d04e' };
-    if (stars === 3) return { t: 'Se puede', c: '#e0a94e' };
-    if (stars === 2) return { t: 'Complicado', c: '#dd8a55' };
-    return { t: 'Mejor no', c: '#e0776b' };
-  }
-
   const DOW = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
   const MON = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
 
@@ -484,7 +471,7 @@
     } catch (err) {
       if (wxTries < 3) { setTimeout(loadWeather, 2500 * wxTries); return; }
       wxTrack.innerHTML = `<div class="wx-error">No se pudo cargar el clima. Probá de nuevo en un rato.</div>`;
-      document.getElementById('hoyClima').innerHTML = '<span class="k">Clima</span><p>No se pudo cargar el pronóstico.</p>';
+      document.getElementById('hoyClima').innerHTML = '<span class="k">Pronóstico del tiempo</span><p>No se pudo cargar el pronóstico.</p>';
     }
   }
 
@@ -501,6 +488,6 @@
   loadWeather();
 
 </script>
-<script src="site.js?v=20261022132521"></script>
+<script src="site.js?v=20261022132639"></script>
 </body>
 </html>
