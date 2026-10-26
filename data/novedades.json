@@ -27,5 +27,12 @@
       }
     }
   ],
-  "eventos": []
+  "eventos": [
+    {
+      "id": "cena-fin-de-anio-2026",
+      "fecha": "2026-12-19",
+      "titulo": "Cena de fin de año",
+      "texto": "El sábado 19 de diciembre es la cena de fin de año del tenis. Reservá la fecha.\n\nPronto vamos a publicar el lugar, la hora y cómo reservar."
+    }
+  ]
 }
