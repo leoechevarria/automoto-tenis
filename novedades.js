@@ -55,6 +55,5 @@ window.Novedades = (() => {
   // Links viejos (novedades.html#id) pasan a la página propia.
   const openFromHash = () => { const id = decodeURIComponent(location.hash.slice(1)); if (id && index.has(id)) location.replace('/n/' + id); };
 
-  const hayEjemplos = list => list.some(x => x.ejemplo);
-  return { load, anuncio, evento, cuando, openFromHash, hayEjemplos, esc, day, MES, DIA };
+  return { load, anuncio, evento, cuando, openFromHash, esc, day, MES, DIA };
 })();

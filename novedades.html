@@ -14,7 +14,7 @@
 <link rel="preload" href="assets/fonts/barlow-condensed-800.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/barlow-condensed-700.woff2" as="font" type="font/woff2" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=20261022132840">
+<link rel="stylesheet" href="site.css?v=20261026115230">
 <style>
 main { padding-bottom: var(--space-3xl); }
 .nov { padding-top: var(--space-xl); }
@@ -73,7 +73,6 @@ details.past-list summary { cursor: pointer; font-family: var(--font-mono); font
   <div class="page-head reveal" style="--i:0">
     <div><h1>Novedades</h1></div>
   </div>
-  <p class="note reveal" id="novNote" style="--i:1; margin-top: var(--space-lg)" hidden>Contenido de ejemplo</p>
   <section class="nov split reveal" style="--i:1">
     <div class="col" id="noticias">
       <div class="col-head"><h2>Novedades</h2></div>
@@ -102,7 +101,7 @@ details.past-list summary { cursor: pointer; font-family: var(--font-mono); font
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="novedades.js?v=20261022132840"></script>
+<script src="novedades.js?v=20261026115230"></script>
 <script>
   (async () => {
     const N = window.Novedades;
@@ -114,7 +113,6 @@ details.past-list summary { cursor: pointer; font-family: var(--font-mono); font
         document.getElementById('listPasados').innerHTML = pasados.map(e => N.evento(e, ' past')).join('');
         document.getElementById('pastWrap').hidden = false;
       }
-      document.getElementById('novNote').hidden = !N.hayEjemplos([...anuncios, ...proximos]);
       N.openFromHash();
     } catch (err) {
       document.getElementById('listAnuncios').innerHTML = '<p class="empty">No se pudieron cargar las novedades. Probá de nuevo en un rato.</p>';
@@ -122,6 +120,6 @@ details.past-list summary { cursor: pointer; font-family: var(--font-mono); font
     }
   })();
 </script>
-<script src="site.js?v=20261022132840"></script>
+<script src="site.js?v=20261026115230"></script>
 </body>
 </html>
