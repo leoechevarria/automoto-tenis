@@ -21,9 +21,14 @@ window.Novedades = (() => {
     const fin = e => day(e.hasta || e.fecha);
     anuncios.forEach(a => index.set(a.id, { tipo: 'anuncio', item: a }));
     eventos.forEach(e => index.set(e.id, { tipo: 'evento', item: e, pasado: fin(e) < t }));
-    // La novedad más reciente por fecha, sin importar si hay una fijada (la usa la home)
-    const ultimo = anuncios.slice().sort((a, b) => (b.publicado || '').localeCompare(a.publicado || ''))[0];
-    return { anuncios, ultimo, proximos: eventos.filter(e => fin(e) >= t), pasados: eventos.filter(e => fin(e) < t).reverse() };
+    // Noticias y eventos próximos juntos, lo más nuevo primero según "publicado" (la usa la home).
+    // Una noticia fijada va arriba en la lista, pero no cuenta como "la última".
+    const proximos = eventos.filter(e => fin(e) >= t);
+    const porPublicado = (a, b) => (b.item.publicado || '').localeCompare(a.item.publicado || '');
+    const todas = [...anuncios.map(item => ({ tipo: 'anuncio', item })), ...proximos.map(item => ({ tipo: 'evento', item }))];
+    const recientes = todas.slice().sort((a, b) => (b.item.fijado === true) - (a.item.fijado === true) || porPublicado(a, b));
+    const ultimo = todas.slice().sort(porPublicado)[0];
+    return { anuncios, recientes, ultimo, proximos, pasados: eventos.filter(e => fin(e) < t).reverse() };
   }
 
   function cuando(e) {

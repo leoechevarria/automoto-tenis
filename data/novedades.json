@@ -1,5 +1,5 @@
 {
-  "_nota": "Fuente única de anuncios y eventos. La home y novedades.html leen este archivo. Más adelante lo escribe el importador de Instagram. Fechas en formato AAAA-MM-DD.",
+  "_nota": "Fuente única de anuncios y eventos. La home y novedades.html leen este archivo. Más adelante lo escribe el importador de Instagram. Fechas en formato AAAA-MM-DD. \"publicado\" es la fecha en que se subió (ordena lo último en la home); en un evento, \"fecha\" es el día del evento.",
   "anuncios": [
     {
       "id": "comunicado-membresias",
@@ -30,6 +30,7 @@
   "eventos": [
     {
       "id": "cena-fin-de-anio-2026",
+      "publicado": "2026-10-26",
       "fecha": "2026-12-19",
       "titulo": "Cena de fin de año",
       "texto": "El sábado 19 de diciembre es la cena de fin de año del tenis. Reservá la fecha.\n\nPronto vamos a publicar el lugar, la hora y cómo reservar."
