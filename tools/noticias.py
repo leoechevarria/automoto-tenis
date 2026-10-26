@@ -66,7 +66,7 @@ def page(item, tipo, v):
     extra = ""
     if item.get("alias"):
         al = item["alias"]
-        extra += (f'<div class="alias-box"><div><div class="lbl">Alias de Mercado Pago</div><div class="alias" id="aliasText">{esc(al["valor"])}</div>'
+        extra += (f'<div class="alias-box"><div><div class="lbl">{esc(al.get("etiqueta", "Alias para transferir"))}</div><div class="alias" id="aliasText">{esc(al["valor"])}</div>'
                   f'<div class="who">Titular: {esc(al["titular"])}</div></div>'
                   f'<button class="btn fill copy-btn" id="copyAlias" type="button"><span id="copyLabel">Copiar alias</span></button></div>')
     if item.get("boton"):

@@ -1,5 +1,5 @@
 {
-  "_nota": "Fuente única de anuncios y eventos. La home y novedades.html leen este archivo. Más adelante lo escribe el importador de Instagram. Fechas en formato AAAA-MM-DD. \"publicado\" es la fecha en que se subió (ordena lo último en la home); en un evento, \"fecha\" es el día del evento.",
+  "_nota": "Fuente única de anuncios y eventos. La home y novedades.html leen este archivo. Más adelante lo escribe el importador de Instagram. Fechas en formato AAAA-MM-DD. \"publicado\" es la fecha en que se subió (ordena lo último en la home; acepta hora, AAAA-MM-DDTHH:MM, para desempatar el mismo día); en un evento, \"fecha\" es el día del evento.",
   "anuncios": [
     {
       "id": "comunicado-membresias",
@@ -18,19 +18,32 @@
       "texto": "Isa va a jugar un torneo por equipos en Mendoza. Para poder viajar, vende combos de comida. Cada pedido la ayuda a llegar al torneo.\n\nHay cinco opciones, entre $7.500 y $11.000: combos con tallarines, ravioles y pizza, sorrentinos y pastelitos. El detalle y los precios están en la imagen.\n\nPara hacer el pedido, escribile por WhatsApp al [[wa:5492914075621|291-4075621]]. La entrega es el miércoles 4 de noviembre.\n\nTambién podés colaborar con una transferencia al alias de Mercado Pago.",
       "alias": {
         "valor": "isa.tenis.torneos",
-        "titular": "Mariana Andrea Lopez"
+        "titular": "Mariana Andrea Lopez",
+        "etiqueta": "Alias de Mercado Pago"
       },
       "boton": {
         "texto": "Hacer el pedido por WhatsApp",
         "url": "https://wa.me/5492914075621?text=Hola!%20Quiero%20hacer%20un%20pedido%20para%20ayudar%20a%20Isa%20a%20viajar%20a%20Mendoza.",
         "whatsapp": true
       }
+    },
+    {
+      "id": "sorteo-raqueta-wilson",
+      "publicado": "2026-10-26",
+      "vence": "2026-10-31",
+      "etiqueta": "Sorteo",
+      "titulo": "Sorteo de una raqueta Wilson Ultra V5 100",
+      "texto": "El sábado 31 de octubre sorteamos una raqueta Wilson Ultra V5 100: 300 gramos, cordaje 16 × 19 y cabeza de 100 pulgadas cuadradas.\n\nHay 100 números, del 1 al 100, y el cupo es limitado. Cada número cuesta $12.000 y se puede pagar en 2 veces. Podés comprar más de un número: con más números tenés más chances de ganar.\n\nPara pagar, transferí al alias.",
+      "alias": {
+        "valor": "tenisautomoto",
+        "titular": "Felipe Andres Kleine"
+      }
     }
   ],
   "eventos": [
     {
       "id": "cena-fin-de-anio-2026",
-      "publicado": "2026-10-26",
+      "publicado": "2026-10-26T20:00",
       "fecha": "2026-12-19",
       "titulo": "Cena de fin de año",
       "texto": "El sábado 19 de diciembre es la cena de fin de año del tenis. Reservá la fecha.\n\nPronto vamos a publicar el lugar, la hora y cómo reservar."
