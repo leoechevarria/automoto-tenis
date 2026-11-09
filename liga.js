@@ -294,7 +294,7 @@
   }
 
   /* ---- Cambios de la semana en la tabla de la liga (mismas reglas que el rating) ----
-     Puntos y puestos netos desde el lunes a las 0 h; lista de partidos de la semana por jugador. */
+     Puntos y puestos netos desde el lunes a las 0 h; lista de partidos de la semana y último resultado por jugador. */
   function semanaTabla(m, temporada, key, rows, lunes = lunesDeEstaSemana()) {
     if (!rows.length || rows.every(r => r.puesto)) return null;       // temporada cerrada: orden oficial fijo
     const pts = m.ptsDe(temporada);
@@ -312,9 +312,23 @@
         else { c.pts += pts.p; c.pp++; c.partidos.push(`perdió con ${rival}`); }
       }
     }
+    // Último resultado de cada jugador en la temporada, sin depender de fechas: la fecha (ronda) más alta con resultado.
+    const ultimo = new Map();
+    m.partidos.forEach((r, idx) => {
+      if (r[0] !== temporada || m.keyOf(r[1], r[2]) !== key || (r[3] || 'Liga') !== 'Liga' || /^s/i.test(r[13] || '')) return;
+      const a = r[8], b = r[9], gan = ganadorDe(r), wo = /^s/i.test(r[12] || '');
+      if (!gan && !wo) return;
+      const orden = (parseInt(r[4], 10) || 0) * 10000 + idx;
+      for (const [yo, rival] of [[a, b], [b, a]]) {
+        const prev = ultimo.get(yo);
+        if (prev && prev.orden > orden) continue;
+        const txt = gan === yo ? (wo ? `ganó por W.O. a ${rival}` : `venció a ${rival}`) : wo ? (gan ? `no se presentó ante ${rival}` : 'no se presentaron') : `perdió con ${rival}`;
+        ultimo.set(yo, { orden, txt });
+      }
+    });
     const lunesRows = sortRows(rows.map(r => { const c = cambio.get(r.jugador); return { ...r, pts: r.pts - c.pts, pg: r.pg - c.pg, pp: r.pp - c.pp, np: r.np - c.np }; }), desempate(m, temporada, key, lunes));
     const antes = new Map(lunesRows.map((r, i) => [r.jugador, i + 1]));
     const out = new Map();
-    rows.forEach((r, i) => { const c = cambio.get(r.jugador); out.set(r.jugador, { dPts: c.pts, dPos: antes.get(r.jugador) - (i + 1), partidos: c.partidos }); });
+    rows.forEach((r, i) => { const c = cambio.get(r.jugador); out.set(r.jugador, { dPts: c.pts, dPos: antes.get(r.jugador) - (i + 1), partidos: c.partidos, ultimo: ultimo.get(r.jugador)?.txt || '' }); });
     return out;
   }

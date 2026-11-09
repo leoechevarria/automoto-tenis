@@ -14,7 +14,7 @@
 <link rel="preload" href="assets/fonts/barlow-condensed-800.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/barlow-condensed-700.woff2" as="font" type="font/woff2" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css?v=20261026151958">
+<link rel="stylesheet" href="site.css?v=20261109145600">
 <style>
 .rank-wrap { padding: var(--space-lg) 0 var(--space-3xl); }
 .vista:empty { display: none; }
@@ -162,7 +162,7 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
   </div>
 </footer>
 <!-- /layout:footer -->
-<script src="liga.js?v=20261026151958"></script>
+<script src="liga.js?v=20261109145600"></script>
 <script>
   const navEl = document.getElementById('nav');
   const subtitleEl = document.getElementById('subtitle');
@@ -291,7 +291,7 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
       html += `
         <tr class="rank-${rank} ${rowClass}">
           <td class="pos"><span class="pos-badge">${rank}</span>${c && c.dPos ? `<span class="mv ${c.dPos > 0 ? 'up' : 'dn'}">${c.dPos > 0 ? '▲' : '▼'}${Math.abs(c.dPos)}</span>` : ''}</td>
-          <td><div class="player">${escapeHtml(r.jugador)}</div>${conZona && r.zona ? `<div class="vs-sem">Zona ${escapeHtml(r.zona)}</div>` : ''}${r.extra ? `<div class="vs-sem">(+${r.extra} por el Apertura)</div>` : ''}${c && c.partidos.length ? `<div class="vs-sem">(${c.partidos.map(escapeHtml).join(' · ')})</div>` : ''}${tag}</td>
+          <td><div class="player">${escapeHtml(r.jugador)}</div>${conZona && r.zona ? `<div class="vs-sem">Zona ${escapeHtml(r.zona)}</div>` : ''}${r.extra ? `<div class="vs-sem">(+${r.extra} por el Apertura)</div>` : ''}${c && c.ultimo ? `<div class="vs-sem">(${escapeHtml(c.ultimo)})</div>` : ''}${tag}</td>
           <td class="num">${r.pj}</td>
           <td class="num">${r.pg}</td>
           <td class="num">${r.pp}</td>
@@ -447,6 +447,6 @@ dialog.res[open] { animation: dlg 320ms var(--ease-out); }
     dlg.close();
   });
 </script>
-<script src="site.js?v=20261026151958"></script>
+<script src="site.js?v=20261109145600"></script>
 </body>
 </html>
